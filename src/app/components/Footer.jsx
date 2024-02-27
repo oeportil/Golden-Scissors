@@ -13,7 +13,7 @@ const Footer = () => {
                         <Image src={Logo} className="w-20" alt="Logo" priority />
                         </Link>
                      </div>
-                    <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-2 justify-center">
                         <div>
                             <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Headquaters</h2>
                             <ul className="text-gray-500  font-medium">
@@ -51,8 +51,8 @@ const Footer = () => {
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
-                    <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {new Date().getFullYear().toString()}
-                      Golden Scissors™. Todos los derechos Reservados.
+                    <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">©{new Date().getFullYear().toString()}
+                      {" "}Golden Scissors™. Todos los derechos Reservados.
                     </span>
                 </div>
             </div>
