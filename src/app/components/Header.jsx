@@ -9,7 +9,7 @@ const Header = () => {
   const pathname = usePathname()
   return (
     <header >
-        <nav className="bg-white border-gray-200 navegacion">
+        <nav className=" border-gray-200 navegacion">
           <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                 <Image src={Logo} className="w-20" alt="Logo" priority />

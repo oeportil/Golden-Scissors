@@ -16,15 +16,15 @@ import service5 from '@/img/service5.png'
 export default function Home() {
   return (
    <>
-      <div className=" bg-blend-multiply bg-no-repeat bg-cover bg-[url(../img/Banner.jpg)] py-60 bg-gray-600">
+      <div className=" bg-blend-multiply bg-no-repeat bg-cover bg-center bg-[url(../img/Banner.jpg)] md:py-60 py-32 bg-gray-600">
         <div className=" flex items-center flex-col">
-            <h1 className="w-2/4 text-center text-5xl font-extrabold ">Marca tu estilo Nosotros lo haremos brillar</h1>
-            <p className='w-2/4 text-center text-2xl font-bold goldest'>Ingresa para poder reservar tu corte</p>
+            <h1 className="md:w-2/4 text-center md:text-5xl text-3xl font-extrabold ">Marca tu estilo Nosotros lo haremos brillar</h1>
+            <p className='md:w-2/4 text-center md:text-2xl text-xl font-bold goldest mt-2'>Ingresa para poder reservar tu corte</p>
         </div>
       </div>
       <section className="py-4 introduccion flex flex-col items-center">
            <div className='md:w-8/12 w-11/12'>
-              <h2 className="text-center text-3xl font-bold mb-7 mt-2">El corte de tus sueños siempre a tu alcance</h2>
+              <h2 className="brown text-center text-3xl font-bold mb-7 mt-2">El corte de tus sueños siempre a tu alcance</h2>
                 <div className='grid gap-8 lg:grid-cols-2 text-justify items-center'>
                     <div className='flex flex-col items-center'>
                       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
@@ -44,9 +44,9 @@ export default function Home() {
            </div> 
       </section>
       <section className='servicios flex flex-col items-center pb-6'>
-        <div className='mt-4 md:w-8/12 w-11/12'>
+        <div className='mt-4 md:w-11/12 w-9/12'>
           <h2 className="text-center text-3xl font-bold mb-7 mt-2">Nuestros servicios</h2>
-           <div className='grid md:grid-cols-5'>
+           <div className='grid lg:grid-cols-5 md:grid-cols-3 gap-4'>
                 <InicioCards 
                 titulo={"Cortes de Pelo"}
                 contenido={"Barber is a person whose occupation is mainly to cut dress style."}
@@ -73,6 +73,12 @@ export default function Home() {
                 imagen={service5}
                 />
            </div>
+          </div>
+      </section>
+      <section className='blog'>
+          <h2 className='brown text-center text-3xl font-bold mb-7 mt-2'>Blog</h2>
+          <div>
+              {/* Blog here */}
           </div>
       </section>
    </>

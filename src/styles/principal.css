@@ -5,9 +5,7 @@ h1{
 .goldest{
     color: var(--gold);
 }
-.introduccion h2 {
-    color: var(--brown);
-}
+
 .introduccion .iniciar_sesion{
     background-color: var(--brown);
     color: var(--gold);

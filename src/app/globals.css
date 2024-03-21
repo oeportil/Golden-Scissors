@@ -35,3 +35,21 @@
 .error404{
   color: var(--gold);
 }
+.brown{
+  color: var(--brown);
+}
+.gold{
+  color: var(--gold);
+}
+.bg-gold{
+  background-color: var(--gold);
+}
+.bg-brown{
+  background-color: var(--brown);
+}
+.bg-white{
+  background-color: var(--white);
+}
+.bg-black{
+  background-color: var(--black);
+}
