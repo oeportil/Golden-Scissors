@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Logo from '../../logos/GS_logo.png'
+import Logo from '../../logos/GS_logo_blanco.png'
 import Link from 'next/link'
 
 

@@ -5,3 +5,11 @@ h1{
 .introduccion h2 {
     color: var(--brown);
 }
+.introduccion .iniciar_sesion{
+    background-color: var(--gold);
+    color: var(--brown);
+}
+
+.introduccion .iniciar_sesion:hover{
+    background-color:  var(--gold);
+}
