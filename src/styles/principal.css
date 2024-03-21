@@ -2,14 +2,33 @@ h1{
     color: var(--gold);
     line-height: 1.5;
 }
+.goldest{
+    color: var(--gold);
+}
 .introduccion h2 {
     color: var(--brown);
 }
 .introduccion .iniciar_sesion{
-    background-color: var(--gold);
-    color: var(--brown);
+    background-color: var(--brown);
+    color: var(--gold);
+    padding: .5rem 2rem;
+    transition-property: background-color;
+    transition-duration: 300ms;
 }
 
 .introduccion .iniciar_sesion:hover{
     background-color:  var(--gold);
+    color: var(--brown);
+}
+.servicios{
+    background-color: var(--ligthbrown);
+}
+.servicios h2{
+    color: var(--gold);
+}
+.card_inicio{
+    background-color: var(--white);
+}
+.titulo_card{
+    color: var(--brown);
 }

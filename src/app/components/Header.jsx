@@ -22,6 +22,9 @@ const Header = () => {
             </button>
             <div className="hidden w-full md:block md:w-auto links" id="navbar-default">
               <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900">
+               <li  className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${ pathname === '/' ? 'activo': ''}`}>
+                  <Link href="/">Inicio</Link>
+                </li>
                 <li  className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${ pathname === '/servicios' ? 'activo': ''}`}>
                   <Link href="/servicios">Servicios</Link>
                 </li>
@@ -32,7 +35,7 @@ const Header = () => {
                   <Link href="/blog" >Blog</Link>
                 </li>
                 <li className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${ pathname === '/login' ? 'activo': ''}`}>  
-                  <Link href="/login" >Iniciar Sesión</Link>
+                  <Link href="/login" >Login</Link>
                 </li>
               </ul>
             </div>

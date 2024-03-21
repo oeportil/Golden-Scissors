@@ -5,6 +5,7 @@
 :root {
   --black: #06070eff;
   --brown: #3e1814ff;
+  --ligthbrown: #392D2B;
   --gold: #ffbf00ff;
   --white: #f2f5f8ff;
   --green: #8fba3aff;
@@ -16,16 +17,16 @@
 }
 
 .navegacion .links a{
-  color: var(--white);
-  font-weight: 400;
+  color: var(--gold);
+  font-weight: 700;
   transition-property: color;
   transition-duration: 300ms;
 }
 .navegacion .links a:hover{
-  color: var(--gold);
+  color: var(--white);
 }
 .navegacion .links .activo a{
-  color: var(--gold);
+  color: var(--white);
 }
 .footer{
   background-color: var(--black);
