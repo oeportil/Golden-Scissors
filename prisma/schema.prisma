@@ -14,7 +14,47 @@ datasource db {
 }
 
 model Usuarios {
-  id       Int    @id @default(autoincrement())
-  nombre   String
-  apellido String
+  id_usuario Int      @id @default(autoincrement())
+  nombre     String
+  apellido   String
+  email      String
+  telefono   String
+  genero     Boolean
+  password   String
+  fechaNac   DateTime
+  admin      Boolean
+}
+
+model Blog {
+  id_blog   Int      @id @default(autoincrement())
+  titulo    String
+  contenido String
+  fechaCrea DateTime
+  fechaMod  DateTime
+}
+
+model Empleados {
+  id_empleado Int      @id @default(autoincrement())
+  nombre      String
+  apellido    String
+  email       String   @unique
+  telefono    String   @unique
+  genero      Boolean
+  // horario 
+  fechaNac    DateTime
+  direccion   String
+  estado      Int
+  contratado  Boolean
+}
+
+model Servicios {
+  id_servicio Int      @id @default(autoincrement())
+  nombre      String
+  precio      Float
+  duracion    DateTime
+}
+
+model Categorias {
+  id_categoria Int    @id @default(autoincrement())
+  nombre       String
 }
