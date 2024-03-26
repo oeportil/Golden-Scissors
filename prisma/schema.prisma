@@ -23,6 +23,7 @@ model Usuarios {
   password   String
   fechaNac   DateTime
   admin      Boolean
+  Citas      Citas[]
 }
 
 model Blog {
@@ -34,27 +35,61 @@ model Blog {
 }
 
 model Empleados {
-  id_empleado Int      @id @default(autoincrement())
-  nombre      String
-  apellido    String
-  email       String   @unique
-  telefono    String   @unique
-  genero      Boolean
-  // horario 
-  fechaNac    DateTime
-  direccion   String
-  estado      Int
-  contratado  Boolean
+  id_empleado     Int               @id @default(autoincrement())
+  nombre          String
+  apellido        String
+  email           String            @unique
+  telefono        String            @unique
+  genero          Boolean
+  // horario ????
+  fechaNac        DateTime
+  direccion       String
+  estado          Int
+  contratado      Boolean
+  cateCapacitadas cateCapacitadas[]
+  detalleCita     detalleCita[]
 }
 
 model Servicios {
-  id_servicio Int      @id @default(autoincrement())
+  id_servicio Int           @id @default(autoincrement())
   nombre      String
   precio      Float
   duracion    DateTime
+  detalleCita detalleCita[]
 }
 
 model Categorias {
-  id_categoria Int    @id @default(autoincrement())
-  nombre       String
+  id_categoria    Int               @id @default(autoincrement())
+  nombre          String
+  cateCapacitadas cateCapacitadas[]
+}
+
+model cateCapacitadas {
+  id_categorias Int        @id @default(autoincrement())
+  empleado      Empleados  @relation(fields: [id_empleado], references: [id_empleado])
+  id_empleado   Int
+  categoria     Categorias @relation(fields: [id_categ], references: [id_categoria])
+  id_categ      Int
+}
+
+model Citas {
+  id_cita     Int           @id @default(autoincrement())
+  fecha       DateTime
+  hora        DateTime
+  usuario     Usuarios      @relation(fields: [id_usuario], references: [id_usuario])
+  id_usuario  Int
+  detalleCita detalleCita[]
+}
+
+model detalleCita {
+  id_detalleCita Int       @id @default(autoincrement())
+  cita           Citas     @relation(fields: [id_cita], references: [id_cita])
+  id_cita        Int
+  servicio       Servicios @relation(fields: [id_servicio], references: [id_servicio])
+  id_servicio    Int
+  empleadoCit    Empleados @relation(fields: [id_empleado], references: [id_empleado])
+  id_empleado    Int
+  //este precio es el total??
+  precio         Float
+  fecha          DateTime
 }
