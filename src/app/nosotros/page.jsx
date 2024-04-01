@@ -21,17 +21,18 @@ const Page = () => {
             Nuestra Mision
           </h3>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet
-            modi, quod facilis cumque maiores consectetur, deserunt eos qui
-            consequuntur porro voluptatum fugit sed iste. Repudiandae quod amet
-            quo architecto et. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Sunt dicta laboriosam consectetur id vero
-            doloribus eius ab atque facilis accusantium! asperiores omnis nemo
-            eum illum explicabo facilis tenetur quidem. Lorem ipsum dolor sit,
-            amet consectetur adipisicing elit. Officiis accusamus, dolorem
-            commodi obcaecati dolores adipisci. Ratione quasi vitae doloribus.
-            Quod, et assumenda. Officiis, facere harum. Perspiciatis mollitia
-            quae voluptates labore?
+            Nuestra misión en Golden Scissors es elevar la experiencia de cada
+            cliente a través de servicios de barbería excepcionales, atención
+            personalizada y un ambiente acogedor. Nos esforzamos por ofrecer
+            cortes de cabello y cuidado de la barba de alta calidad,
+            manteniéndonos al tanto de las últimas tendencias y técnicas de la
+            industria. Valoramos la individualidad de cada cliente y nos
+            comprometemos a proporcionar servicios que resalten su estilo único.
+            Además, buscamos crear un espacio donde la comunidad pueda
+            conectarse y sentirse bienvenido. En Golden Scissors, nuestro
+            objetivo es más que simplemente cortar el cabello; se trata de crear
+            una experiencia memorable y satisfactoria para cada persona que
+            cruza nuestras puertas.
           </p>
         </div>
         <div className="text-justify mt-6 md:mt-0">
@@ -39,17 +40,23 @@ const Page = () => {
             Nuestra Historia
           </h3>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet
-            modi, quod facilis cumque maiores consectetur, deserunt eos qui
-            consequuntur porro voluptatum fugit sed iste. Repudiandae quod amet
-            quo architecto et. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Sunt dicta laboriosam consectetur id vero
-            doloribus eius ab atque facilis accusantium! asperiores omnis nemo
-            eum illum explicabo facilis tenetur quidem. Lorem ipsum dolor sit,
-            amet consectetur adipisicing elit. Officiis accusamus, dolorem
-            commodi obcaecati dolores adipisci. Ratione quasi vitae doloribus.
-            Quod, et assumenda. Officiis, facere harum. Perspiciatis mollitia
-            quae voluptates labore?
+            En los vibrantes callejones del centro histórico, nació Golden
+            Scissors. una pequeña barbería que se convertiría en una de las mas
+            confiables de San salvador.
+          </p>
+          <br />
+          <p>
+            Fundada por Carlos Solis, un apasionado barbero con décadas de
+            experiencia, y su hijo José Solis, un estilista innovador, la
+            barbería abrió sus puertas con un objetivo claro: fusionar la
+            tradición con la modernidad.
+          </p>
+          <br />
+          <p>
+            Inspirados por el deseo de ofrecer a la comunidad algo más que un
+            simple corte de cabello, Carlos y José crearon un espacio acogedor
+            donde cada silla contaba una historia y cada cliente se convertía en
+            parte de la familia.{" "}
           </p>
         </div>
         <Image src={Nosotros2} width={700} height={700} alt="Nosotros Imagen" />

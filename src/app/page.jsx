@@ -31,14 +31,20 @@ export default function Home() {
           <div className="grid gap-8 lg:grid-cols-2 text-justify items-center">
             <div className="flex flex-col items-center">
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Numquam, harum, laborum et illo repellat sapiente cum enim nulla
-                impedit neque dignissimos odio ut deserunt nam. Iure magnam
-                accusantium debitis cum. Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Natus eius ducimus maxime, exercitationem
-                corporis aut. Id assumenda eveniet tempore velit amet
-                necessitatibus ad provident ipsa, soluta, sapiente blanditiis
-                pariatur accusantium.
+                En Golden Scissors, no solo obtienes un corte de cabello,
+                ¡obtienes una experiencia! Nuestro equipo de talentosos barberos
+                no solo está comprometido con la excelencia en cada corte y
+                arreglo de barba, sino que también se esfuerza por crear un
+                ambiente acogedor y amigable para cada cliente. En nuestra
+                barbería, la atención personalizada es nuestra prioridad número
+                uno. Nos tomamos el tiempo para entender tus necesidades y
+                deseos individuales, para que puedas salir luciendo y
+                sintiéndote como la mejor versión de ti mismo. Además, nos
+                enorgullecemos de mantenernos al tanto de las últimas tendencias
+                y técnicas de la industria, garantizando que siempre recibas un
+                servicio de vanguardia. Ven y únete a la familia Golden
+                Scissors, donde cada corte de cabello es una obra maestra y cada
+                cliente es tratado con el respeto y la atención que se merece.
               </p>
               <Link
                 className="my-5 p-3 iniciar_sesion font-semibold"
@@ -79,34 +85,36 @@ export default function Home() {
             <InicioCards
               titulo={"Cortes de Pelo"}
               contenido={
-                "Barber is a person whose occupation is mainly to cut dress style."
+                "Con una combinación de habilidad, pasión y atención al detalle, transformamos tu cabello en una declaración de estilo personalizada para ti. "
               }
               imagen={service1}
             />
             <InicioCards
               titulo={"Cortes de Barba"}
               contenido={
-                "Barber is a person whose occupation is mainly to cut dress style."
+                "Con productos de calidad y técnicas expertas, te garantizamos un resultado que resalte tu masculinidad y estilo único que posees."
               }
               imagen={service2}
             />
             <InicioCards
               titulo={"Ajuste Capilar"}
               contenido={
-                "Barber is a person whose occupation is mainly to cut dress style."
+                "Ya sea que necesites un simple recorte de puntas o un ajuste completo de tu estilo actual, te brindaremos un servicio personalizado y de calidad."
               }
               imagen={service3}
             />
             <InicioCards
-              titulo={"Cortes de Pelo"}
+              titulo={"Ajustes de Pelo"}
               contenido={
-                "Barber is a person whose occupation is mainly to cut dress style."
+                "Ya sea que busques refrescar tu look actual, suavizar los contornos o agregar textura y volumen, estamos aquí para ayudarte a lograr el resultado perfecto e ideal para ti."
               }
               imagen={service4}
             />
             <InicioCards
               titulo={"Cejas y Cabello Facial"}
-              contenido={"occupation is mainly to cut dress style."}
+              contenido={
+                "Ya sea que necesites un simple recorte de puntas o un ajuste completo de tu estilo actual, te brindaremos un servicio personalizado y de calidad."
+              }
               imagen={service5}
             />
           </div>
