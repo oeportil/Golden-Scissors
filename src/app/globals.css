@@ -5,51 +5,55 @@
 :root {
   --black: #06070eff;
   --brown: #3e1814ff;
-  --ligthbrown: #392D2B;
+  --ligthbrown: #392d2b;
   --gold: #ffbf00ff;
   --white: #f2f5f8ff;
   --green: #8fba3aff;
   --red: #f85a3eff;
   --gray: rgb(246, 247, 250);
+  --transparente: #3e181430;
 }
- .navegacion{
+.navegacion {
   background-color: var(--black);
 }
 
-.navegacion .links a{
+.navegacion .links a {
   color: var(--gold);
   font-weight: 700;
   transition-property: color;
   transition-duration: 300ms;
 }
-.navegacion .links a:hover{
+.navegacion .links a:hover {
   color: var(--white);
 }
-.navegacion .links .activo a{
+.navegacion .links .activo a {
   color: var(--white);
 }
-.footer{
+.footer {
   background-color: var(--black);
-} 
+}
 
-.error404{
+.error404 {
   color: var(--gold);
 }
-.brown{
+.brown {
   color: var(--brown);
 }
-.gold{
+.gold {
   color: var(--gold);
 }
-.bg-gold{
+.bg-gold {
   background-color: var(--gold);
 }
-.bg-brown{
+.bg-brown {
   background-color: var(--brown);
 }
-.bg-white{
+.bg-white {
   background-color: var(--white);
 }
-.bg-black{
+.bg-black {
   background-color: var(--black);
+}
+.bg-transparente {
+  background-color: var(--transparente);
 }
