@@ -35,13 +35,26 @@ model Empleados {
   email           String            @unique
   telefono        String            @unique
   genero          Boolean
-  // horario ????
   fechaNac        DateTime
   direccion       String
   estado          Int
   contratado      Boolean
+  salario         Float
   cateCapacitadas cateCapacitadas[]
   detalleCita     detalleCita[]
+  horarioEmpleado horarioEmpleado[]
+}
+
+model horarioEmpleado {
+  id_horarioEmpleado   Int       @id @default(autoincrement())
+  empleado             Empleados @relation(fields: [id_empleado], references: [id_empleado])
+  id_empleado          Int
+  hora_inicio          DateTime
+  hora_fin             DateTime
+  laboral              Boolean
+  sabatino             Boolean
+  dominguero           Boolean
+  empleadosId_empleado Int
 }
 
 model Servicios {
