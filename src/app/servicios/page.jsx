@@ -1,15 +1,8 @@
-
-
-
 export const metadata = {
-  title: 'Barberia - Servicios'
-}
+  title: "Barberia - Servicios",
+};
 const Page = () => {
-  return (
-    <div>
-        servicios
-    </div>
-  )
-}
+  return <div>servicios</div>;
+};
 
-export default Page
+export default Page;
