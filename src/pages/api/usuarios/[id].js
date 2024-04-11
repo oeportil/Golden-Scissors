@@ -12,7 +12,7 @@ export default async function handler(req, res){
             }
         })
         if(!usuario){
-            return res.json({mensaje: "No se ha encontrado usu"})
+            return res.json({mensaje: "No se ha encontrado usuario"})
         }
         res.json(usuario)
 

@@ -11,8 +11,8 @@ model Usuarios {
   id_usuario Int      @id @default(autoincrement())
   nombre     String
   apellido   String
-  email      String
-  telefono   String
+  email      String   @unique
+  telefono   String   @unique
   genero     Boolean
   password   String
   fechaNac   DateTime
@@ -21,11 +21,11 @@ model Usuarios {
 }
 
 model Blog {
-  id_blog   Int      @id @default(autoincrement())
+  id_blog   Int       @id @default(autoincrement())
   titulo    String
   contenido String
   fechaCrea DateTime
-  fechaMod  DateTime
+  fechaMod  DateTime?
 }
 
 model Empleados {
@@ -46,15 +46,14 @@ model Empleados {
 }
 
 model horarioEmpleado {
-  id_horarioEmpleado   Int       @id @default(autoincrement())
-  empleado             Empleados @relation(fields: [id_empleado], references: [id_empleado])
-  id_empleado          Int
-  hora_inicio          DateTime
-  hora_fin             DateTime
-  laboral              Boolean
-  sabatino             Boolean
-  dominguero           Boolean
-  empleadosId_empleado Int
+  id_horarioEmpleado Int       @id @default(autoincrement())
+  empleado           Empleados @relation(fields: [id_empleado], references: [id_empleado])
+  id_empleado        Int
+  hora_inicio        DateTime
+  hora_fin           DateTime
+  laboral            Boolean
+  sabatino           Boolean
+  dominguero         Boolean
 }
 
 model Servicios {
@@ -82,7 +81,6 @@ model cateCapacitadas {
 model Citas {
   id_cita     Int           @id @default(autoincrement())
   fecha       DateTime
-  hora        DateTime
   usuario     Usuarios      @relation(fields: [id_usuario], references: [id_usuario])
   id_usuario  Int
   detalleCita detalleCita[]
