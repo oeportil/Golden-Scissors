@@ -27,7 +27,7 @@ const Page = () => {
       <div className="w-11/12 md:grid md:w-10/12 md:gap-8 md:grid-cols-2 lg:grid-cols-3 items-center justify-center">
       {blog.length !== 0 ? blog.map( entrada => (
                     <EntradasBlog key={entrada.id_blog} entrada={entrada}/>
-                  )) : <div className="my-5"> <p className="text-2xl font-bold text-slate-400">No hay nada que mostrar aqui</p></div> }
+                  )) : <div className="my-5"> <div className="loader"></div></div> }
       </div>
     </div>
   )

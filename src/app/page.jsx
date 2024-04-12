@@ -13,8 +13,7 @@ import service4 from "@/img/service4.png";
 import service5 from "@/img/service5.png";
 
 import { getBlog } from "@/controllers/BlogController";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EntradasBlog from "./components/EntradasBlog";
 
 export default function Home() {
@@ -33,7 +32,7 @@ export default function Home() {
       fetchData();
     }
   }, [blog]); 
-
+  
   return (
     <>
       <div className=" bg-blend-multiply bg-no-repeat bg-cover bg-center bg-[url(../img/Banner.jpg)] md:py-60 py-32 bg-gray-600">
@@ -150,6 +149,9 @@ export default function Home() {
                   {blog.length !== 0 ? blog.slice(0,3).map( entrada => (
                     <EntradasBlog key={entrada.id_blog} entrada={entrada}/>
                   )) : <div className="my-5"> <p className="text-2xl font-bold text-slate-400">No hay nada que mostrar aqui</p></div> }
+            </div>
+            <div className="flex mt-4 justify-end">
+                <Link href={"/blog"} className="bg-brown p-2 gold w-full text-center md:w-auto" >Ver Mas</Link>
             </div>
        </div>
       </section>
