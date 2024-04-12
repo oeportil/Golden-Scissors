@@ -11,9 +11,10 @@ export default async function handler(req, res){
         res.json(servicios);
     } else if (req.method === 'POST') {
         try {
-            const servicios = await prisma.servicios.create() 
+            const servicios = await prisma.servicios.create({data: req.body}) 
+            res.json({servicios})
         } catch (error) {
-            console.log("error inesperado")
+            console.log(error)
         }
     }
 }

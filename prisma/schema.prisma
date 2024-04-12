@@ -60,7 +60,7 @@ model Servicios {
   id_servicio Int           @id @default(autoincrement())
   nombre      String
   precio      Float
-  duracion    DateTime
+  duracion    Int
   detalleCita detalleCita[]
 }
 
