@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Nosotros from "../../img/Nosotros.webp";
 import Nosotros2 from "@/img/Nosotros2.png";
-import "../../styles/nosotros.css";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 
 export const metadata = {
-  title: "Barberia - Nosotros",
+  title: "GoldenScissors - Nosotros",
 };
 
 const Page = () => {

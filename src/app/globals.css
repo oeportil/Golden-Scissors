@@ -5,51 +5,85 @@
 :root {
   --black: #06070eff;
   --brown: #3e1814ff;
-  --ligthbrown: #392D2B;
+  --ligthbrown: #392d2b;
   --gold: #ffbf00ff;
   --white: #f2f5f8ff;
   --green: #8fba3aff;
   --red: #f85a3eff;
   --gray: rgb(246, 247, 250);
+  --transparente: #3e181430;
 }
- .navegacion{
+.navegacion {
   background-color: var(--black);
 }
 
-.navegacion .links a{
+.navegacion .links a {
   color: var(--gold);
   font-weight: 700;
   transition-property: color;
   transition-duration: 300ms;
 }
-.navegacion .links a:hover{
+.navegacion .links a:hover {
   color: var(--white);
 }
-.navegacion .links .activo a{
+.navegacion .links .activo a {
   color: var(--white);
 }
-.footer{
+.footer {
   background-color: var(--black);
-} 
+}
 
-.error404{
+.error404 {
   color: var(--gold);
 }
-.brown{
+.brown {
   color: var(--brown);
 }
-.gold{
+.gold {
   color: var(--gold);
 }
-.bg-gold{
+.bg-gold {
   background-color: var(--gold);
 }
-.bg-brown{
+.bg-brown {
   background-color: var(--brown);
 }
-.bg-white{
+.bg-white {
   background-color: var(--white);
 }
-.bg-black{
+.bg-black {
   background-color: var(--black);
+}
+.bg-transparente {
+  background-color: var(--transparente);
+}
+
+.line-clamp{
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.separacion{
+ white-space: pre-wrap;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: calc(80px*0.707);
+  height: calc(80px*0.707);
+  background: var(--gold);
+  clip-path: polygon(0 0,50% 15%,100% 0,85% 50%,100% 100%,50% 85%,0 100%,15% 50%);
+  -webkit-mask:
+    radial-gradient(circle closest-side,#0000 92%,#000) top   /100% 33.4%,
+    radial-gradient(circle closest-side,#0000 92%,#000) left  /33.4%  33.4%,
+    radial-gradient(circle 5px         ,#0000 92%,#000) center/33.3%  33.3%,
+    radial-gradient(circle closest-side,#0000 92%,#000) right /33.4%  33.4%,
+    radial-gradient(circle closest-side,#0000 92%,#000) bottom/100% 33.4%;
+  -webkit-mask-repeat: no-repeat;
+  animation: l4 1.5s infinite linear;
+}
+@keyframes l4 { 
+  100%{transform: rotate(1turn)}
 }

@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image";
 import "../styles/principal.css";
 import Link from "next/link";
@@ -10,7 +12,27 @@ import service3 from "@/img/service3.png";
 import service4 from "@/img/service4.png";
 import service5 from "@/img/service5.png";
 
+import { getBlog } from "@/controllers/BlogController";
+import { useEffect, useState } from "react";
+import EntradasBlog from "./components/EntradasBlog";
+
 export default function Home() {
+  const [blog, setBlog] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getBlog();
+        setBlog(data);
+      } catch (error) {
+        console.error("Error fetching blog data:", error);
+      }
+    };
+    if (blog.length === 0) {
+      fetchData();
+    }
+  }, [blog]); 
+  
   return (
     <>
       <div className=" bg-blend-multiply bg-no-repeat bg-cover bg-center bg-[url(../img/Banner.jpg)] md:py-60 py-32 bg-gray-600">
@@ -58,6 +80,12 @@ export default function Home() {
                 className=""
                 src={bar1}
                 alt={"Introduccion de imagen"}
+                priority
+              />
+              <Image
+                className="lg:row-start-1 lg:col-start-2"
+                src={bar2}
+                alt={"Introduccion de imagen 2"}
                 priority
               />
               <Image
@@ -114,9 +142,18 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="blog">
-        <h2 className="brown text-center text-3xl font-bold mb-7 mt-2">Blog</h2>
-        <div>{/* Blog here */}</div>
+      <section className="blog flex flex-col items-center pb-6">
+       <div className="mt-4 md:w-11/12 w-9/12">
+          <h2 className="brown text-center text-3xl font-bold mb-7 mt-2">Blog</h2>
+            <div className="md:flex gap-8 justify-center">
+                  {blog.length !== 0 ? blog.slice(0,3).map( entrada => (
+                    <EntradasBlog key={entrada.id_blog} entrada={entrada}/>
+                  )) : <div className="my-5"> <p className="text-2xl font-bold text-slate-400">No hay nada que mostrar aqui</p></div> }
+            </div>
+            <div className="flex mt-4 justify-end">
+                <Link href={"/blog"} className="bg-brown p-2 gold w-full text-center md:w-auto" >Ver Mas</Link>
+            </div>
+       </div>
       </section>
     </>
   );
