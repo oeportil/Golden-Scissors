@@ -1,26 +1,70 @@
+"use client";
 import Link from "next/link";
-
+import { useCrearCuentaLogic } from "../../utils/createAccountLogic";
 const CrearCuenta = () => {
+  //toda la logica de este componente se encuentra en utils y solo se manda a llamar acá
+  const {
+    newUser,
+    passwordRepeated,
+    alert,
+    handleChange,
+    handleSubmit,
+    setPasswordRepeated,
+  } = useCrearCuentaLogic();
+
   return (
-    <div className="md:grid md:grid-cols-2">
+    <div className="md:grid lg:grid-cols-2">
       <div className="bg-blend-multiply bg-no-repeat bg-cover bg-center bg-[url(../img/CrearCuenta.png)] md:block hidden"></div>
       <div className="py-14">
         <h2 className="brown text-center text-3xl font-bold mb-7 mt-2">
           Crear Cuenta
         </h2>
-        <form className="max-w-md w-11/12  mx-auto flex flex-col items-center">
+        {alert ? (
+          <p
+            className={`${
+              alert === "Error al crear el usuario"
+                ? "bg-red-600"
+                : "bg-yellow-400"
+            }  text-white font-bold flex m-5 gap-2
+            justify-center rounded-sm`}
+          >
+            {alert}{" "}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+              />
+            </svg>
+          </p>
+        ) : (
+          ""
+        )}
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-md w-11/12  mx-auto flex flex-col items-center"
+        >
           <div className="grid md:grid-cols-2 md:gap-6 w-full">
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="text"
-                name="floating_first_name"
-                id="floating_first_name"
+                name="nombre"
+                id="nombre"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
                 placeholder=" "
+                value={newUser.nombre}
+                onChange={handleChange}
                 required
               />
               <label
-                htmlFor="floating_first_name"
+                htmlFor="nombre"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 Nombre
@@ -29,14 +73,16 @@ const CrearCuenta = () => {
             <div className="relative z-0 w-full mb-5 group ">
               <input
                 type="text"
-                name="floating_last_name"
-                id="floating_last_name"
+                name="apellido"
+                id="apellido"
+                value={newUser.apellido}
+                onChange={handleChange}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
                 placeholder=" "
                 required
               />
               <label
-                htmlFor="floating_last_name"
+                htmlFor="apellido"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 Apellido
@@ -47,14 +93,16 @@ const CrearCuenta = () => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="email"
-              name="floating_last_email"
-              id="floating_last_email"
+              name="email"
+              id="email"
+              value={newUser.email}
+              onChange={handleChange}
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
               placeholder=" "
               required
             />
             <label
-              htmlFor="floating_last_email"
+              htmlFor="email"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Ingrese su correo electrónico
@@ -65,33 +113,36 @@ const CrearCuenta = () => {
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="tel"
-                name="floating_first_tel"
-                id="floating_first_tel"
+                name="telefono"
+                id="telefono"
+                value={newUser.telefono}
+                onChange={handleChange}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
                 placeholder=" "
                 required
               />
               <label
-                htmlFor="floating_first_tel"
+                htmlFor="telefono"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
                 Telefono
               </label>
             </div>
             <div className="relative z-0 w-full mb-5 group">
-              <input
-                type="text"
-                name="floating_last_gen"
-                id="floating_last_gen"
+              <select
+                name="genero"
+                onChange={handleChange}
+                value={newUser.genero}
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
-                placeholder=" "
-                required
-              />
+              >
+                <option value={"masculino"}>Masculino</option>
+                <option value={"femenino"}>Femenino</option>
+              </select>
               <label
-                htmlFor="floating_last_gen"
+                htmlFor="genero"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                Genero
+                Género
               </label>
             </div>
           </div>
@@ -99,14 +150,16 @@ const CrearCuenta = () => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="date"
-              name="floating_last_fecha"
-              id="floating_last_fecha"
+              name="fechaNac"
+              id="fechaNac"
+              value={newUser.fechaNac}
+              onChange={handleChange}
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
               placeholder=" "
               required
             />
             <label
-              htmlFor="floating_last_fecha"
+              htmlFor="fechaNac"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Fecha de Nacimiento
@@ -116,14 +169,16 @@ const CrearCuenta = () => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="password"
-              name="floating_last_password"
-              id="floating_last_password"
+              name="password"
+              id="password"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
               placeholder=" "
+              value={newUser.password}
+              onChange={handleChange}
               required
             />
             <label
-              htmlFor="floating_last_password"
+              htmlFor="password"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Contraseña
@@ -133,14 +188,16 @@ const CrearCuenta = () => {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="password"
-              name="floating_last_Rpassword"
-              id="floating_last_Rpassword"
+              name="passwordRepeated"
+              id="passwordRepeated"
+              value={passwordRepeated}
+              onChange={(e) => setPasswordRepeated(e.target.value)}
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
               placeholder=" "
               required
             />
             <label
-              htmlFor="floating_last_Rpassword"
+              htmlFor="passwordRepeated"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-yellow-500 peer-focus:dark:text-yellow-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Repetir Contraseña

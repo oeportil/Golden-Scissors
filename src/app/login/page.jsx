@@ -1,19 +1,40 @@
+"use client";
 import Image from "next/image";
 import Logo from "../../logos/GS_logo.png";
 import Link from "next/link";
+import { useState } from "react";
 
 const Page = () => {
+  const [sesion, setSesion] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChangeSesion = (e) => {
+    setSesion({ ...sesion, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Datos de inicio de sesión:", sesion);
+  };
+
   return (
     <div className="bg-blend-multiply bg-no-repeat bg-cover bg-center bg-[url(../img/bglogin.jpg)]  bg-gray-600">
       <div className=" flex flex-col justify-center items-center bg-transparente">
         <div className="flex flex-col items-center bg-black my-16 rounded-2xl w-11/12 md:w-2/5 py-8 opacity-80">
           <Image src={Logo} className="w-20" alt="Logo" priority />
           <h2 className="gold text-3xl">Login</h2>
-          <form className="w-11/12 flex flex-col items-center">
+          <form
+            className="w-11/12 flex flex-col items-center"
+            onSubmit={handleSubmit}
+          >
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="email"
-                name="floating_email"
+                value={sesion.email}
+                onChange={handleChangeSesion}
+                name="email"
                 id="floating_email"
                 className="block py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer "
                 placeholder=" "
@@ -29,7 +50,9 @@ const Page = () => {
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="password"
-                name="floating_password"
+                value={sesion.password}
+                onChange={handleChangeSesion}
+                name="password"
                 id="floating_password"
                 className="block  py-2.5 px-0 w-full text-sm text-gray-100 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-yellow-500 focus:outline-none focus:ring-0 focus:border-yellow-500 peer"
                 placeholder=" "
