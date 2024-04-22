@@ -5,21 +5,24 @@
 
 */
 -- AlterTable
-ALTER TABLE "Empleados" ADD COLUMN     "salario" DOUBLE PRECISION NOT NULL;
+CREATE OR REPLACE FUNCTION buscar_usuario(email_input TEXT, password_input TEXT)
+RETURNS record AS $$
+DECLARE
+    usuario record;
+BEGIN
+    -- Busca el usuario por correo y contraseña
+    SELECT *
+    INTO usuario
+    FROM Usuarios
+    WHERE email = email_input AND password = password_input;
 
--- CreateTable
-CREATE TABLE "horarioEmpleado" (
-    "id_horarioEmpleado" SERIAL NOT NULL,
-    "id_empleado" INTEGER NOT NULL,
-    "hora_inicio" TIMESTAMP(3) NOT NULL,
-    "hora_fin" TIMESTAMP(3) NOT NULL,
-    "laboral" BOOLEAN NOT NULL,
-    "sabatino" BOOLEAN NOT NULL,
-    "dominguero" BOOLEAN NOT NULL,
-    "empleadosId_empleado" INTEGER NOT NULL,
+    -- Si se encuentra un usuario, lo devuelve
+    IF usuario IS NOT NULL THEN
+        RETURN usuario;
+    ELSE
+        -- Si no se encuentra ningún usuario, devuelve NULL
+        RETURN NULL;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
 
-    CONSTRAINT "horarioEmpleado_pkey" PRIMARY KEY ("id_horarioEmpleado")
-);
-
--- AddForeignKey
-ALTER TABLE "horarioEmpleado" ADD CONSTRAINT "horarioEmpleado_id_empleado_fkey" FOREIGN KEY ("id_empleado") REFERENCES "Empleados"("id_empleado") ON DELETE RESTRICT ON UPDATE CASCADE;
