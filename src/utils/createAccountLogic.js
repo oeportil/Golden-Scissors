@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createUser } from "@/controllers/CreateAccountController";
+import { prismaFecha } from "./helpers";
 
 export const useCrearCuentaLogic = () => {
   //state de los datos de nuevo usuario
@@ -23,7 +24,7 @@ export const useCrearCuentaLogic = () => {
   const handleChange = (e) => {
     if (e.target.name == "genero") {
       let gender = e.target.value == "true";
-      console.log(gender);
+      
       setNewUser({ ...newUser, [e.target.name]: gender });
     } else {
       setNewUser({ ...newUser, [e.target.name]: e.target.value });
@@ -48,6 +49,9 @@ export const useCrearCuentaLogic = () => {
 
     setAlert("");
     try {
+      const fecha = prismaFecha(newUser.fechaNac)
+      newUser.fechaNac = fecha
+      console.log(fecha)
       const response = await createUser(newUser);
       console.log("Usuario creado:", response);
       setAlert("Usuario creado con exito");
