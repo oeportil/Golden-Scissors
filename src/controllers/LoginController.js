@@ -13,15 +13,12 @@ export const iniciarSesion = async(datos) =>{
             usuarios.data.map( usuario => {
                 if(usuario.email === email){
                     if(usuario.password === password){
-                        console.log("Todo correcto")
-                    } else 
-                        return "Usuario encontrado pero contraseña incorrecta"                    
-                } else 
-                    return "usario no encontrado"                
+                        const {admin, nombre, apellido, email: userEmail} = usuarios.data
+                        
+                    } else return "Usuario encontrado pero contraseña incorrecta"                    
+                } else return "usario no encontrado"                
             });
-       } else {
-            
-            return usuarios.data
-       }
+       } else return usuarios.data
+       
     }
 }
