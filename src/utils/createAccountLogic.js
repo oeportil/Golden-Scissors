@@ -9,7 +9,7 @@ export const useCrearCuentaLogic = () => {
     admin: false,
     email: "",
     telefono: "",
-    genero: "masculino",
+    genero: true,
     fechaNac: "",
     password: "",
   });
@@ -21,11 +21,13 @@ export const useCrearCuentaLogic = () => {
 
   //tomando el cambio de los datos
   const handleChange = (e) => {
-    if (e.target.name === "genero") {
-      let gender = e.target.value === "masculino" ? true : false;
-      setNewUser({ ...newUser, genero: gender });
+    if (e.target.name == "genero") {
+      let gender = e.target.value == "true";
+      console.log(gender);
+      setNewUser({ ...newUser, [e.target.name]: gender });
+    } else {
+      setNewUser({ ...newUser, [e.target.name]: e.target.value });
     }
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
