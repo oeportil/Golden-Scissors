@@ -3,6 +3,7 @@ import Image from "next/image";
 import Logo from "../../logos/GS_logo.png";
 import Link from "next/link";
 import { useState } from "react";
+import { iniciarSesion } from "@/controllers/LoginController";
 
 const Page = () => {
   const [sesion, setSesion] = useState({
@@ -14,9 +15,9 @@ const Page = () => {
     setSesion({ ...sesion, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("Datos de inicio de sesión:", sesion);
+    await iniciarSesion(sesion);
   };
 
   return (
