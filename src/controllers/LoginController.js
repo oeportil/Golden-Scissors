@@ -8,6 +8,20 @@ export const iniciarSesion = async(datos) =>{
     } else {
         //Toda la logica
         const usuarios = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/usuarios`)
-        
+       console.log(usuarios.data)
+       if(typeof usuarios.data !== "string"){
+            usuarios.data.map( usuario => {
+                if(usuario.email === email){
+                    if(usuario.password === password){
+                        console.log("Todo correcto")
+                    } else 
+                        return "Usuario encontrado pero contraseña incorrecta"                    
+                } else 
+                    return "usario no encontrado"                
+            });
+       } else {
+            
+            return usuarios.data
+       }
     }
 }
