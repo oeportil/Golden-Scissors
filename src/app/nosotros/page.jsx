@@ -70,9 +70,9 @@ const Page = () => {
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3871.6010935214026!2d-89.55025832576118!3d13.982333691916077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f62e62036825a69%3A0xec68b49f92513893!2sUniversidad%20Cat%C3%B3lica%20de%20El%20Salvador!5e0!3m2!1ses!2ssv!4v1711033647103!5m2!1ses!2ssv"
             width="1000"
             height="300"
-            allowfullscreen=""
+            allowFullScreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
       </div>

@@ -3,7 +3,7 @@ import "./globals.css";
 import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-//https://react-icons.github.io/react-icons/ for icons
+import { PeluqueriaProvider } from "@/context/PeluqueriaProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +19,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+        <PeluqueriaProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+        </PeluqueriaProvider>
       </body>
     </html>
   );
