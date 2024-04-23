@@ -4,20 +4,35 @@ import Logo from "../../logos/GS_logo.png";
 import Link from "next/link";
 import { useState } from "react";
 import { iniciarSesion } from "@/controllers/LoginController";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const { push } = useRouter();
+
   const [sesion, setSesion] = useState({
     email: "",
     password: "",
   });
+  const [alerta, setAlerta] = useState("")
 
   const handleChangeSesion = (e) => {
     setSesion({ ...sesion, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async(e) => {
-    e.preventDefault();
-    await iniciarSesion(sesion);
+      e.preventDefault();
+      const data = await iniciarSesion(sesion);
+      if(typeof data != "string"){
+          console.log(data)
+          if(data.admin){
+            push('/dashboard/admin')
+          } else {
+            push('/dashboard/user')
+          }
+      } else {
+          await setAlerta(data);
+          console.log(alerta)
+      }
   };
 
   return (
@@ -26,6 +41,9 @@ const Page = () => {
         <div className="flex flex-col items-center bg-black my-16 rounded-2xl w-11/12 md:w-2/5 py-8 opacity-80">
           <Image src={Logo} className="w-20" alt="Logo" priority />
           <h2 className="gold text-3xl">Login</h2>
+
+          {alerta && (<div className="py-3 w-11/12 text-center my-3 text-white bg-red-700">{alerta}</div>)}
+
           <form
             className="w-11/12 flex flex-col items-center"
             onSubmit={handleSubmit}

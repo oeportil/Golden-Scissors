@@ -2,6 +2,8 @@
 import { useContext } from "react";
 import peluqueriaContext from "@/context/PeluqueriaProvider";
 
-export const usePeluqueria = () => {
+const usePeluqueria = () => {
   return useContext(peluqueriaContext);
 };
+
+export default usePeluqueria;
