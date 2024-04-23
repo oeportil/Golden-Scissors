@@ -1,6 +1,3 @@
-import service1 from "@/img/service1.png";
-import axios from "axios";
-import def from "@/../public/servicios/def.jpg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -49,15 +46,13 @@ const Servicio = ({ corte }) => {
 
   return (
     <div className="bg-black w-1/3 rounded-md">
-      {route && ( // Renderizar el componente de imagen solo si hay una ruta
-        <Image
-          src={route}
-          alt={`imagen del corte ${corte.nombre}`}
-          width={300}
-          height={200}
-        />
-      )}
-
+      <Image
+        width={500}
+        height={100}
+        src={`/servicios/${corte.id_categoria}.jpg`}
+        alt={`imagen del corte ${corte.nombre}`}
+        className="w-full h-72"
+      />
       <h3 className="text-white text-center text-xl">{corte.nombre}</h3>
       <div className="flex justify-between">
         <h3 className="text-white text-center text-xl p-2">

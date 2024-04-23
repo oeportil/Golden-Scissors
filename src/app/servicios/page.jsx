@@ -1,14 +1,13 @@
 "use client";
 import usePeluqueria from "@/hooks/usePeluqueria";
 import Servicio from "../components/Servicio";
-import { useState } from "react";
 
 const Page = () => {
   const { services } = usePeluqueria();
   const filtrarPorCategoria = (categoria) => {
     return services.filter((servicio) => servicio.id_categoria === categoria);
   };
-
+  //estos son los arrays que hice en base a los servicios XD
   const tradicional = filtrarPorCategoria(1);
   const especial = filtrarPorCategoria(2);
   const barba = filtrarPorCategoria(3);
@@ -24,6 +23,7 @@ const Page = () => {
       >
         Nuestros Servicios
       </h1>
+
       <main className="grid md:grid-cols-2">
         <section>
           <div className="mb-5">
