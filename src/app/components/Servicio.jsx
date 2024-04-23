@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const Servicio = ({ corte }) => {
-  const [route, setRoute] = useState(null);
+  const [route, setRoute] = useState("");
 
   useEffect(() => {
     async function obtenerRuta() {
