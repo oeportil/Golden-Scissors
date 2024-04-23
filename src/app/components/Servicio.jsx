@@ -32,9 +32,7 @@ const Servicio = ({ corte }) => {
         const rutacam = rutaRelativa.replace(/['"]+/g, "");
         // Transformar la ruta absoluta en una ruta relativa dentro del contexto de la aplicación Next.js
         console.log(rutacam);
-        //setRoute(
-        //  require("@/../public/servicios/" + corte.id_servicio + ".jpg")
-        //);
+
         setRoute(require("@/../public/servicios/" + rutacam));
       } catch (error) {
         console.error("Error al obtener la ruta:", error);
@@ -49,7 +47,7 @@ const Servicio = ({ corte }) => {
       <Image
         width={500}
         height={100}
-        src={`/servicios/${corte.id_categoria}.jpg`}
+        src={route}
         alt={`imagen del corte ${corte.nombre}`}
         className="w-full h-72"
       />
