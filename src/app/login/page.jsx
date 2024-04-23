@@ -24,6 +24,7 @@ const Page = () => {
       const data = await iniciarSesion(sesion);
       if(typeof data != "string"){
           console.log(data)
+          
           if(data.admin){
             push('/dashboard/admin')
           } else {

@@ -1,5 +1,6 @@
+ "use server"
 import axios from "axios";
-
+import {cookies} from "next/headers"
 
 export const iniciarSesion = async (datos) => {
     console.log("Datos de inicio de sesión:", datos);
@@ -21,7 +22,7 @@ export const iniciarSesion = async (datos) => {
             }
 
             if (usuarioEncontrado.password === password) {
-                localStorage.setItem("token", JSON.stringify(usuarioEncontrado))
+                cookies().set("token", JSON.stringify(usuarioEncontrado))
                 return usuarioEncontrado;
             } else {
                 return "Contraseña incorrecta";
