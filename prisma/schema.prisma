@@ -57,17 +57,20 @@ model horarioEmpleado {
 }
 
 model Servicios {
-  id_servicio Int           @id @default(autoincrement())
-  nombre      String
-  precio      Float
-  duracion    Int
-  detalleCita detalleCita[]
+  id_servicio   Int           @id @default(autoincrement())
+  categoria     Categorias    @relation(fields: [id_categoria], references: [id_categoria])
+  id_categoria  Int
+  nombre        String
+  precio        Float
+  duracion      Int
+  detalleCita   detalleCita[]
 }
 
 model Categorias {
   id_categoria    Int               @id @default(autoincrement())
   nombre          String
   cateCapacitadas cateCapacitadas[]
+  servicios       Servicios[]
 }
 
 model cateCapacitadas {
