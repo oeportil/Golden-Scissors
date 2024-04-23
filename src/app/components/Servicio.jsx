@@ -44,13 +44,15 @@ const Servicio = ({ corte }) => {
 
   return (
     <div className="bg-black w-1/3 rounded-md">
-      <Image
-        width={500}
-        height={100}
-        src={route}
-        alt={`imagen del corte ${corte.nombre}`}
-        className="w-full h-72"
-      />
+      {route && (
+        <Image
+          width={500}
+          height={100}
+          src={route}
+          alt={`imagen del corte ${corte.nombre}`}
+          className="w-full h-72"
+        />
+      )}
       <h3 className="text-white text-center text-xl">{corte.nombre}</h3>
       <div className="flex justify-between">
         <h3 className="text-white text-center text-xl p-2">
