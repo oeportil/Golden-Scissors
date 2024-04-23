@@ -222,6 +222,6 @@ const CrearCuenta = () => {
       </div>
     </div>
   );
-};
+}; 
 
 export default CrearCuenta;
