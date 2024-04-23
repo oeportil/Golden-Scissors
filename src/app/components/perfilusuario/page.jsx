@@ -1,10 +1,12 @@
 import Image from "next/image";
+import foto from "@/img/peril.jpg";
+
 
 const PerfilUsuario = () => {
     return (
         <div>
             <section className="parte1">
-                <div className="p1">
+                <div className="p1 flex">
                     <div className="sher<3">
                         <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Nombre</h5>
@@ -18,7 +20,7 @@ const PerfilUsuario = () => {
                         </div>
                     </div>
                     <div className="P-der">
-                        
+
                     </div>
                 </div>
             </section>
