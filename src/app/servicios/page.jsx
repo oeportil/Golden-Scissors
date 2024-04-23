@@ -1,50 +1,96 @@
-import serv1 from "../../../public/servicios/1.jpg";
-import serv2 from "../../../public/servicios/2.jpg";
-import Image from "next/image";
-
-export const metadata = {
-  title: "Barberia - Servicios",
-};
+"use client";
+import usePeluqueria from "@/hooks/usePeluqueria";
+import Servicio from "../components/Servicio";
+import { useState } from "react";
 
 const Page = () => {
+  const { services } = usePeluqueria();
+  const filtrarPorCategoria = (categoria) => {
+    return services.filter((servicio) => servicio.id_categoria === categoria);
+  };
+
+  const tradicional = filtrarPorCategoria(1);
+  const especial = filtrarPorCategoria(2);
+  const barba = filtrarPorCategoria(3);
+  const delineado = filtrarPorCategoria(4);
+  const tintado = filtrarPorCategoria(5);
+  const ajustes = filtrarPorCategoria(6);
+
   return (
-    <div>
-      <section className="titulo flex justify-center items-center">
-        <div className="text-center p-10">
-          <h1 className="md:text-4xl font-bold" style={{ color: '#3E1814' }}>
-            Nuestros Servicios
-          </h1>
-        </div>
-      </section>
-      <section className="CA p-10">
-        <div className="part1 flex">
-          <div className="izq">
-            <div className="encabezado">
-              <h3>
-                Cortes de pelo Tradicionales
-              </h3>
-            </div>
-            <div className="carrusel">
-              <div className="max-w-xs bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <a href="#">
-                  <Image className="rounded-t-lg" src={serv1} alt="" width={200} height={150} />
-                </a>
-                <div className="p-3">
-                  <a href="#">
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">BUZZ</h5>
-                  </a>
-                  <p className="mb-2 text-sm font-normal text-gray-700 dark:text-gray-400">Tiempo: 45 Min. <br />Precio: $5</p>
-                </div>
-              </div>
-              <div className="C2">
-              </div>
+    <>
+      <h1
+        className="text-4xl font-bold text-center"
+        style={{ color: "#3E1814" }}
+      >
+        Nuestros Servicios
+      </h1>
+      <main className="grid md:grid-cols-2">
+        <section>
+          <div className="mb-5">
+            <h2 className="uppercase font-bold text-2xl text-center">
+              Cortes de pelo tradicionales
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {tradicional.map((corte) => (
+                <Servicio key={corte.id_servicio} corte={corte} />
+              ))}
             </div>
           </div>
-          <div className="der">
+          <div className="mb-5">
+            <h2 className="uppercase font-bold text-2xl text-center">
+              Cortes de barba
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {barba.map((corte) => (
+                <Servicio key={corte.id_servicio} corte={corte} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+          <div className="mb-5">
+            <h2 className="uppercase font-bold text-2xl text-center">
+              Tintado
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {tintado.map((corte) => (
+                <Servicio key={corte.id_servicio} corte={corte} />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className="">
+          <div className="mb-5">
+            <h2 className="uppercase font-bold text-2xl text-center">
+              Cortes de pelo Especiales
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {especial.map((corte) => (
+                <Servicio key={corte.id_servicio} corte={corte} />
+              ))}
+            </div>
+          </div>
+          <div className="mb-5">
+            <h2 className="uppercase font-bold text-2xl text-center">
+              Delineados
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {delineado.map((corte) => (
+                <Servicio key={corte.id_servicio} corte={corte} />
+              ))}
+            </div>
+          </div>
+          <div className="mb-5">
+            <h2 className="uppercase font-bold text-2xl text-center">
+              ajustes
+            </h2>
+            <div className="flex gap-2 justify-center">
+              {ajustes.map((corte) => (
+                <Servicio key={corte.id_servicio} corte={corte} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 

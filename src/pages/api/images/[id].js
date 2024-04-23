@@ -57,13 +57,11 @@ export default async function handler(req, res) {
         break;
     }
     //Override de nombrid
-    if (nombrid > 0) {
+    if (nombrid !== "0") {
       idusu = nombrid;
     }
     //Obtencion de la img
-    const data = await imagen.formData;
-    const file = data.get("file");
-    const fileName = file.name;
+    const fileName = imagen.name;
 
     //Gen de la extension
     if (fileName.endsWith(".jpg")) {
@@ -78,7 +76,7 @@ export default async function handler(req, res) {
       res.json({ mensaje: "Formato inadecuado" });
     } else {
       //subida de data
-      const bytes = await file.arrayBuffer();
+      const bytes = await imagen.arrayBuffer();
       const buffer = Buffer.from(bytes);
 
       const filePath = path.join(
@@ -91,7 +89,8 @@ export default async function handler(req, res) {
       writeFile(filePath, buffer);
       res.json({ mensaje: "El archivo se creo correctamente" });
     }
-  } catch {
+  } catch (e) {
+    console.log(e);
     res.json({ mensaje: "Ocurrió un error entre la generación de imgs" });
   }
 }
