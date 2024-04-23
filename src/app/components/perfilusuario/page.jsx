@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const PerfilUsuario = () => {
+ const PerfilUsuario = () => {
     return (
         <div>
             <section className="parte1">
@@ -25,3 +25,5 @@ const PerfilUsuario = () => {
         </div>
     );
 }
+
+export default PerfilUsuario
