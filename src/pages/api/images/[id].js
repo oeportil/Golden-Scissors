@@ -57,7 +57,7 @@ export default async function handler(req, res) {
         break;
     }
     //Override de nombrid
-    if (nombrid > 0) {
+    if (nombrid == "0") {
       idusu = nombrid;
     }
     //Obtencion de la img
@@ -91,7 +91,8 @@ export default async function handler(req, res) {
       writeFile(filePath, buffer);
       res.json({ mensaje: "El archivo se creo correctamente" });
     }
-  } catch {
+  } catch (e) {
+    console.log(e);
     res.json({ mensaje: "Ocurrió un error entre la generación de imgs" });
   }
 }
