@@ -6,9 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { getCookie, deleteCookie } from "cookies-next";
 import { useState, useEffect } from "react";
 
-
 const Header = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [cook, setCook] = useState({});
   const [route, setRoute] = useState("");
 
@@ -22,11 +21,11 @@ const Header = () => {
     console.log(`Item clicked: ${item}`);
     switch (item) {
       case 1:
-          deleteCookie("token")
-          setCook({})
-          router.push("/login")          
+        deleteCookie("token");
+        setCook({});
+        router.push("/login");
         break;
-    
+
       default:
         break;
     }
@@ -163,7 +162,7 @@ const Header = () => {
                     pathname === "/login" ? "activo" : ""
                   }`}
                 >
-                  <Link href={'/login'}>
+                  <Link href={"/login"}>
                     <Image
                       width={40}
                       height={40}
@@ -174,22 +173,34 @@ const Header = () => {
                   </Link>
                   <div className="relative inline-block">
                     <div className="flex flex-col">
-                      <button 
+                      <button
                         className="py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 gold flex items-center "
                         onClick={toggleDropdown}
                       >
                         {cook.nombre}
-                          <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
-                          </svg>
+                        <svg
+                          className="w-2.5 h-2.5 ms-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 10 6"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="m1 1 4 4 4-4"
+                          />
+                        </svg>
                       </button>
                       {isOpen && (
                         <ul className="absolute z-10 bg-white shadow-lg rounded-md mt-10">
-                          <li 
+                          <li
                             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleItemClick(1)}
                           >
-                            Salir
+                            Cerrar Sesión
                           </li>
                         </ul>
                       )}
