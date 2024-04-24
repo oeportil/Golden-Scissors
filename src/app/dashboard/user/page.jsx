@@ -1,6 +1,11 @@
 import React from 'react';
 import Image from "next/image";
 import foto from "@/img/peril.jpg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+
+
 
 const Page = () => {
   return (
@@ -25,7 +30,7 @@ const Page = () => {
 
           <div className="w-5/12 flex flex-col justify-center items-center">
             <div className='w-1/2 h-auto rounded-full'>
-              <Image src={foto} alt="Foto de perfil" className='rounded-full'/>
+              <Image src={foto} alt="Foto de perfil" className='rounded-full' />
             </div>
 
             <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -33,6 +38,100 @@ const Page = () => {
             </button>
           </div>
         </div>
+      </section>
+      <section className='tabla'>
+
+
+      <div class="p-10 relative overflow-x-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    N° Res.
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Fecha
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Agenda
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Atendido por
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Total
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                12343
+                </th>
+                <td class="px-6 py-4">
+                20/05/2024 1:50 p.m
+                </td>
+                <td class="px-6 py-4">
+                Corte de pelo, Corte de barba
+                Estilo de cejas
+                </td>
+                <td class="px-6 py-4">
+                Sin atender
+                </td>
+                <td class="px-6 py-4">
+                $30.00
+                </td>
+                <td class="px-6 py-4">
+                <FontAwesomeIcon icon={['fas', 'print']} />
+                </td>
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    --
+                </th>
+                <td class="px-6 py-4">
+                    --/--/--
+                </td>
+                <td class="px-6 py-4">
+                    --
+                </td>
+                <td class="px-6 py-4">
+                    --
+                </td>
+                <td class="px-6 py-4">
+                    --
+                </td>
+                <td class="px-6 py-4">
+                <FontAwesomeIcon icon={['fas', 'print']} />
+                </td>
+            </tr>
+            <tr class="bg-white dark:bg-gray-800">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    --
+                </th>
+                <td class="px-6 py-4">
+                    --/--/--
+                </td>
+                <td class="px-6 py-4">
+                    --
+                </td>
+                <td class="px-6 py-4">
+                    --
+                </td>
+                <td class="px-6 py-4">
+                    --
+                </td>
+                <td class="px-6 py-4">
+                <FontAwesomeIcon icon={['fas', 'print']} />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
       </section>
     </div>
   );
