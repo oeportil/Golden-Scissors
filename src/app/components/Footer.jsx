@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className=" dark:bg-gray-900 footer">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div className="grid grid-cols-3  w-100">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 items-center w-100">
           <div className="mb-6 md:mb-0 me-12 ms-12">
             <Link href="/" className="flex items-center">
               <Image
@@ -18,7 +18,7 @@ const Footer = () => {
               />
             </Link>
           </div>
-          <div className=" justify-center">
+          <div className=" ms-16 md:ms-0 justify-center my-4">
             <div>
               <h2 className="mb-6 text-sm font-semibold text-white uppercase dark:text-white">
                 Ubicación

@@ -7,8 +7,8 @@ const Page = () => {
   return (
     <div className=" flex flex-col items-center">
       <section className="parte1 container">
-        <div className="p1 flex p-10">
-          <div className="w-7/12">
+        <div className="p1 md:flex p-10 grid gap-4">
+          <div className="md:w-7/12 row-start-2">
             <div className="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 p-10">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Nombre
@@ -31,9 +31,9 @@ const Page = () => {
             </div>
           </div>
 
-          <div className="w-5/12 flex flex-col justify-center items-center">
-            <div className="w-1/2 h-auto rounded-full">
-              <Image src={foto} alt="Foto de perfil" className="rounded-full" />
+          <div className=" flex flex-col gap-2 justify-center items-center">
+            <div className="rounded-full">
+              <Image src={foto} width={200} height={200} alt="Foto de perfil" className="rounded-full w-full h-full" />
             </div>
 
             <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
