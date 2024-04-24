@@ -1,24 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import usePeluqueria from "@/hooks/usePeluqueria";
 import EntradasBlog from "../components/EntradasBlog";
-import { getBlog } from "@/controllers/BlogController";
 
 const Page = () => {
-  const [blog, setBlog] = useState([]);
+  const { blog } = usePeluqueria();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getBlog();
-        setBlog(data);
-      } catch (error) {
-        console.error("Error fetching blog data:", error);
-      }
-    };
-    if (blog.length === 0) {
-      fetchData();
-    }
-  }, [blog]);
   return (
     <div className="flex flex-col items-center mb-8">
       <h2 className="nosotros my-8 font-bold text-3xl brown">Blog</h2>

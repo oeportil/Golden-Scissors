@@ -1,20 +1,69 @@
-import Link from 'next/link'
-import React from 'react'
+import Link from "next/link";
+import Image from "next/image";
+import React from "react";
+import { useState, useEffect } from "react";
 
-const EntradasBlog = ({entrada}) => {
-   const {titulo, contenido, id_blog} = entrada
+const EntradasBlog = ({ entrada }) => {
+  const { titulo, contenido, id_blog } = entrada;
+  const [route, setRoute] = useState("");
+
+  useEffect(() => {
+    async function obtenerRuta() {
+      const tipo = "2";
+      const identity = id_blog;
+
+      try {
+        const respuesta = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/images/${id_blog}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tipo: tipo,
+              identity: identity,
+            }),
+          }
+        );
+
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener la ruta");
+        }
+
+        const rutaRelativa = await respuesta.text(); // Obtener la ruta absoluta como texto
+        const rutacam = rutaRelativa.replace(/['"]+/g, "");
+        console.log(rutacam);
+
+        setRoute(require("@/../public/blog/" + rutacam));
+      } catch (error) {
+        console.error("Error al obtener la ruta:", error);
+      }
+    }
+
+    obtenerRuta();
+  }, []);
   return (
-    <div className='bg-white mt-4 p-4'>        
-        <div className='text-center'>
-            <h3 className='text-lg font-semibold'>{titulo}</h3>
-            <div className='pb-4'>
-                <p className='text-slate-600 line-clamp text-justify'>{contenido}</p>                
-            </div>
-            <hr className='mb-2' />
-            <Link className='text-slate-600 p-2' href={`/blog/${id_blog}`}>Ir a la entrada</Link>
+    <section className="bg-white mt-4 p-4">
+      <div>
+        <Image
+          className="w-full h-72"
+          src={route}
+          alt={`Imagen de blog numero ${id_blog}`}
+        />
+      </div>
+      <div className="text-center">
+        <h3 className="text-lg font-semibold">{titulo}</h3>
+        <div className="pb-4">
+          <p className="text-slate-600 line-clamp text-justify">{contenido}</p>
         </div>
-    </div>
-  )
-}
+        <hr className="mb-2" />
+        <Link className="text-slate-600 p-2" href={`/blog/${id_blog}`}>
+          Ir a la entrada
+        </Link>
+      </div>
+    </section>
+  );
+};
 
-export default EntradasBlog
+export default EntradasBlog;

@@ -33,10 +33,10 @@ export default async function handler(req, res) {
           tipoarchivo = "empleados";
           break;
       }
-      console.log(tipoarchivo);
+
       let ruta = path.join(process.cwd(), "public", tipoarchivo);
       const archivos = readdirSync(ruta);
-      console.log(ruta);
+
       for (const archivo of archivos) {
         const rutaArchivo = path.join(ruta, archivo);
 

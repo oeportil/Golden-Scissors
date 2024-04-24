@@ -13,22 +13,20 @@ const Page = () => {
     email: "",
     password: "",
   });
-  const [alerta, setAlerta] = useState("")
+  const [alerta, setAlerta] = useState("");
 
   const handleChangeSesion = (e) => {
     setSesion({ ...sesion, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
-      e.preventDefault();
-      const data = await iniciarSesion(sesion);
-      if(typeof data != "string"){
-          console.log(data)
-          push('/login')
-      } else {
-          await setAlerta(data);
-          console.log(alerta)
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = await iniciarSesion(sesion);
+    if (typeof data != "string") {
+      push("/login");
+    } else {
+      await setAlerta(data);
+    }
   };
 
   return (
@@ -38,7 +36,11 @@ const Page = () => {
           <Image src={Logo} className="w-20" alt="Logo" priority />
           <h2 className="gold text-3xl">Login</h2>
 
-          {alerta && (<div className="py-3 w-11/12 text-center my-3 text-white bg-red-700">{alerta}</div>)}
+          {alerta && (
+            <div className="py-3 w-11/12 text-center my-3 text-white bg-red-700">
+              {alerta}
+            </div>
+          )}
 
           <form
             className="w-11/12 flex flex-col items-center"
