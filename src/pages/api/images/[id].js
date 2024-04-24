@@ -46,7 +46,8 @@ export default async function handler(req, res) {
             archivo == identity + ".jpg" ||
             archivo == identity + ".png" ||
             archivo == identity + ".gif" ||
-            archivo == identity + ".jpeg"
+            archivo == identity + ".jpeg" ||
+            archivo == identity + ".svg"
           ) {
             extent = archivo;
           }
@@ -66,7 +67,7 @@ export default async function handler(req, res) {
     const { id } = req.query; //Usado para seleccion de archivo
     let filetype;
     let idusu = 0; //Generado para poder nombrar el archivo segun el id
-    const { imagen, nombrid } = req.body;
+    const { imagen, nombrid } = await req.body;
     let extension = null;
     try {
       //Obtención de folder y id ultima, si se eligio 0 en nombrid
@@ -116,6 +117,7 @@ export default async function handler(req, res) {
         idusu = nombrid;
       }
       //Obtencion de la img
+      console.log(imagen);
       const fileName = imagen.name;
 
       //Gen de la extension
@@ -127,6 +129,8 @@ export default async function handler(req, res) {
         extension = ".png";
       } else if (fileName.endsWith(".gif")) {
         extension = ".gif";
+      } else if (fileName.endsWith(".svg")) {
+        extension = ".svg";
       }
       //Separacion de errores
       if (fileName == null) {

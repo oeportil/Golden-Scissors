@@ -13,6 +13,8 @@ export const useCrearCuentaLogic = () => {
     genero: true,
     fechaNac: "",
     password: "",
+    imagen: undefined,
+    nombrid: "0",
   });
 
   //state para cuando se repita la contraseña
@@ -26,6 +28,9 @@ export const useCrearCuentaLogic = () => {
       let gender = e.target.value == "true";
 
       setNewUser({ ...newUser, [e.target.name]: gender });
+    } else if (e.target.name == "imagen") {
+      console.log(e.target.files[0]);
+      setNewUser({ ...newUser, [e.target.name]: e.target.files[0] });
     } else {
       setNewUser({ ...newUser, [e.target.name]: e.target.value });
     }
@@ -51,7 +56,7 @@ export const useCrearCuentaLogic = () => {
     try {
       const fecha = prismaFecha(newUser.fechaNac);
       newUser.fechaNac = fecha;
-      console.log(fecha);
+      console.log(newUser.imagen);
       const response = await createUser(newUser);
       console.log("Usuario creado:", response);
       setAlert("Usuario creado con exito");
