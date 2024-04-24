@@ -13,10 +13,10 @@ export const useCrearCuentaLogic = () => {
     genero: true,
     fechaNac: "",
     password: "",
-    imagen: undefined,
+    imagen: "",
     nombrid: "0",
   });
-
+  const [imagePreview, setImagePreview] = useState("");
   //state para cuando se repita la contraseña
   const [passwordRepeated, setPasswordRepeated] = useState("");
   //state para alertas
@@ -28,9 +28,18 @@ export const useCrearCuentaLogic = () => {
       let gender = e.target.value == "true";
 
       setNewUser({ ...newUser, [e.target.name]: gender });
-    } else if (e.target.name == "imagen") {
-      console.log(e.target.files[0]);
-      setNewUser({ ...newUser, [e.target.name]: e.target.files[0] });
+    } else if (e.target.name === "imagen") {
+      const file = e.target.files[0];
+      if (file) {
+        // Previsualizar la imagen
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+        // Guardar el archivo en el estado
+        setNewUser({ ...newUser, [e.target.name]: file });
+      }
     } else {
       setNewUser({ ...newUser, [e.target.name]: e.target.value });
     }
@@ -51,12 +60,14 @@ export const useCrearCuentaLogic = () => {
         return;
       }
     }
-
+    if (newUser.imagen === undefined) {
+      setAlert("Suba una imagen de perfil!!!");
+      return;
+    }
     setAlert("");
     try {
       const fecha = prismaFecha(newUser.fechaNac);
       newUser.fechaNac = fecha;
-      console.log(newUser.imagen);
       const response = await createUser(newUser);
       console.log("Usuario creado:", response);
       setAlert("Usuario creado con exito");
