@@ -2,14 +2,35 @@
 import Image from "next/image";
 import Logo from "../../logos/GS_logo.png";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { getCookie } from "cookies-next";
+import { usePathname, useRouter } from "next/navigation";
+import { getCookie, deleteCookie } from "cookies-next";
 import { useState, useEffect } from "react";
 
+
 const Header = () => {
+  const router = useRouter()
   const [cook, setCook] = useState({});
   const [route, setRoute] = useState("");
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleItemClick = (item) => {
+    console.log(`Item clicked: ${item}`);
+    switch (item) {
+      case 1:
+          deleteCookie("token")
+          setCook({})
+          router.push("/login")          
+        break;
+    
+      default:
+        break;
+    }
+  };
   const user = getCookie("token");
   useEffect(() => {
     const cokie = () => {
@@ -22,7 +43,6 @@ const Header = () => {
 
   useEffect(() => {
     async function obtenerRuta() {
-      console.log(cook);
       const tipo = "1";
       const identity = cook.id_usuario.toString();
       console.log(identity);
@@ -99,7 +119,7 @@ const Header = () => {
             className="hidden w-full md:block md:w-auto links"
             id="navbar-default"
           >
-            <ul className="font-medium flex items-center flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900">
+            <ul className="font-medium flex md:items-center flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900">
               <li
                 className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${
                   pathname === "/" ? "activo" : ""
@@ -143,54 +163,37 @@ const Header = () => {
                     pathname === "/login" ? "activo" : ""
                   }`}
                 >
-                  <Image
-                    width={40}
-                    height={40}
-                    src={route}
-                    alt={`imagen`}
-                    className="rounded-full"
-                  />
-                  <button
-                    id="dropdownDefaultButton"
-                    data-dropdown-toggle="dropdown"
-                    className="inline-flex items-center gold py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900"
-                    type="button"
-                  >
-                    {cook.nombre}
-                    <svg
-                      class="w-2.5 h-2.5 ms-3"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 10 6"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="m1 1 4 4 4-4"
-                      />
-                    </svg>
-                  </button>
-
-                  <div
-                    id="dropdown"
-                    className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-                  >
-                    <ul
-                      className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                      aria-labelledby="dropdownDefaultButton"
-                    >
-                      <li>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >
-                          Cerrar Sesión
-                        </a>
-                      </li>
-                    </ul>
+                  <Link href={'/login'}>
+                    <Image
+                      width={40}
+                      height={40}
+                      src={route}
+                      alt={`imagen`}
+                      className="rounded-full"
+                    />
+                  </Link>
+                  <div className="relative inline-block">
+                    <div className="flex flex-col">
+                      <button 
+                        className="py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 gold flex items-center "
+                        onClick={toggleDropdown}
+                      >
+                        {cook.nombre}
+                          <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                          </svg>
+                      </button>
+                      {isOpen && (
+                        <ul className="absolute z-10 bg-white shadow-lg rounded-md mt-10">
+                          <li 
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleItemClick(1)}
+                          >
+                            Salir
+                          </li>
+                        </ul>
+                      )}
+                    </div>
                   </div>
                 </li>
               ) : (
