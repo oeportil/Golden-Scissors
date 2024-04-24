@@ -23,7 +23,6 @@ export async function createUser(newUser) {
       `${process.env.NEXT_PUBLIC_API_URL}/usuarios`,
       datosUser
     );
-
     // Realizar la solicitud POST para enviar la imagen
     const result2 = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/images/1`,
