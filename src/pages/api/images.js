@@ -39,11 +39,11 @@ export default async function handler(req, res) {
         if (statSync(rutaArchivo).isFile()) {
           //const probarextent = path.name(rutaArchivo);
           if (
-            archivo == identity + ".jpg" ||
-            archivo == identity + ".png" ||
-            archivo == identity + ".gif" ||
-            archivo == identity + ".jpeg" ||
-            archivo == identity + ".svg"
+            archivo.toLowerCase() == identity + ".jpg" ||
+            archivo.toLowerCase() == identity + ".png" ||
+            archivo.toLowerCase() == identity + ".gif" ||
+            archivo.toLowerCase() == identity + ".jpeg" ||
+            archivo.toLowerCase() == identity + ".svg"
           ) {
             extent = archivo;
           }

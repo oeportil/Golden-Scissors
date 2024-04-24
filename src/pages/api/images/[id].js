@@ -83,7 +83,7 @@ export default async function handler(req, res) {
         //Obtencion de la img
         const pimagen = imagen[0];
         console.log(nomID);
-        const fileName = pimagen.originalFilename;
+        const fileName = pimagen.originalFilename.toLowerCase();
 
         //Gen de la extension
         if (fileName.endsWith(".jpg")) {
