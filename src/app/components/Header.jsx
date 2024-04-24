@@ -4,8 +4,23 @@ import Image from 'next/image'
 import Logo from '../../logos/GS_logo.png'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { getCookie } from 'cookies-next'
+import { useState, useEffect } from 'react'
 
 const Header = () => {
+
+  const [cook, setCook] = useState({});
+  const user =  getCookie("token")  
+    useEffect(()=>{
+      const cokie = () =>{    
+        if(user !== undefined){
+
+          setCook(user)
+        }
+      }
+      cokie()
+    }, [user])
+
   const pathname = usePathname()
   return (
     <header >
@@ -37,6 +52,9 @@ const Header = () => {
                 <li className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${ pathname === '/login' ? 'activo': ''}`}>  
                   <Link href="/login" >Login</Link>
                 </li>
+                { Object.keys(cook).length !== 0 ? (<li className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${ pathname === '/login' ? 'activo': ''}`}>
+                  <Link href="/login" >User</Link>
+                </li>) : "" }
               </ul>
             </div>
           </div>
