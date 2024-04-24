@@ -82,18 +82,20 @@ export default function Home() {
                 alt={"Introduccion de imagen"}
                 priority
               />
-              <Image
-                className="lg:row-start-1 lg:col-start-2"
-                src={bar2}
-                alt={"Introduccion de imagen 2"}
-                priority
-              />
-              <Image
-                className="lg:row-start-2 lg:col-start-2"
-                src={bar2}
-                alt={"Introduccion de imagen 2"}
-                priority
-              />
+              <div>
+                <Image
+                  className=" mb-3 "
+                  src={bar2}
+                  alt={"Introduccion de imagen 2"}
+                  priority
+                />
+                <Image
+                  className=" mt-3 "
+                  src={bar2}
+                  alt={"Introduccion de imagen 2"}
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
