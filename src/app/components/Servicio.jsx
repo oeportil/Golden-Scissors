@@ -11,7 +11,7 @@ const Servicio = ({ corte }) => {
 
       try {
         const respuesta = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/images/1`,
+          `${process.env.NEXT_PUBLIC_API_URL}/images`,
           {
             method: "PUT",
             headers: {

@@ -14,7 +14,7 @@ const EntradasBlog = ({ entrada }) => {
 
       try {
         const respuesta = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/images/${id_blog}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/images`,
           {
             method: "PUT",
             headers: {
