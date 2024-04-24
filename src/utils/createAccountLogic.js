@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { createUser } from "@/controllers/CreateAccountController";
 import { prismaFecha } from "./helpers";
+import { NextResponse } from "next/server";
+
+// Dentro de tu componente o función
 
 export const useCrearCuentaLogic = () => {
   //state de los datos de nuevo usuario
@@ -71,6 +74,9 @@ export const useCrearCuentaLogic = () => {
       const response = await createUser(newUser);
       console.log("Usuario creado:", response);
       setAlert("Usuario creado con exito");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
     } catch (error) {
       console.error("Error al crear el usuario:", error.message);
       setAlert("Error al crear el usuario");
