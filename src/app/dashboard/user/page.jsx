@@ -1,39 +1,96 @@
+"use client"
 import React from "react";
 import Image from "next/image";
-import foto from "@/img/peril.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState, useEffect } from "react";
+import { getCookie } from "cookies-next";
+import { formatDate } from "@/utils/helpers";
+import Link from "next/link";
 
 const Page = () => {
+  const [cook, setCook] = useState({});
+  const [route, setRoute] = useState("");
+
+  const user = getCookie("token");
+  useEffect(() => {
+    const cokie = () => {
+      if (user !== undefined) {
+        setCook(JSON.parse(user));
+      }
+    };
+    cokie();
+  }, [user]);
+
+  useEffect(() => {
+    async function obtenerRuta() {
+      const tipo = "1";
+      const identity = cook.id_usuario.toString();
+      console.log(identity);
+      try {
+        const respuesta = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/images`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              tipo: tipo,
+              identity: identity,
+            }),
+          }
+        );
+
+        if (!respuesta.ok) {
+          throw new Error("Error al obtener la ruta");
+        }
+
+        const rutaRelativa = await respuesta.text(); // Obtener la ruta absoluta como texto
+        const rutacam = rutaRelativa.replace(/['"]+/g, "");
+        // Transformar la ruta absoluta en una ruta relativa dentro del contexto de la aplicación Next.js
+        console.log(rutacam);
+
+        setRoute(require("@/../../public/usuarios/" + rutacam));
+      } catch (error) {
+        console.error("Error al obtener la ruta:", error);
+      }
+    }
+    if (Object.keys(cook).length !== 0) {
+      obtenerRuta();
+    }
+  }, [cook]);
+
+
   return (
-    <div className=" flex flex-col items-center">
-      <section className="parte1 container">
+    <div className="flex flex-col items-center mb-4">
+      <section className="parte1 container grid justify-center w-full">
         <div className="p1 md:flex p-10 grid gap-4">
           <div className="md:w-7/12 row-start-2">
             <div className="bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 p-10">
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Nombre
+                {cook.nombre + " " + cook.apellido}
               </h5>
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                Edad
+                {formatDate(cook.fechaNac)}
               </p>
               <hr className="my-2 border-gray-300 dark:border-gray-600" />
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                Género
+                {cook.genero ? "Masculino" : "Femenino"}
               </p>
               <hr className="my-2 border-gray-300 dark:border-gray-600" />
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                Contacto
+                {cook.telefono}
               </p>
               <hr className="my-2 border-gray-300 dark:border-gray-600" />
               <p className="font-normal text-gray-700 dark:text-gray-400">
-                Correo
+                {cook.email}
               </p>
             </div>
           </div>
 
           <div className=" flex flex-col gap-2 justify-center items-center">
             <div className="rounded-full">
-              <Image src={foto} width={200} height={200} alt="Foto de perfil" className="rounded-full w-full h-full" />
+              <Image src={route} width={200} height={200} alt="Foto de perfil" className="rounded-full w-full h-full" />
             </div>
 
             <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -117,8 +174,11 @@ const Page = () => {
           </table>
         </div>
       </section>
+      <Link className="bg-ligthbrown gold py-2 px-8 font-semibold rounded-full hover:bg-yellow-500 hover:text-amber-950"  href={"user/reservar"}>
+          Reservar
+      </Link>
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

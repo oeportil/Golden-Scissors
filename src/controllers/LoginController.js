@@ -9,11 +9,14 @@ export const iniciarSesion = async (datos) => {
     return "Malo ting ling";
   } else {
     try {
-      const usuarios = await axios.get(
+      let usuarios = [];
+      console.log(usuarios)
+      usuarios = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/usuarios`
       );
+      console.log(usuarios.data)
 
-      if (usuarios.data.length === 0) {
+      if (typeof usuarios.data === "string") {
         return "No hay usuarios registrados";
       }
       const usuarioEncontrado = usuarios.data.find(

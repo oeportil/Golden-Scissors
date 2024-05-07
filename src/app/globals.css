@@ -54,6 +54,10 @@
 .bg-black {
   background-color: var(--black);
 }
+
+.bg-ligthbrown{
+  background-color: var(--ligthbrown);
+}
 .bg-transparente {
   background-color: var(--transparente);
 }

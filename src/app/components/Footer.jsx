@@ -11,7 +11,7 @@ const Footer = () => {
             <Link href="/" className="flex items-center">
               <Image
                 src={Logo}
-                width={180}
+                width={100}
                 className="w-30"
                 alt="Logo"
                 priority
