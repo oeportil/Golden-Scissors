@@ -23,7 +23,7 @@ export async function getServicesByCat(cat) {
 
 export async function getCategoServicios(){
   const result = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/categoria`
+    `${process.env.NEXT_PUBLIC_API_URL}/categorias`
   )
   return result.data
 }

@@ -16,7 +16,12 @@
 .navegacion {
   background-color: var(--black);
 }
-
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 .navegacion .links a {
   color: var(--gold);
   font-weight: 700;

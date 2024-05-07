@@ -1,17 +1,39 @@
 "use client"
-import{ useState } from 'react'
+import{ useState, useEffect } from 'react'
+import { getCategoServicios, getServicesByCat, getServicesById } from '@/controllers/ServiciosController';
 
 const Page = () => {
 
     const [activeTab, setActiveTab] = useState("servicios");
+    const [categs, setCategs] = useState([]);
+    const[categActv, setCategActv] = useState("")
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
+  const selected = active =>{
 
+    const datos = async() => {
+        const servCatg = await getServicesByCat(active)
+        await console.log(servCatg)
+    }
+    datos()
+
+    setCategActv(active)
+  }
+
+    useEffect(() => {      
+      const data = async() =>{
+        const categorias = await getCategoServicios();
+        await setCategs(categorias);
+        
+      }
+      data()
+    }, [categs])
+    
   return (
     <>
-        <h2 className='brown text-center text-2xl font-semibold'>Sistema de Reservacion</h2>
+        <h2 className='brown mt-4 text-center text-2xl font-semibold'>Reservaciones</h2>
 
             <div className='flex justify-center'>
                 <div className="my-4 border-b  dark:border-gray-700 w-11/12 md:w-9/12">
@@ -59,9 +81,18 @@ const Page = () => {
                     </ul>
                     <div id="default-tab-content" className='bg-slate-200'>
                         <div className={`p-4 ${activeTab === "servicios" ? "" : "hidden"} `} id="servicios" role="tabpanel" aria-labelledby="servicios-tab">
+                            <h3 className='text-center brown mb-8 text-xl font-semibold'>Seleccionar Servicios</h3>
                             <div className='grid md:grid-cols-3'>
-                                
-                            </div>  
+                                {categs.map(categoria => (
+                                    <div 
+                                    key={categoria.id_categoria}
+                                    className={`px-2 p-5 m-4 bg-ligthbrown cursor-pointer ${categoria.id_categoria === categActv ? "border-yellow-400 border-4": " "}`}                                     
+                                    onClick={() => selected(categoria.id_categoria)}>
+                                        <p className='text-center text-white font-semibold'>{categoria.nombre}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            
                         </div>
 
 
@@ -72,7 +103,9 @@ const Page = () => {
                         <div className={`p-4  ${activeTab === "resumen" ? "" : "hidden"} `} id="resumen" role="tabpanel" aria-labelledby="resumen-tab">
                         <p className="text-sm">This is some placeholder content the <strong className="font-medium ">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
                         </div>
+                       
                     </div>
+                    
                 </div>
             </div>
     </>
