@@ -2,10 +2,20 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { useState, useEffect } from "react";
+import { deleteBlogByID } from "@/controllers/BlogController";
 
-const EntradasBlog = ({ entrada }) => {
+import ReactConfirmPopup from "react-confirm-popup";
+
+const EntradasBlog = ({ entrada, isadmin, refresh }) => {
   const { titulo, contenido, id_blog } = entrada;
   const [route, setRoute] = useState("");
+
+
+  const deleteBlog = id =>{
+    if(deleteBlogByID(id)){
+      refresh(id)
+    }
+  }
 
   useEffect(() => {
     async function obtenerRuta() {
@@ -58,9 +68,28 @@ const EntradasBlog = ({ entrada }) => {
           <p className="text-slate-600 line-clamp text-justify">{contenido}</p>
         </div>
         <hr className="mb-2" />
-        <Link className="text-slate-600 p-2" href={`/blog/${id_blog}`}>
-          Ir a la entrada
+       {isadmin ? 
+       <div className="grid grid-cols-2 gap-1">
+        <Link className="bg-black text-white rounded-full py-2 font-semibold my-auto" href={`/blog/administrar/${id_blog}`} >
+          Editar
         </Link>
+         <ReactConfirmPopup 
+         trigger={<button className="bg-gold text-white rounded-full py-2 font-semibold ">Eliminar</button>} 
+         title="¿Estas Seguro que deseas eliminar esta entrada?"
+         text={
+             <div className="">
+             Se borrara permanentemente
+             </div>
+         }
+         confirmText="Eliminar"
+         cancelText="Mantener"
+         onConfirmClicked={() => deleteBlog(id_blog)}
+         />
+       </div> 
+       :  
+       <Link className="text-slate-600 p-2" href={`/blog/${id_blog}`}>
+          Ir a la entrada
+       </Link>}
       </div>
     </section>
   );

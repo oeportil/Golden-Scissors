@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createUser } from "@/controllers/CreateAccountController";
 import { prismaFecha } from "./helpers";
-import { NextResponse } from "next/server";
+
 
 // Dentro de tu componente o función
 
