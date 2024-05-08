@@ -145,26 +145,28 @@ export default function Home() {
         </div>
       </section>
       <section className="blog flex flex-col items-center pb-6">
-        <div className="mt-4 md:w-11/12 w-9/12">
+        <div className="mt-4 md:w-11/12 w-10/12">
           <h2 className="brown text-center text-3xl font-bold mb-7 mt-2">
             Blog
           </h2>
-          <div className="md:flex gap-8 justify-center">
-            {blog.length !== 0 ? (
-              blog
-                .slice(0, 3)
-                .map((entrada) => (
-                  <EntradasBlog key={entrada.id_blog} entrada={entrada} />
-                ))
-            ) : (
-              <div className="my-5">
-                {" "}
-                <p className="text-2xl font-bold text-slate-400">
-                  No hay nada que mostrar aqui
-                </p>
-              </div>
-            )}
-          </div>
+         <div className="flex justify-center">
+          <div className="md:grid md:w-11/12 md:gap-8 md:grid-cols-2 lg:grid-cols-3 content-center">
+              {blog.length !== 0 ? (
+                blog
+                  .slice(0, 3)
+                  .map((entrada) => (
+                    <EntradasBlog key={entrada.id_blog} entrada={entrada} />
+                  ))
+              ) : (
+                <div className="my-5">
+                  {" "}
+                  <p className="text-2xl font-bold text-slate-400">
+                    No hay nada que mostrar aqui
+                  </p>
+                </div>
+              )}
+            </div>
+         </div>
           <div className="flex mt-4 justify-end">
             <Link
               href={"/blog"}

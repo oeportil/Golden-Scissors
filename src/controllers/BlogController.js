@@ -18,3 +18,19 @@ export async function deleteBlogByID(id){
         console.log(error)
     }
 }
+
+export async function updateBlogByID(id, datos) {
+    try {
+        const result = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/blog/${id}`, datos)
+    } catch (error) {
+        
+    }
+}
+export async function createBlog(datos){
+    try {
+        const result = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/blog`, datos)
+        return result.mensaje
+    } catch (error) {
+        console.log(error)
+    }
+}

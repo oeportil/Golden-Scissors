@@ -96,3 +96,11 @@ html {
 @keyframes l4 { 
   100%{transform: rotate(1turn)}
 }
+.contenedor{
+  max-width: 1200px;
+  width: 95%;
+}
+
+.pading-100 {
+  width:100%;
+}

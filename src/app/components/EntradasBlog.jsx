@@ -70,7 +70,7 @@ const EntradasBlog = ({ entrada, isadmin, refresh }) => {
         <hr className="mb-2" />
        {isadmin ? 
        <div className="grid grid-cols-2 gap-1">
-        <Link className="bg-black text-white rounded-full py-2 font-semibold my-auto" href={`/blog/administrar/${id_blog}`} >
+        <Link className="bg-black text-white rounded-full py-2 font-semibold my-auto" href={`dashboard/admin/blogadmin/${id_blog}`} >
           Editar
         </Link>
          <ReactConfirmPopup 
