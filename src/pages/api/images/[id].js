@@ -1,3 +1,4 @@
+import axios from "axios";
 import prisma from "@/utils/prismaClient";
 import fs from "fs";
 import formidable from "formidable";
@@ -79,6 +80,20 @@ export default async function handler(req, res) {
         //Override de nombrid
         if (nomID !== "0") {
           idusu = nomID;
+          //Intentamos eliminar archivos que nos puedan molestar
+          try {
+            const enviodelete = {
+              tipo: id,
+              identity: nomID,
+            };
+            const result = await axios.delete(
+              `${process.env.NEXT_PUBLIC_API_URL}/images`,
+              enviodelete
+            );
+            return result.data.mensaje;
+          } catch (error) {
+            console.log(error);
+          }
         }
         //Obtencion de la img
         const pimagen = imagen[0];
