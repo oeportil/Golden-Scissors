@@ -35,7 +35,7 @@ model Empleados {
   email           String            @unique
   telefono        String            @unique
   genero          Boolean
-  fechaNac        DateTime
+  fechaContra     DateTime
   direccion       String
   estado          Int
   contratado      Boolean

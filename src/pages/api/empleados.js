@@ -3,7 +3,7 @@ import prisma from "@/utils/prismaClient";
 export default async function handle(req, res) {
   if (req.method === "GET") {
     const empleado = await prisma.empleados.findMany();
-    if (!empleado.isEmpty) {
+    if (empleado.isEmpty) {
       res.json({ mensaje: "No existen empleados aun" });
     }
     res.json(empleado);

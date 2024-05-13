@@ -7,7 +7,6 @@ export const formatDate = fecha =>{
         month: "long",
         year: "numeric"
     }).toString()
-    console.log(nueva)
     return nueva
 }
 
