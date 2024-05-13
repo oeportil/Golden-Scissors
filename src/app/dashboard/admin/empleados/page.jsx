@@ -133,6 +133,8 @@ const Page = () => {
         </div>
         <div className="flex justify-center">
             <Link href={""} className="bg-black text-white py-2 px-6 rounded-full hover:bg-slate-700">Agregar Empleado</Link>
+
+            
         </div>        
     </div>
   )
