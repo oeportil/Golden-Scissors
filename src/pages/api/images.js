@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     } catch {
       res.json(req.body);
     }
-  } else if (req.method === "DELETE") {
+  } else if (req.method === "POST") {
     let { tipo, identity } = req.body;
     console.log(req.body);
     tipo = tipo.toString();
