@@ -19,10 +19,24 @@ const StyledModal = Modal.styled`
 const Page = () => {
     const [empleado, setEmpleado] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [empleadoActual, setEmpleadoActual] = useState({})
+    const [empleadoActual, setEmpleadoActual] = useState({
+        id_empleado: 0,
+        nombre: "",
+        apellido: "",
+        email: "",
+        telefono: "",
+        genero: false,
+        fechaContra: "",
+        direccion: "",
+        estado: 1,
+        contratado: false,
+        salario: 0
+
+    })
    
     const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
+
 
     function toggleModal(e) {
         setOpacity(0);
@@ -97,7 +111,13 @@ const Page = () => {
         }
         empleact()
         toggleModal()
+        console.log(empleadoActual)
     }
+
+    const handleChangeEmpleado = (e) => {
+        setEmpleadoActual({ ...empleadoActual, [e.target.name]: e.target.value });
+      };
+
 
   return (
     <div className='container mx-auto my-4'>
@@ -189,7 +209,7 @@ const Page = () => {
                     opacity={opacity}
                     backgroundProps={{ opacity }}
                 >
-                    <h2 className="text-center text-xl brown font-semibold mt-2">{Object.keys(empleadoActual).length == 0 ? "Crear Empleado" : "Editar Empleado"}</h2>
+                    <h2 className="text-center text-xl brown font-semibold mt-2">{ empleadoActual.id_empleado == 0 ? "Crear Empleado" : "Editar Empleado"}</h2>
                     <div className="p-2">
                         <form className="max-w-md mx-auto">
                             <div className="">
@@ -197,8 +217,9 @@ const Page = () => {
                                         <div className="relative z-0 w-full mb-5 group">
                                             <input
                                             type="text"
-                                            name="text"
-                                            
+                                            name="nombre"
+                                            value={empleadoActual.id_empleado != 0 ? empleadoActual.nombre : ""}
+                                            onChange={handleChangeEmpleado}
                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             required
@@ -213,8 +234,9 @@ const Page = () => {
                                         <div className="relative z-0 w-full mb-5 group">
                                             <input
                                             type="text"
-                                            name="text"
-                                            
+                                            name="apellido"
+                                            value={empleadoActual.id_empleado != 0 ? empleadoActual.apellido : ""}
+                                            onChange={handleChangeEmpleado}
                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             required
@@ -231,7 +253,8 @@ const Page = () => {
                                         <input
                                         type="email"
                                         name="email"
-                                    
+                                        value={empleadoActual.id_empleado != 0 ? empleadoActual.email : ""}
+                                            onChange={handleChangeEmpleado}
                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                         placeholder=" "
                                         required
@@ -247,8 +270,9 @@ const Page = () => {
                                         <div className="relative z-0 w-full mb-5 group">
                                         <input
                                             type="tel"
-                                            name="tel"
-                                        
+                                            name="telefono"
+                                            value={empleadoActual.id_empleado != 0 ? empleadoActual.telefono : ""}
+                                            onChange={handleChangeEmpleado}
                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             required
@@ -261,7 +285,9 @@ const Page = () => {
                                         </label>
                                         </div>
                                         <div className="relative z-0 w-full mb-5 group">
-                                            <select name="" id="genero"
+                                            <select name="genero" id="genero"
+                                             onChange={handleChangeEmpleado}
+                                             value={empleadoActual.id_empleado != 0 ? empleadoActual.genero : ""}
                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             >
                                                 <option value={true}>Masculino</option>
@@ -277,7 +303,7 @@ const Page = () => {
                                     </div>
                                     <div className="grid md:grid-cols-2 md:gap-6">
                                     <div className="relative z-0 w-full mb-5 group">
-                                            <select name="" id=""
+                                            <select name="horarios" id=""
                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             >
 
@@ -293,7 +319,8 @@ const Page = () => {
                                         <input
                                             type="number"
                                             name="salario"
-                                        
+                                            onChange={handleChangeEmpleado}
+                                            value={empleadoActual.id_empleado != 0 ? empleadoActual.salario : ""}
                                             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                             placeholder=" "
                                             required
@@ -307,7 +334,9 @@ const Page = () => {
                                         </div>
                                     </div>
                                     <div className="relative z-0 w-full mb-5 group">
-                                        <textarea name="" id=""
+                                        <textarea name="direccion" id=""
+                                        onChange={handleChangeEmpleado}
+                                        value={empleadoActual.id_empleado != 0 ? empleadoActual.direccion : ""}
                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                     >
                                         </textarea>
@@ -319,7 +348,7 @@ const Page = () => {
                                         </label>
                                     </div>
                                     <div className="relative z-0 w-full mb-5 group">
-                                        <select name="" id="servicios"
+                                        <select name="servicios" id="servicios"
                                         className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                                         >
                                         <option> </option>
@@ -347,12 +376,25 @@ const Page = () => {
             </ModalProvider>
     </div>
   )
+  
   function cerrarModal(){
-    
     toggleModal()
-    setEmpleadoActual({})
+    setEmpleadoActual({
+        id_empleado: 0,
+        nombre: "",
+        apellido: "",
+        email: "",
+        telefono: "",
+        genero: false,
+        fechaContra: "",
+        direccion: "",
+        estado: 1,
+        contratado: false,
+        salario: 0
+
+    })
     console.log(empleadoActual)
-  }
+    }
 }
 
 export default Page
