@@ -31,7 +31,6 @@ const Servicio = ({ corte }) => {
         const rutaRelativa = await respuesta.text(); // Obtener la ruta absoluta como texto
         const rutacam = rutaRelativa.replace(/['"]+/g, "");
         // Transformar la ruta absoluta en una ruta relativa dentro del contexto de la aplicación Next.js
-        console.log(rutacam);
 
         setRoute(require("@/../public/servicios/" + rutacam));
       } catch (error) {
@@ -43,7 +42,7 @@ const Servicio = ({ corte }) => {
   }, []);
 
   return (
-    <div className="bg-black w-1/3 rounded-md">
+    <div className="bg-black w-10/12 rounded-md">
       {route && (
         <Image
           width={500}
