@@ -5,7 +5,7 @@ import {
   getEmpleados,
   getHorarios,
 } from "@/controllers/EmpleadosController";
-import { useEffect, useState, useRef   } from "react";
+import { useEffect, useState, useRef } from "react";
 import { formatDate, Hora, prismaFecha } from "@/utils/helpers";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
@@ -17,11 +17,13 @@ const StyledModal = Modal.styled`
   opacity: ${(props) => props.opacity};
   transition : all 0.3s ease-in-out;
   `;
-
+const FadingBackground = styled(BaseModalBackground)`
+  opacity: ${(props) => props.opacity};
+  transition: all 0.3s ease-in-out;
+`;
 const Page = () => {
   const [empleado, setEmpleado] = useState([]);
   const [horarios, setHorarios] = useState([]);
-
 
   const [currentPage, setCurrentPage] = useState(1);
   const [employesFiltered, setEmployesFiltered] = useState([]);
@@ -37,13 +39,11 @@ const Page = () => {
     estado: 1,
     contratado: true,
     salario: 0,
-    id_horarioEmpleado: 4
+    id_horarioEmpleado: 4,
   });
 
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
-
-
 
   function toggleModal(e) {
     setOpacity(0);
@@ -62,10 +62,6 @@ const Page = () => {
       setTimeout(resolve, 300);
     });
   }
-  const FadingBackground = styled(BaseModalBackground)`
-    opacity: ${(props) => props.opacity};
-    transition: all 0.3s ease-in-out;
-  `;
 
   useEffect(() => {
     const datos = async () => {
@@ -76,12 +72,13 @@ const Page = () => {
       );
       setEmployesFiltered(empleadosContratados);
     };
-    const h = async() => {
-      const hora = await getHorarios()
+    const h = async () => {
+      const hora = await getHorarios();
       await setHorarios(hora);
-    }
-    h()
+    };
+    h();
     datos();
+    console.log("Viendo");
   }, []);
 
   let empleados = [];
@@ -91,7 +88,7 @@ const Page = () => {
       nombre: `${emp.nombre} ${emp.apellido}`,
       salario: emp.salario,
       id: emp.id_empleado,
-      contratado: emp.contratado
+      contratado: emp.contratado,
     });
   });
   let records = [];
@@ -121,19 +118,18 @@ const Page = () => {
   const Despedir = (id) => {};
 
   //funcion para enviar a editar o a crear
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(empleadoActual.id_empleado == 0){
-      empleadoActual.fechaContra = prismaFecha( new Date())
-      const e = await createEmpleado(empleadoActual)
-      console.log(e)
-      if(typeof e != "string"){
-        window.location.reload()
+    if (empleadoActual.id_empleado == 0) {
+      empleadoActual.fechaContra = prismaFecha(new Date());
+      const e = await createEmpleado(empleadoActual);
+      console.log(e);
+      if (typeof e != "string") {
+        window.location.reload();
       } else {
-        alert(e)
+        alert(e);
       }
-    } else { 
-      
+    } else {
     }
   };
 
@@ -143,13 +139,14 @@ const Page = () => {
       await setEmpleadoActual(data);
     };
     empleact();
+
     toggleModal();
   };
   const handleChangeEmpleado = (e) => {
-    const { name, value } = e.target;
-    setEmpleadoActual(prevEmpleado => ({
+    //const { name, value } = e.target;
+    setEmpleadoActual((prevEmpleado) => ({
       ...prevEmpleado,
-      [name]: value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -211,22 +208,28 @@ const Page = () => {
                     >
                       {formatDate(emple.fechaContra)}
                     </th>
-                    <td className="px-6 py-4">{emple.nombre} {emple.apellido}</td>
+                    <td className="px-6 py-4">
+                      {emple.nombre} {emple.apellido}
+                    </td>
                     <td className="px-6 py-4">$ {emple.salario}</td>
-                    { emple.contratado ?  <td className="px-6 py-4 flex gap-2">
-                      <button
-                        className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
-                        onClick={() => handleEdit(emple.id_empleado)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="bg-gold px-3 text-white rounded-full hover:bg-yellow-400"
-                        onClick={() => Despedir(emple.id_empleado)}
-                      >
-                        Despedir
-                      </button>
-                      </td> : <td></td>}
+                    {emple.contratado ? (
+                      <td className="px-6 py-4 flex gap-2">
+                        <button
+                          className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
+                          onClick={() => handleEdit(emple.id_empleado)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="bg-gold px-3 text-white rounded-full hover:bg-yellow-400"
+                          onClick={() => Despedir(emple.id_empleado)}
+                        >
+                          Despedir
+                        </button>
+                      </td>
+                    ) : (
+                      <td></td>
+                    )}
                   </tr>
                 ))
               : ""}
@@ -302,7 +305,9 @@ const Page = () => {
                       name="nombre"
                       value={empleadoActual.nombre}
                       onChange={handleChangeEmpleado}
-                      className={`${empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"} block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      className={`${
+                        empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"
+                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                       placeholder=" "
                       required
                       disabled={empleadoActual.id_empleado == 0 ? false : true}
@@ -320,10 +325,12 @@ const Page = () => {
                       name="apellido"
                       value={empleadoActual.apellido}
                       onChange={handleChangeEmpleado}
-                      className={`${empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"} block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      className={`${
+                        empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"
+                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                       disabled={empleadoActual.id_empleado == 0 ? false : true}
                       placeholder=" "
-                      required                     
+                      required
                     />
                     <label
                       htmlFor="floating_apellido"
@@ -355,7 +362,7 @@ const Page = () => {
                     <input
                       type="tel"
                       name="telefono"
-                      value={ empleadoActual.telefono}
+                      value={empleadoActual.telefono}
                       onChange={handleChangeEmpleado}
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                       placeholder=" "
@@ -374,9 +381,11 @@ const Page = () => {
                       id="genero"
                       onChange={handleChangeEmpleado}
                       value={empleadoActual.genero}
-                      className={`${empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"} block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      disabled={empleadoActual.id_empleado == 0 ? false : true} 
-                      >
+                      className={`${
+                        empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"
+                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      disabled={empleadoActual.id_empleado == 0 ? false : true}
+                    >
                       <option value={true}>Masculino</option>
                       <option value={false}>Femenino</option>
                     </select>
@@ -397,12 +406,16 @@ const Page = () => {
                       onChange={handleChangeEmpleado}
                       value={empleadoActual.id_horarioEmpleado}
                     >
-                      {horarios.length != 0 ?
-                        horarios.map(horario => (
-                          <option key={horario.id_horarioEmpleado} value={horario.id_horarioEmpleado}>{Hora(horario)}</option>
-                        ))
-                        :
-                         ""}
+                      {horarios.length != 0
+                        ? horarios.map((horario) => (
+                            <option
+                              key={horario.id_horarioEmpleado}
+                              value={horario.id_horarioEmpleado}
+                            >
+                              {Hora(horario)}
+                            </option>
+                          ))
+                        : ""}
                     </select>
                     <label
                       htmlFor="floating_last_name"
@@ -434,7 +447,7 @@ const Page = () => {
                     name="direccion"
                     id=""
                     onChange={handleChangeEmpleado}
-                    value={empleadoActual.direccion}  
+                    value={empleadoActual.direccion}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   ></textarea>
                   <label
