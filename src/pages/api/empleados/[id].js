@@ -25,6 +25,7 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       res.json({ mensaje: "empleado no encontrado" });
+      console.log(error)
     }
   } else if (req.method === "DELETE") {
     try {
@@ -36,6 +37,23 @@ export default async function handler(req, res) {
       res.json({ data: empleado, mensaje: "empleado eliminado correctamente" });
     } catch (error) {
       res.json({ mensaje: "empleado no encontrado" });
+    }
+  } else if(req.method === "PATCH"){
+    const {contratado} = req.body;
+    try {
+      const empleado = await prisma.empleados.update({
+        where:{
+          id_empleado: Number(id)
+          
+        },
+        data: {
+          contratado
+        }
+      })
+      res.json({empleado})
+    } catch (error) {
+      res.json({mensaje: "error"})
+      console.log(error)
     }
   }
 }

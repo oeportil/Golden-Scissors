@@ -1,11 +1,14 @@
 "use client";
 import {
   createEmpleado,
+  despedirEmpleado,
+  getCategorias,
   getEmpleadoById,
   getEmpleados,
   getHorarios,
+  updateEmpleado,
 } from "@/controllers/EmpleadosController";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import { formatDate, Hora, prismaFecha } from "@/utils/helpers";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
@@ -45,6 +48,8 @@ const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
 
+
+
   function toggleModal(e) {
     setOpacity(0);
     setIsOpen(!isOpen);
@@ -62,7 +67,7 @@ const Page = () => {
       setTimeout(resolve, 300);
     });
   }
-
+  const [categorias, setCategorias] = useState([]);
   useEffect(() => {
     const datos = async () => {
       const empleados = await getEmpleados();
@@ -76,10 +81,16 @@ const Page = () => {
       const hora = await getHorarios();
       await setHorarios(hora);
     };
+    const categ = async() =>{
+      const c = await getCategorias();
+      await setCategorias(c);
+    }
+    categ()
     h();
     datos();
     console.log("Viendo");
   }, []);
+
 
   let empleados = [];
   empleado.map((emp) => {
@@ -92,7 +103,7 @@ const Page = () => {
     });
   });
   let records = [];
-  let npage = 0;
+  let npage = 0;  
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
@@ -115,21 +126,35 @@ const Page = () => {
   const chhangeCPage = (id) => {
     setCurrentPage(id);
   };
-  const Despedir = (id) => {};
-
+  //funcion para despedir empleados 
+  const Despedir = async(id) => {
+   if(confirm("¿Seguro que desea despedirlo") == true){
+    const result = await despedirEmpleado(id)
+    if(result.empleado.id_empleado){
+      window.location.reload()
+    }   
+   }  else {
+    return 
+   }
+  };
   //funcion para enviar a editar o a crear
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (empleadoActual.id_empleado == 0) {
       empleadoActual.fechaContra = prismaFecha(new Date());
       const e = await createEmpleado(empleadoActual);
-      console.log(e);
       if (typeof e != "string") {
         window.location.reload();
       } else {
         alert(e);
       }
-    } else {
+    } else { 
+      const e = await updateEmpleado(empleadoActual.id_empleado, empleadoActual)
+      if(typeof e != "string"){
+        window.location.reload();
+      } else{
+        alert(e);
+      }
     }
   };
 
@@ -214,18 +239,18 @@ const Page = () => {
                     <td className="px-6 py-4">$ {emple.salario}</td>
                     {emple.contratado ? (
                       <td className="px-6 py-4 flex gap-2">
-                        <button
-                          className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
-                          onClick={() => handleEdit(emple.id_empleado)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          className="bg-gold px-3 text-white rounded-full hover:bg-yellow-400"
-                          onClick={() => Despedir(emple.id_empleado)}
-                        >
-                          Despedir
-                        </button>
+                      <button
+                        className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
+                        onClick={() => handleEdit(emple.id_empleado)}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        className="bg-gold px-3 text-white rounded-full hover:bg-yellow-400"
+                        onClick={() => Despedir(emple.id_empleado)}
+                      >
+                        Despedir
+                      </button>
                       </td>
                     ) : (
                       <td></td>
@@ -249,8 +274,8 @@ const Page = () => {
                 Previous
               </a>
             </li>
-            {numbers.map((n, i) => (
-              <li key={i}>
+            {numbers.map((n) => (
+              <li key={n}>
                 <a
                   href="#"
                   onClick={() => chhangeCPage(n)}
@@ -330,7 +355,7 @@ const Page = () => {
                       } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                       disabled={empleadoActual.id_empleado == 0 ? false : true}
                       placeholder=" "
-                      required
+                      required                     
                     />
                     <label
                       htmlFor="floating_apellido"
@@ -384,8 +409,8 @@ const Page = () => {
                       className={`${
                         empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"
                       } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      disabled={empleadoActual.id_empleado == 0 ? false : true}
-                    >
+                      disabled={empleadoActual.id_empleado == 0 ? false : true} 
+                      >
                       <option value={true}>Masculino</option>
                       <option value={false}>Femenino</option>
                     </select>
@@ -414,7 +439,7 @@ const Page = () => {
                             >
                               {Hora(horario)}
                             </option>
-                          ))
+                        ))
                         : ""}
                     </select>
                     <label
@@ -447,8 +472,9 @@ const Page = () => {
                     name="direccion"
                     id=""
                     onChange={handleChangeEmpleado}
-                    value={empleadoActual.direccion}
+                    value={empleadoActual.direccion}  
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    required
                   ></textarea>
                   <label
                     htmlFor="floating_direccion"
@@ -463,7 +489,9 @@ const Page = () => {
                     id="servicios"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   >
-                    <option> </option>
+                    {categorias.map(categoria => (
+                      <option key={categoria.id_categoria} value={categoria.id_categoria}>{categoria.nombre}</option>
+                    ))}
                   </select>
                   <label
                     htmlFor="servicios"
