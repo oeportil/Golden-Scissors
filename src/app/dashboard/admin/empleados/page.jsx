@@ -1,12 +1,12 @@
 "use client";
 import {
+  createEmpleado,
   getEmpleadoById,
   getEmpleados,
+  getHorarios,
 } from "@/controllers/EmpleadosController";
-import { useEffect, useState } from "react";
-import { formatDate } from "@/utils/helpers";
-import Link from "next/link";
-import handle from "@/pages/api/empleados";
+import { useEffect, useState, useRef   } from "react";
+import { formatDate, Hora, prismaFecha } from "@/utils/helpers";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import "@/styles/empleados.css";
@@ -20,6 +20,9 @@ const StyledModal = Modal.styled`
 
 const Page = () => {
   const [empleado, setEmpleado] = useState([]);
+  const [horarios, setHorarios] = useState([]);
+
+
   const [currentPage, setCurrentPage] = useState(1);
   const [employesFiltered, setEmployesFiltered] = useState([]);
   const [empleadoActual, setEmpleadoActual] = useState({
@@ -28,16 +31,19 @@ const Page = () => {
     apellido: "",
     email: "",
     telefono: "",
-    genero: false,
+    genero: true,
     fechaContra: "",
     direccion: "",
     estado: 1,
-    contratado: false,
+    contratado: true,
     salario: 0,
+    id_horarioEmpleado: 4
   });
 
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
+
+
 
   function toggleModal(e) {
     setOpacity(0);
@@ -70,8 +76,14 @@ const Page = () => {
       );
       setEmployesFiltered(empleadosContratados);
     };
+    const h = async() => {
+      const hora = await getHorarios()
+      await setHorarios(hora);
+    }
+    h()
     datos();
   }, []);
+
   let empleados = [];
   empleado.map((emp) => {
     empleados.push({
@@ -79,6 +91,7 @@ const Page = () => {
       nombre: `${emp.nombre} ${emp.apellido}`,
       salario: emp.salario,
       id: emp.id_empleado,
+      contratado: emp.contratado
     });
   });
   let records = [];
@@ -106,23 +119,40 @@ const Page = () => {
     setCurrentPage(id);
   };
   const Despedir = (id) => {};
-  const handleSubmit = (e) => {
+
+  //funcion para enviar a editar o a crear
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(empleadoActual);
+    if(empleadoActual.id_empleado == 0){
+      empleadoActual.fechaContra = prismaFecha( new Date())
+      const e = await createEmpleado(empleadoActual)
+      console.log(e)
+      if(typeof e != "string"){
+        window.location.reload()
+      } else {
+        alert(e)
+      }
+    } else { 
+      
+    }
   };
+
   const handleEdit = (id) => {
     const empleact = async () => {
       const data = await getEmpleadoById(id);
       await setEmpleadoActual(data);
     };
     empleact();
-    console.log(id);
     toggleModal();
-    console.log(empleadoActual);
   };
   const handleChangeEmpleado = (e) => {
-    setEmpleadoActual({ ...empleadoActual, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setEmpleadoActual(prevEmpleado => ({
+      ...prevEmpleado,
+      [name]: value
+    }));
   };
+
   //esta función es la que filtra los empleados en base a su estado (contratado ,despedido)
   const handleEmployeState = (e) => {
     const estadoEmpleado = e.target.value === "true"; // Convertir el valor seleccionado a booleano
@@ -181,9 +211,9 @@ const Page = () => {
                     >
                       {formatDate(emple.fechaContra)}
                     </th>
-                    <td className="px-6 py-4">{emple.nombre}</td>
+                    <td className="px-6 py-4">{emple.nombre} {emple.apellido}</td>
                     <td className="px-6 py-4">$ {emple.salario}</td>
-                    <td className="px-6 py-4 flex gap-2">
+                    { emple.contratado ?  <td className="px-6 py-4 flex gap-2">
                       <button
                         className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
                         onClick={() => handleEdit(emple.id_empleado)}
@@ -196,7 +226,7 @@ const Page = () => {
                       >
                         Despedir
                       </button>
-                    </td>
+                      </td> : <td></td>}
                   </tr>
                 ))
               : ""}
@@ -270,15 +300,12 @@ const Page = () => {
                     <input
                       type="text"
                       name="nombre"
-                      value={
-                        empleadoActual.id_empleado != 0
-                          ? empleadoActual.nombre
-                          : ""
-                      }
+                      value={empleadoActual.nombre}
                       onChange={handleChangeEmpleado}
-                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      className={`${empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"} block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                       placeholder=" "
                       required
+                      disabled={empleadoActual.id_empleado == 0 ? false : true}
                     />
                     <label
                       htmlFor="floating_nombre"
@@ -291,15 +318,12 @@ const Page = () => {
                     <input
                       type="text"
                       name="apellido"
-                      value={
-                        empleadoActual.id_empleado != 0
-                          ? empleadoActual.apellido
-                          : ""
-                      }
+                      value={empleadoActual.apellido}
                       onChange={handleChangeEmpleado}
-                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      className={`${empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"} block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      disabled={empleadoActual.id_empleado == 0 ? false : true}
                       placeholder=" "
-                      required
+                      required                     
                     />
                     <label
                       htmlFor="floating_apellido"
@@ -313,11 +337,7 @@ const Page = () => {
                   <input
                     type="email"
                     name="email"
-                    value={
-                      empleadoActual.id_empleado != 0
-                        ? empleadoActual.email
-                        : ""
-                    }
+                    value={empleadoActual.email}
                     onChange={handleChangeEmpleado}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
@@ -335,11 +355,7 @@ const Page = () => {
                     <input
                       type="tel"
                       name="telefono"
-                      value={
-                        empleadoActual.id_empleado != 0
-                          ? empleadoActual.telefono
-                          : ""
-                      }
+                      value={ empleadoActual.telefono}
                       onChange={handleChangeEmpleado}
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                       placeholder=" "
@@ -357,13 +373,10 @@ const Page = () => {
                       name="genero"
                       id="genero"
                       onChange={handleChangeEmpleado}
-                      value={
-                        empleadoActual.id_empleado != 0
-                          ? empleadoActual.genero
-                          : ""
-                      }
-                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    >
+                      value={empleadoActual.genero}
+                      className={`${empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"} block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      disabled={empleadoActual.id_empleado == 0 ? false : true} 
+                      >
                       <option value={true}>Masculino</option>
                       <option value={false}>Femenino</option>
                     </select>
@@ -378,10 +391,19 @@ const Page = () => {
                 <div className="grid md:grid-cols-2 md:gap-6">
                   <div className="relative z-0 w-full mb-5 group">
                     <select
-                      name="horarios"
+                      name="id_horarioEmpleado"
                       id=""
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    ></select>
+                      onChange={handleChangeEmpleado}
+                      value={empleadoActual.id_horarioEmpleado}
+                    >
+                      {horarios.length != 0 ?
+                        horarios.map(horario => (
+                          <option key={horario.id_horarioEmpleado} value={horario.id_horarioEmpleado}>{Hora(horario)}</option>
+                        ))
+                        :
+                         ""}
+                    </select>
                     <label
                       htmlFor="floating_last_name"
                       className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
@@ -394,11 +416,7 @@ const Page = () => {
                       type="number"
                       name="salario"
                       onChange={handleChangeEmpleado}
-                      value={
-                        empleadoActual.id_empleado != 0
-                          ? empleadoActual.salario
-                          : ""
-                      }
+                      value={empleadoActual.salario}
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                       placeholder=" "
                       required
@@ -416,11 +434,7 @@ const Page = () => {
                     name="direccion"
                     id=""
                     onChange={handleChangeEmpleado}
-                    value={
-                      empleadoActual.id_empleado != 0
-                        ? empleadoActual.direccion
-                        : ""
-                    }
+                    value={empleadoActual.direccion}  
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   ></textarea>
                   <label

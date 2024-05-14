@@ -6,8 +6,9 @@ export default async function handler(req, res) {
     const empleado = await prisma.empleados.findUnique({
       where: {
         id_empleado: Number(id),
-      },
+      }
     });
+
     if (!empleado) {
       return res.json({ mensaje: "No se ha encontrado el empleado" });
     }

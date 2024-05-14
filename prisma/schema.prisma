@@ -29,41 +29,41 @@ model Blog {
 }
 
 model Empleados {
-  id_empleado     Int               @id @default(autoincrement())
-  nombre          String
-  apellido        String
-  email           String            @unique
-  telefono        String            @unique
-  genero          Boolean
-  fechaContra     DateTime
-  direccion       String
-  estado          Int
-  contratado      Boolean
-  salario         Float
-  cateCapacitadas cateCapacitadas[]
-  detalleCita     detalleCita[]
-  horarioEmpleado horarioEmpleado[]
+  id_empleado        Int               @id @default(autoincrement())
+  nombre             String
+  apellido           String
+  email              String            @unique
+  telefono           String            @unique
+  genero             Boolean
+  fechaContra        DateTime
+  direccion          String
+  estado             Int
+  contratado         Boolean
+  salario            Float
+  horarioEmpleado    horarioEmpleado   @relation(fields: [id_horarioEmpleado], references: [id_horarioEmpleado])
+  id_horarioEmpleado Int
+  cateCapacitadas    cateCapacitadas[]
+  detalleCita        detalleCita[]
 }
 
 model horarioEmpleado {
-  id_horarioEmpleado Int       @id @default(autoincrement())
-  empleado           Empleados @relation(fields: [id_empleado], references: [id_empleado])
-  id_empleado        Int
+  id_horarioEmpleado Int         @id @default(autoincrement())
   hora_inicio        DateTime
   hora_fin           DateTime
   laboral            Boolean
   sabatino           Boolean
   dominguero         Boolean
+  Empleados          Empleados[]
 }
 
 model Servicios {
-  id_servicio   Int           @id @default(autoincrement())
-  categoria     Categorias    @relation(fields: [id_categoria], references: [id_categoria])
-  id_categoria  Int
-  nombre        String
-  precio        Float
-  duracion      Int
-  detalleCita   detalleCita[]
+  id_servicio  Int           @id @default(autoincrement())
+  categoria    Categorias    @relation(fields: [id_categoria], references: [id_categoria])
+  id_categoria Int
+  nombre       String
+  precio       Float
+  duracion     Int
+  detalleCita  detalleCita[]
 }
 
 model Categorias {
