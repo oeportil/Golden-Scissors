@@ -117,7 +117,10 @@ const Page = () => {
     const handleChangeEmpleado = (e) => {
         setEmpleadoActual({ ...empleadoActual, [e.target.name]: e.target.value });
       };
-
+      const handleSubmit = e => {
+        e.preventDefault()
+        console.log(empleadoActual)
+      }
 
   return (
     <div className='container mx-auto my-4'>
@@ -211,7 +214,7 @@ const Page = () => {
                 >
                     <h2 className="text-center text-xl brown font-semibold mt-2">{ empleadoActual.id_empleado == 0 ? "Crear Empleado" : "Editar Empleado"}</h2>
                     <div className="p-2">
-                        <form className="max-w-md mx-auto">
+                        <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
                             <div className="">
                                     <div className="grid md:grid-cols-2 md:gap-6">
                                         <div className="relative z-0 w-full mb-5 group">
@@ -370,8 +373,7 @@ const Page = () => {
                             </button>
                         </form>
                         <button className="w-full md:w-auto md:px-4 bg-black py-2 my-1 rounded-full text-white" onClick={cerrarModal}>Cerrar</button>         
-                    </div>
-                    
+                    </div>                    
                 </StyledModal>
             </ModalProvider>
     </div>
