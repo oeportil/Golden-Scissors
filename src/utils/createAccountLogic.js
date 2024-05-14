@@ -2,7 +2,6 @@ import { useState } from "react";
 import { createUser } from "@/controllers/CreateAccountController";
 import { prismaFecha } from "./helpers";
 
-
 // Dentro de tu componente o función
 
 export const useCrearCuentaLogic = () => {
@@ -63,8 +62,17 @@ export const useCrearCuentaLogic = () => {
         return;
       }
     }
+    //valida que la imagen no este vacia
     if (newUser.imagen === undefined) {
       setAlert("Suba una imagen de perfil!!!");
+      return;
+    }
+    //validación de fecha
+    let fechaNacimiento = new Date(newUser.fechaNac);
+    let fechaActual = new Date();
+    let edad = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+    if (edad < 13) {
+      setAlert("Debes ser mayor a 13 años");
       return;
     }
     setAlert("");
@@ -73,7 +81,7 @@ export const useCrearCuentaLogic = () => {
       newUser.fechaNac = fecha;
       const response = await createUser(newUser);
       console.log("Usuario creado:", response);
-      setAlert("Usuario creado con exito");
+      setAlert("Usuario creado con éxito");
       setTimeout(() => {
         window.location.href = "/login";
       }, 1500);
