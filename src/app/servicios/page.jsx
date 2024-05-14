@@ -1,22 +1,54 @@
 "use client";
 import usePeluqueria from "@/hooks/usePeluqueria";
 import Servicio from "../components/Servicio";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Page = () => {
   const { services } = usePeluqueria();
   const filtrarPorCategoria = (categoria) => {
     return services.filter((servicio) => servicio.id_categoria === categoria);
   };
-  //estos son los arrays que hice en base a los servicios XD
-  const tradicional = filtrarPorCategoria(1);
-  const especial = filtrarPorCategoria(2);
-  const barba = filtrarPorCategoria(3);
-  const delineado = filtrarPorCategoria(4);
-  const tintado = filtrarPorCategoria(5);
-  const ajustes = filtrarPorCategoria(6);
+
+  const categorias = [
+    {
+      id: 1,
+      titulo: "Cortes de pelo tradicionales",
+      servicios: filtrarPorCategoria(1),
+    },
+    {
+      id: 2,
+      titulo: "Cortes de pelo Especiales",
+      servicios: filtrarPorCategoria(2),
+    },
+    { id: 3, titulo: "Cortes de barba", servicios: filtrarPorCategoria(3) },
+    { id: 4, titulo: "Delineados", servicios: filtrarPorCategoria(4) },
+    { id: 5, titulo: "Tintado", servicios: filtrarPorCategoria(5) },
+    { id: 6, titulo: "Ajustes", servicios: filtrarPorCategoria(6) },
+  ];
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          centerMode: true,
+        },
+      },
+    ],
+  };
 
   return (
-    <>
+    <div className="container ">
       <h1
         className="text-4xl font-bold text-center"
         style={{ color: "#3E1814" }}
@@ -24,73 +56,21 @@ const Page = () => {
         Nuestros Servicios
       </h1>
 
-      <main className="grid md:grid-cols-2">
-        <section>
-          <div className="mb-5">
-            <h2 className="uppercase font-bold text-2xl text-center">
-              Cortes de pelo tradicionales
+      <main className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+        {categorias.map((categoria) => (
+          <section key={categoria.id}>
+            <h2 className="uppercase font-bold text-2xl text-center m-5">
+              {categoria.titulo}
             </h2>
-            <div className="flex gap-2 justify-center">
-              {tradicional.map((corte) => (
-                <Servicio key={corte.id_servicio} corte={corte} />
+            <Slider {...settings} className="m-7 w-full">
+              {categoria.servicios.map((servicio) => (
+                <Servicio key={servicio.id_servicio} corte={servicio} />
               ))}
-            </div>
-          </div>
-          <div className="mb-5">
-            <h2 className="uppercase font-bold text-2xl text-center">
-              Cortes de barba
-            </h2>
-            <div className="flex gap-2 justify-center">
-              {barba.map((corte) => (
-                <Servicio key={corte.id_servicio} corte={corte} />
-              ))}
-            </div>
-          </div>
-          <div className="mb-5">
-            <h2 className="uppercase font-bold text-2xl text-center">
-              Tintado
-            </h2>
-            <div className="flex gap-2 justify-center">
-              {tintado.map((corte) => (
-                <Servicio key={corte.id_servicio} corte={corte} />
-              ))}
-            </div>
-          </div>
-        </section>
-        <section className="">
-          <div className="mb-5">
-            <h2 className="uppercase font-bold text-2xl text-center">
-              Cortes de pelo Especiales
-            </h2>
-            <div className="flex gap-2 justify-center">
-              {especial.map((corte) => (
-                <Servicio key={corte.id_servicio} corte={corte} />
-              ))}
-            </div>
-          </div>
-          <div className="mb-5">
-            <h2 className="uppercase font-bold text-2xl text-center">
-              Delineados
-            </h2>
-            <div className="flex gap-2 justify-center">
-              {delineado.map((corte) => (
-                <Servicio key={corte.id_servicio} corte={corte} />
-              ))}
-            </div>
-          </div>
-          <div className="mb-5">
-            <h2 className="uppercase font-bold text-2xl text-center">
-              ajustes
-            </h2>
-            <div className="flex gap-2 justify-center">
-              {ajustes.map((corte) => (
-                <Servicio key={corte.id_servicio} corte={corte} />
-              ))}
-            </div>
-          </div>
-        </section>
+            </Slider>
+          </section>
+        ))}
       </main>
-    </>
+    </div>
   );
 };
 

@@ -24,9 +24,10 @@ const CrearCuenta = () => {
             className={`${
               alert === "Error al crear el usuario"
                 ? "bg-red-600"
+                : alert === "Usuario creado con éxito"
+                ? "bg-green-400"
                 : "bg-yellow-400"
-            }  text-white font-bold flex m-5 gap-2
-            justify-center rounded-sm`}
+            } text-white font-bold flex m-5 gap-2 justify-center rounded-sm`}
           >
             {alert}{" "}
             <svg
