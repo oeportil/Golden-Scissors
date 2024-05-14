@@ -10,12 +10,11 @@ const EntradasBlog = ({ entrada, isadmin, refresh }) => {
   const { titulo, contenido, id_blog } = entrada;
   const [route, setRoute] = useState("");
 
-
-  const deleteBlog = id =>{
-    if(deleteBlogByID(id)){
-      refresh(id)
+  const deleteBlog = (id) => {
+    if (deleteBlogByID(id)) {
+      refresh(id);
     }
-  }
+  };
 
   useEffect(() => {
     async function obtenerRuta() {
@@ -65,31 +64,37 @@ const EntradasBlog = ({ entrada, isadmin, refresh }) => {
       <div className="text-center">
         <h3 className="text-lg font-semibold">{titulo}</h3>
         <div className="pb-4">
-          <p className="text-slate-600 line-clamp text-justify">{contenido}</p>
+          <p className="text-slate-600 line-clamp text-justify">
+            {contenido.substring(0, 100) + "..."}
+          </p>
         </div>
         <hr className="mb-2" />
-       {isadmin ? 
-       <div className="grid grid-cols-2 gap-1">
-        <Link className="bg-black text-white rounded-full py-2 font-semibold my-auto" href={`dashboard/admin/blogadmin/${id_blog}`} >
-          Editar
-        </Link>
-         <ReactConfirmPopup 
-         trigger={<button className="bg-gold text-white rounded-full py-2 font-semibold ">Eliminar</button>} 
-         title="¿Estas Seguro que deseas eliminar esta entrada?"
-         text={
-             <div className="">
-             Se borrara permanentemente
-             </div>
-         }
-         confirmText="Eliminar"
-         cancelText="Mantener"
-         onConfirmClicked={() => deleteBlog(id_blog)}
-         />
-       </div> 
-       :  
-       <Link className="text-slate-600 p-2" href={`/blog/${id_blog}`}>
-          Ir a la entrada
-       </Link>}
+        {isadmin ? (
+          <div className="grid grid-cols-2 gap-1">
+            <Link
+              className="bg-black text-white rounded-full py-2 font-semibold my-auto"
+              href={`dashboard/admin/blogadmin/${id_blog}`}
+            >
+              Editar
+            </Link>
+            <ReactConfirmPopup
+              trigger={
+                <button className="bg-gold text-white rounded-full py-2 font-semibold ">
+                  Eliminar
+                </button>
+              }
+              title="¿Estas Seguro que deseas eliminar esta entrada?"
+              text={<div className="">Se borrara permanentemente</div>}
+              confirmText="Eliminar"
+              cancelText="Mantener"
+              onConfirmClicked={() => deleteBlog(id_blog)}
+            />
+          </div>
+        ) : (
+          <Link className="text-slate-600 p-2" href={`/blog/${id_blog}`}>
+            Ir a la entrada
+          </Link>
+        )}
       </div>
     </section>
   );

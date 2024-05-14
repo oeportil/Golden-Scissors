@@ -48,7 +48,7 @@ const Page = () => {
   };
 
   return (
-    <div className="container ">
+    <div className="container self-center mx-auto">
       <h1
         className="text-4xl font-bold text-center"
         style={{ color: "#3E1814" }}
@@ -56,7 +56,7 @@ const Page = () => {
         Nuestros Servicios
       </h1>
 
-      <main className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden ">
         {categorias.map((categoria) => (
           <section key={categoria.id}>
             <h2 className="uppercase font-bold text-2xl text-center m-5">
@@ -69,7 +69,7 @@ const Page = () => {
             </Slider>
           </section>
         ))}
-      </main>
+      </div>
     </div>
   );
 };

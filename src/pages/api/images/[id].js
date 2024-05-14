@@ -77,7 +77,7 @@ export default async function handler(req, res) {
             filetype = "def";
             break;
         }
-        //Override de nombrid
+        //Override de nombrid y de paso comprobamos si es una actualización mas que una creacion
         if (nomID !== "0") {
           idusu = nomID;
           //Intentamos eliminar archivos que nos puedan molestar
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
               tipo: id,
               identity: nomID,
             };
-            const result = await axios.delete(
+            const result = await axios.post(
               `${process.env.NEXT_PUBLIC_API_URL}/images`,
               enviodelete
             );
