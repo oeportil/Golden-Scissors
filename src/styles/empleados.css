@@ -1,0 +1,6 @@
+.empleado__campo{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    row-gap: 2rem;
+    margin: .2rem;
+}
