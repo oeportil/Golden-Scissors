@@ -179,7 +179,7 @@ const Page = () => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {emple.fechaContra}
+                      {formatDate(emple.fechaContra)}
                     </th>
                     <td className="px-6 py-4">{emple.nombre}</td>
                     <td className="px-6 py-4">$ {emple.salario}</td>
