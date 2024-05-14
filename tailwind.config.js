@@ -23,4 +23,9 @@ module.exports = {
  
     require("flowbite/plugin")    
   ],
+
+  colors: {
+    'fondo': '#E8E8E8', // Puedes nombrar el color como prefieras
+    'reser': '#231F20'
+  }
 };
