@@ -17,6 +17,16 @@ export async function deleteBlogByID(id) {
     const result = await axios.delete(
       `${process.env.NEXT_PUBLIC_API_URL}/blog/${id}`
     );
+    //Intentamos borrar
+    const enviodelete = {
+      tipo: 2,
+      identity: id,
+    };
+    const result2 = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/images`,
+      enviodelete
+    );
+
     return result.data.mensaje;
   } catch (error) {
     console.log(error);
