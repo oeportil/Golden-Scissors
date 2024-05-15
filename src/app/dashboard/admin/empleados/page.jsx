@@ -16,7 +16,7 @@ import "@/styles/empleados.css";
 
 const StyledModal = Modal.styled`
   width: 95%;
-  height: 90%; 
+  height: 70vh; 
   overflow-y: scroll;
   background-color: white;
   opacity: ${(props) => props.opacity};
@@ -510,17 +510,21 @@ const Page = () => {
                   >
                     Servicios
                   </label>
-                  </div>
-                    <div className="overflow-y-scroll max-h-28">
-                      {selecto.length != 0 &&
-                        selecto.map((categoria) => 
-                        <div className="flex items-center justify-between py-4 my- ">
-                          {categoria.nombre}
-                          <button className="bg-black text-white py-2 px-2 rounded-lg hover:bg-slate-700 ">
-                            Eliminar
-                          </button>
-                        </div>)}
-                    </div>
+                </div>
+                <div className="overflow-y-scroll max-h-28">
+                  {selecto.length != 0 &&
+                    selecto.map((categoria) => (
+                      <div className="flex items-center justify-between py-4 my- ">
+                        {categoria.nombre}
+                        <div
+                          className="bg-black text-white py-2 px-2 rounded-lg hover:bg-slate-700 "
+                          onClick={() => deleteServ(categoria.id_categoria)}
+                        >
+                          Eliminar
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
               <button
                 type="submit"
@@ -555,6 +559,20 @@ const Page = () => {
       }
       console.log(categorias);
       console.log(selecto);
+    }
+  }
+
+  function deleteServ(id) {
+    console.log(id);
+    const result = selecto.filter((categoria) => categoria.id_categoria == id);
+    if (result[0]) {
+      setCategorias((prevCategorias) => [result[0], ...prevCategorias]);
+      let copy = selecto;
+      for (let index = 0; index < copy.length; index++) {
+        if (copy[index] == result[0]) {
+          copy.splice(index, 1);
+        }
+      }
     }
   }
 
