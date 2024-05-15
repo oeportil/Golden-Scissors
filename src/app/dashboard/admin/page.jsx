@@ -7,21 +7,21 @@ import Script from "next/script";
 const page = () => {
   return (
     <div className="p-8 fondo text-white min-h-screen">
-       <button
-              data-modal-target="popup-modal1"
-              data-modal-toggle="popup-modal"
-              class="block text-white boton1  focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center  "
-              type="button"
-            >
-              Search
-            </button>
+      <button
+        data-modal-target="popup-modal2"
+        data-modal-toggle="popup-modal2"
+        class="block text-white boton1  focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center  "
+        type="button"
+      >
+        Search
+      </button>
 
       <div className="md:flex justify-between">
         <div className="md:w-1/2 mr-4">
           <div className="justify-center text-center">
-           
+
             <div
-              id="popup-modal1"
+              id="popup-modal2"
               tabindex="-1"
               class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
             >
@@ -88,9 +88,9 @@ const page = () => {
                     </table>
                     <div class="mt-4">
                       <button
-                        data-modal-hide="popup-modal"
+                        data-modal-hide="popup-modal2"
                         type="button"
-                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                        class="text-white boton1 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                       >
                         Close
                       </button>
