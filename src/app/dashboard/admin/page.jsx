@@ -188,8 +188,8 @@ const page = () => {
           <div className="justify-center text-center">
             <h2 className="texto font-bold text-lg mb-4">Peluqueros actuales</h2>
           </div>
-          <div className="p-1 boton1 mb-4">
-            <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg">
+          <div className="p-1 boton1 mb-7">
+            <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg" style={{height:'19vh'}}>
               <div>
                 <h3 className="font-bold">Walter white</h3>
                 <p>Corte tradicional, Barba, Delineado, Tintado, Ajuste.</p>
@@ -254,18 +254,12 @@ const page = () => {
                 </div>
               </div>
               <div className="flex items-center">
-                <Image
-                  src={foto}
-                  alt="Foto del usuario"
-                  className="rounded-full"
-                  width={150}
-                  height={100}
-                />
+         
               </div>
             </div>
           </div>
           <div className="p-1 boton1 mb-4">
-            <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg">
+            <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg" style={{height:'19vh'}}>
               <div>
                 <h3 className="font-bold">Carlos Guerra</h3>
                 <p>Corte tradicional, Barba, Delineado, Tintado, Ajuste.</p>
@@ -330,32 +324,20 @@ const page = () => {
                 </div>
               </div>
               <div className="flex items-center">
-                <Image
-                  src={foto}
-                  alt="Foto del usuario"
-                  className="rounded-full"
-                  width={150}
-                  height={100}
-                />
+   
               </div>
             </div>
           </div>
 
-          <div className="p-1 mt-6">
-            <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg">
+          <div className="p-1 mt-6" >
+            <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg" style={{height:'19vh'}}>
               <div>
                 <h3 className="font-bold">Carlos Guerra</h3>
                 <p>Corte tradicional, Barba, Delineado, Tintado, Ajuste.</p>
                 <p className="text-white">Atendiendo - #5624561</p>
               </div>
               <div className="flex items-center">
-                <Image
-                  src={foto}
-                  alt="Foto del usuario"
-                  className="rounded-full"
-                  width={150}
-                  height={100}
-                />
+               
               </div>
             </div>
           </div>
