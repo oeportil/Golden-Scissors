@@ -183,6 +183,7 @@ const Page = () => {
     );
     setEmployesFiltered(employesFilter);
   };
+  const [select, setSelect] = useState([]);
   return (
     <div className="container mx-auto my-4">
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-5 ">
@@ -488,6 +489,7 @@ const Page = () => {
                     name="servicios"
                     id="servicios"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    onChange={handleServ}
                   >
                     {categorias.map(categoria => (
                       <option key={categoria.id_categoria} value={categoria.id_categoria}>{categoria.nombre}</option>
@@ -499,6 +501,7 @@ const Page = () => {
                   >
                     Servicios
                   </label>
+                  
                 </div>
               </div>
               <button
@@ -519,8 +522,23 @@ const Page = () => {
       </ModalProvider>
     </div>
   );
+  function handleServ(e) {
+    const result = categorias.filter( categoria => categoria.id_categoria == e.target.value )
+    setSelect([...select, result[0]])
+
+    let copy = categorias;
+    for (let index = 0; index < copy.length; index++) {
+      if(copy[index] == result[0]){
+        copy.splice(index, 1)
+      } 
+    }
+    console.log(select)
+    console.log(copy)
+  }
+
   function cerrarModal() {
     toggleModal();
+    setSelect([]);
     setEmpleadoActual({
       id_empleado: 0,
       nombre: "",
