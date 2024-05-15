@@ -57,7 +57,7 @@ const page = () => {
                           <th scope="col" className="px-8 py-3">Agenda</th>
                           <th scope="col" className="px-8 py-3">Atendido por</th>
                           <th scope="col" className="px-8 py-3">Total</th>
-                          <th scope="col" className="px-8 py-3">--</th>
+                          <th scope="col" className="px-8 py-3"></th>
                         </tr>
                       </thead>
                       <tbody>
