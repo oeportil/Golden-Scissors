@@ -138,7 +138,6 @@ const Page = ({ params }) => {
                 name="titulo"
                 type="file"
                 onChange={handleChangeImg}
-                required
               />
               {imagePreview ? (
                 <Image

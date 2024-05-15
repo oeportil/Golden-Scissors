@@ -8,7 +8,7 @@ import {
   getHorarios,
   updateEmpleado,
 } from "@/controllers/EmpleadosController";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { formatDate, Hora, prismaFecha } from "@/utils/helpers";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
@@ -16,6 +16,8 @@ import "@/styles/empleados.css";
 
 const StyledModal = Modal.styled`
   width: 95%;
+  height: 90%; 
+  overflow-y: scroll;
   background-color: white;
   opacity: ${(props) => props.opacity};
   transition : all 0.3s ease-in-out;
@@ -48,8 +50,6 @@ const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
 
-
-
   function toggleModal(e) {
     setOpacity(0);
     setIsOpen(!isOpen);
@@ -81,16 +81,15 @@ const Page = () => {
       const hora = await getHorarios();
       await setHorarios(hora);
     };
-    const categ = async() =>{
+    const categ = async () => {
       const c = await getCategorias();
       await setCategorias(c);
-    }
-    categ()
+    };
+    categ();
     h();
     datos();
     console.log("Viendo");
   }, []);
-
 
   let empleados = [];
   empleado.map((emp) => {
@@ -103,7 +102,7 @@ const Page = () => {
     });
   });
   let records = [];
-  let npage = 0;  
+  let npage = 0;
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
@@ -126,16 +125,16 @@ const Page = () => {
   const chhangeCPage = (id) => {
     setCurrentPage(id);
   };
-  //funcion para despedir empleados 
-  const Despedir = async(id) => {
-   if(confirm("¿Seguro que desea despedirlo") == true){
-    const result = await despedirEmpleado(id)
-    if(result.empleado.id_empleado){
-      window.location.reload()
-    }   
-   }  else {
-    return 
-   }
+  //funcion para despedir empleados
+  const Despedir = async (id) => {
+    if (confirm("¿Seguro que desea despedirlo") == true) {
+      const result = await despedirEmpleado(id);
+      if (result.empleado.id_empleado) {
+        window.location.reload();
+      }
+    } else {
+      return;
+    }
   };
   //funcion para enviar a editar o a crear
   const handleSubmit = async (e) => {
@@ -148,11 +147,14 @@ const Page = () => {
       } else {
         alert(e);
       }
-    } else { 
-      const e = await updateEmpleado(empleadoActual.id_empleado, empleadoActual)
-      if(typeof e != "string"){
+    } else {
+      const e = await updateEmpleado(
+        empleadoActual.id_empleado,
+        empleadoActual
+      );
+      if (typeof e != "string") {
         window.location.reload();
-      } else{
+      } else {
         alert(e);
       }
     }
@@ -169,6 +171,7 @@ const Page = () => {
   };
   const handleChangeEmpleado = (e) => {
     //const { name, value } = e.target;
+    console.log(selecto);
     setEmpleadoActual((prevEmpleado) => ({
       ...prevEmpleado,
       [e.target.name]: e.target.value,
@@ -183,7 +186,7 @@ const Page = () => {
     );
     setEmployesFiltered(employesFilter);
   };
-  const [select, setSelect] = useState([]);
+  const [selecto, setSelecto] = useState([]);
   return (
     <div className="container mx-auto my-4">
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-5 ">
@@ -240,18 +243,18 @@ const Page = () => {
                     <td className="px-6 py-4">$ {emple.salario}</td>
                     {emple.contratado ? (
                       <td className="px-6 py-4 flex gap-2">
-                      <button
-                        className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
-                        onClick={() => handleEdit(emple.id_empleado)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="bg-gold px-3 text-white rounded-full hover:bg-yellow-400"
-                        onClick={() => Despedir(emple.id_empleado)}
-                      >
-                        Despedir
-                      </button>
+                        <button
+                          className="bg-black text-white py-2 px-4 rounded-full hover:bg-slate-700"
+                          onClick={() => handleEdit(emple.id_empleado)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="bg-gold px-3 text-white rounded-full hover:bg-yellow-400"
+                          onClick={() => Despedir(emple.id_empleado)}
+                        >
+                          Despedir
+                        </button>
                       </td>
                     ) : (
                       <td></td>
@@ -321,7 +324,7 @@ const Page = () => {
               ? "Crear Empleado"
               : "Editar Empleado"}
           </h2>
-          <div className="p-2">
+          <div className="p-2 ">
             <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
               <div className="">
                 <div className="grid md:grid-cols-2 md:gap-6">
@@ -356,7 +359,7 @@ const Page = () => {
                       } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                       disabled={empleadoActual.id_empleado == 0 ? false : true}
                       placeholder=" "
-                      required                     
+                      required
                     />
                     <label
                       htmlFor="floating_apellido"
@@ -410,8 +413,8 @@ const Page = () => {
                       className={`${
                         empleadoActual.id_empleado == 0 ? "" : "bg-slate-100"
                       } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      disabled={empleadoActual.id_empleado == 0 ? false : true} 
-                      >
+                      disabled={empleadoActual.id_empleado == 0 ? false : true}
+                    >
                       <option value={true}>Masculino</option>
                       <option value={false}>Femenino</option>
                     </select>
@@ -440,7 +443,7 @@ const Page = () => {
                             >
                               {Hora(horario)}
                             </option>
-                        ))
+                          ))
                         : ""}
                     </select>
                     <label
@@ -473,7 +476,7 @@ const Page = () => {
                     name="direccion"
                     id=""
                     onChange={handleChangeEmpleado}
-                    value={empleadoActual.direccion}  
+                    value={empleadoActual.direccion}
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     required
                   ></textarea>
@@ -491,8 +494,14 @@ const Page = () => {
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     onChange={handleServ}
                   >
-                    {categorias.map(categoria => (
-                      <option key={categoria.id_categoria} value={categoria.id_categoria}>{categoria.nombre}</option>
+                    <option selected>Selecciona un Servicio</option>
+                    {categorias.map((categoria) => (
+                      <option
+                        key={categoria.id_categoria}
+                        value={categoria.id_categoria}
+                      >
+                        {categoria.nombre}
+                      </option>
                     ))}
                   </select>
                   <label
@@ -501,8 +510,17 @@ const Page = () => {
                   >
                     Servicios
                   </label>
-                  
-                </div>
+                  </div>
+                    <div className="overflow-y-scroll max-h-28">
+                      {selecto.length != 0 &&
+                        selecto.map((categoria) => 
+                        <div className="flex items-center justify-between py-4 my- ">
+                          {categoria.nombre}
+                          <button className="bg-black text-white py-2 px-2 rounded-lg hover:bg-slate-700 ">
+                            Eliminar
+                          </button>
+                        </div>)}
+                    </div>
               </div>
               <button
                 type="submit"
@@ -523,22 +541,26 @@ const Page = () => {
     </div>
   );
   function handleServ(e) {
-    const result = categorias.filter( categoria => categoria.id_categoria == e.target.value )
-    setSelect([...select, result[0]])
+    const result = categorias.filter(
+      (categoria) => categoria.id_categoria == e.target.value
+    );
+    if (result[0]) {
+      setSelecto((prevSelecto) => [result[0], ...prevSelecto]);
 
-    let copy = categorias;
-    for (let index = 0; index < copy.length; index++) {
-      if(copy[index] == result[0]){
-        copy.splice(index, 1)
-      } 
+      let copy = categorias;
+      for (let index = 0; index < copy.length; index++) {
+        if (copy[index] == result[0]) {
+          copy.splice(index, 1);
+        }
+      }
+      console.log(categorias);
+      console.log(selecto);
     }
-    console.log(select)
-    console.log(copy)
   }
 
   function cerrarModal() {
     toggleModal();
-    setSelect([]);
+    setSelecto([]);
     setEmpleadoActual({
       id_empleado: 0,
       nombre: "",
