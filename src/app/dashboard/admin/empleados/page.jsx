@@ -7,6 +7,7 @@ import {
   getEmpleados,
   getHorarios,
   updateEmpleado,
+  getCategsById,
 } from "@/controllers/EmpleadosController";
 import { useEffect, useState } from "react";
 import { formatDate, Hora, prismaFecha } from "@/utils/helpers";
@@ -44,7 +45,7 @@ const Page = () => {
     estado: 1,
     contratado: true,
     salario: 0,
-    id_horarioEmpleado: 4,
+    id_horarioEmpleado: 1,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -139,31 +140,39 @@ const Page = () => {
   //funcion para enviar a editar o a crear
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (empleadoActual.id_empleado == 0) {
-      empleadoActual.fechaContra = prismaFecha(new Date());
-      const e = await createEmpleado(empleadoActual);
-      if (typeof e != "string") {
-        window.location.reload();
+    if (selecto.length > 0) {
+      if (empleadoActual.id_empleado == 0) {
+        empleadoActual.fechaContra = prismaFecha(new Date());
+        const e = await createEmpleado(empleadoActual, selecto);
+        if (typeof e != "string") {
+          window.location.reload();
+        } else {
+          alert(e);
+        }
       } else {
-        alert(e);
+        const e = await updateEmpleado(
+          empleadoActual.id_empleado,
+          empleadoActual,
+          selecto
+        );
+        if (typeof e != "string") {
+          window.location.reload();
+        } else {
+          alert(e);
+        }
       }
-    } else {
-      const e = await updateEmpleado(
-        empleadoActual.id_empleado,
-        empleadoActual
-      );
-      if (typeof e != "string") {
-        window.location.reload();
-      } else {
-        alert(e);
-      }
-    }
+    } // Pocho hace el alert
   };
 
   const handleEdit = (id) => {
     const empleact = async () => {
       const data = await getEmpleadoById(id);
       await setEmpleadoActual(data);
+      const array = await getCategsById(id);
+      console.log(array);
+      for (let i = 0; i < array.length; i++) {
+        handleServ2(array[i].id_categ);
+      }
     };
     empleact();
 
@@ -561,7 +570,23 @@ const Page = () => {
       console.log(selecto);
     }
   }
+  function handleServ2(id) {
+    const result = categorias.filter(
+      (categoria) => categoria.id_categoria == id
+    );
+    if (result[0]) {
+      setSelecto((prevSelecto) => [result[0], ...prevSelecto]);
 
+      let copy = categorias;
+      for (let index = 0; index < copy.length; index++) {
+        if (copy[index] == result[0]) {
+          copy.splice(index, 1);
+        }
+      }
+      console.log(categorias);
+      console.log(selecto);
+    }
+  }
   function deleteServ(id) {
     console.log(id);
     const result = selecto.filter((categoria) => categoria.id_categoria == id);
