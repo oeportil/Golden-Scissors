@@ -83,6 +83,7 @@ const Page = () => {
               </label>
             </div>
             <p className="gold">¿Olvidaste tu contraseña?</p>
+            {/*hola*/}
             <Link className="gold mb-5" href={"#"}>
               Recuperar contraseña
             </Link>
