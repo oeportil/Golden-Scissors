@@ -16,6 +16,8 @@ import "@/styles/empleados.css";
 
 const StyledModal = Modal.styled`
   width: 95%;
+  height: 90%; 
+  overflow-y: scroll;
   background-color: white;
   opacity: ${(props) => props.opacity};
   transition : all 0.3s ease-in-out;
@@ -322,7 +324,7 @@ const Page = () => {
               ? "Crear Empleado"
               : "Editar Empleado"}
           </h2>
-          <div className="p-2">
+          <div className="p-2 ">
             <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
               <div className="">
                 <div className="grid md:grid-cols-2 md:gap-6">
@@ -508,9 +510,17 @@ const Page = () => {
                   >
                     Servicios
                   </label>
-                </div>
-                {selecto.length != 0 &&
-                  selecto.map((categoria) => <div>{categoria.nombre}</div>)}
+                  </div>
+                    <div className="overflow-y-scroll max-h-28">
+                      {selecto.length != 0 &&
+                        selecto.map((categoria) => 
+                        <div className="flex items-center justify-between py-4 my- ">
+                          {categoria.nombre}
+                          <button className="bg-black text-white py-2 px-2 rounded-lg hover:bg-slate-700 ">
+                            Eliminar
+                          </button>
+                        </div>)}
+                    </div>
               </div>
               <button
                 type="submit"
