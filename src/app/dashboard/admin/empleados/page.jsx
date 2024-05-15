@@ -107,9 +107,9 @@ const Page = () => {
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
-  if (empleados.length != 0) {
+  if (employesFiltered.length != 0) {
     records = employesFiltered.slice(firstIndex, lastIndex);
-    npage = Math.ceil(empleados.length / recordsPerPage);
+    npage = Math.ceil(employesFiltered.length / recordsPerPage);
   }
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
@@ -194,6 +194,7 @@ const Page = () => {
       (empleado) => empleado.contratado === estadoEmpleado
     );
     setEmployesFiltered(employesFilter);
+    setCurrentPage(1);
   };
   const [selecto, setSelecto] = useState([]);
   return (
