@@ -121,16 +121,19 @@ const page = () => {
                 </button>
 
 
-                <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div id="default-modal" tabindex="-1" aria-hidden="true" class="bg-gray-800 bg-opacity-75 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                   <div class="relative p-4 w-full max-w-2xl max-h-full">
 
                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
 
-                      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <div class=" flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                          #5624561
+                        </h3>
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                           DETALLES
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-12 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
                           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                           </svg>
@@ -138,54 +141,64 @@ const page = () => {
                         </button>
                       </div>
 
-                      <div class="p-4 md:p-5 space-y-4">
+                      <div class="p-4 md:p-5 space-y-4 ml-10 mr-10">
                         <div class="text-gray-900 dark:text-white">
-                          <div class="mb-4">
+                          <div class="flex justify-between mb-4">
                             <div class="font-bold">José Padilla</div>
                             <div>7234-2357</div>
+                            
+                            
                           </div>
                           <div class="mb-4">
                             <div class="flex justify-between">
                               <span>Corte Tradicional</span>
-                              <span>$5</span>
+                              
                             </div>
                             <div class="flex justify-between">
                               <span>Crew</span>
-                              <span>4:30 p.m. - 5:15 p.m.</span>
+                              <span>$5</span>
+                              
                             </div>
                             <div class="flex justify-between">
+                            <span>4:30 p.m. - 5:15 p.m.</span>
                               <span>Kruma Lui</span>
                             </div>
                           </div>
                           <div class="mb-4">
                             <div class="flex justify-between">
                               <span>Barba</span>
-                              <span>$4</span>
+                              
                             </div>
                             <div class="flex justify-between">
                               <span>Candado</span>
-                              <span>5:15 p.m. - 5:30 p.m.</span>
+                              <span>$4</span>
+                              
                             </div>
                             <div class="flex justify-between">
+                            <span>5:15 p.m. - 5:30 p.m.</span>
                               <span>Kruma Lui</span>
                             </div>
                           </div>
                           <div class="mb-4">
                             <div class="flex justify-between">
                               <span>Delineado</span>
-                              <span>$3</span>
+                              
                             </div>
                             <div class="flex justify-between">
                               <span>Cejas</span>
-                              <span>5:30 p.m. - 5:45 p.m.</span>
+                              <span>$3</span>
+                              
                             </div>
                             <div class="flex justify-between">
+                            <span>5:30 p.m. - 5:45 p.m.</span>
                               <span>Carlos Guerra</span>
                             </div>
                           </div>
+                          <div className="flex justify-between">
                           <div class="font-bold">25/05/2024</div>
-                          <div>4:30 p.m. - 5:45 p.m.</div>
+                          <div className="font-bold">4:30 p.m. - 5:45 p.m.</div>
                           <div class="font-bold text-right">$12</div>
+                          </div>
                         </div>
                       </div>
 
@@ -218,9 +231,100 @@ const page = () => {
                 <p>7234-2357</p>
                 <p>Corte tradicional, Barba</p>
                 <p>4:30 p.m.</p>
-                <button className="boton1 texto font-bold py-2 px-4 rounded">
+                <button data-modal-target="default-modal2" data-modal-toggle="default-modal2" class="boton1 texto font-bold py-2 px-4 rounded" type="button">
                   Detalles
                 </button>
+
+                <div id="default-modal2" tabindex="-1" aria-hidden="true" class="bg-gray-800 bg-opacity-75 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                  <div class="relative p-4 w-full max-w-2xl max-h-full">
+
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+                      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                          #5624561
+                        </h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                          DETALLES
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-12 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal2">
+                          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                          </svg>
+                          <span class="sr-only">Close modal</span>
+                        </button>
+                      </div>
+
+                      <div class="p-4 md:p-5 space-y-4 ml-10 mr-10">
+                        <div class="text-gray-900 dark:text-white">
+                          <div class="flex justify-between mb-4">
+                            <div class="font-bold">José Padilla</div>
+                            <div>7234-2357</div>
+                            
+                            
+                          </div>
+                          <div class="mb-4">
+                            <div class="flex justify-between">
+                              <span>Corte Tradicional</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                              <span>Crew</span>
+                              <span>$5</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                            <span>4:30 p.m. - 5:15 p.m.</span>
+                              <span>Kruma Lui</span>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <div class="flex justify-between">
+                              <span>Barba</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                              <span>Candado</span>
+                              <span>$4</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                            <span>5:15 p.m. - 5:30 p.m.</span>
+                              <span>Kruma Lui</span>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <div class="flex justify-between">
+                              <span>Delineado</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                              <span>Cejas</span>
+                              <span>$3</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                            <span>5:30 p.m. - 5:45 p.m.</span>
+                              <span>Carlos Guerra</span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between">
+                          <div class="font-bold">25/05/2024</div>
+                          <div className="font-bold">4:30 p.m. - 5:45 p.m.</div>
+                          <div class="font-bold text-right">$12</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button data-modal-hide="default-modal2" type="button" class="text-white boton1 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cerrar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 <button className="boton2 texto font-bold py-2 px-4 rounded ml-2">
                   Cancelar
                 </button>
@@ -243,9 +347,100 @@ const page = () => {
                 <p>7234-2357</p>
                 <p>Corte tradicional, Barba</p>
                 <p>4:30 p.m.</p>
-                <button className="boton1 texto font-bold py-2 px-4 rounded">
+                <button data-modal-target="default-modal3" data-modal-toggle="default-modal3" class="boton1 texto font-bold py-2 px-4 rounded" type="button">
                   Detalles
                 </button>
+
+                <div id="default-modal3" tabindex="-1" aria-hidden="true" class="bg-gray-800 bg-opacity-75 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                  <div class="relative p-4 w-full max-w-2xl max-h-full">
+
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+                      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                          #5624561
+                        </h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                          DETALLES
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-12 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal3">
+                          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                          </svg>
+                          <span class="sr-only">Close modal</span>
+                        </button>
+                      </div>
+
+                      <div class="p-4 md:p-5 space-y-4 ml-10 mr-10">
+                        <div class="text-gray-900 dark:text-white">
+                          <div class="flex justify-between mb-4">
+                            <div class="font-bold">José Padilla</div>
+                            <div>7234-2357</div>
+                            
+                            
+                          </div>
+                          <div class="mb-4">
+                            <div class="flex justify-between">
+                              <span>Corte Tradicional</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                              <span>Crew</span>
+                              <span>$5</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                            <span>4:30 p.m. - 5:15 p.m.</span>
+                              <span>Kruma Lui</span>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <div class="flex justify-between">
+                              <span>Barba</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                              <span>Candado</span>
+                              <span>$4</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                            <span>5:15 p.m. - 5:30 p.m.</span>
+                              <span>Kruma Lui</span>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <div class="flex justify-between">
+                              <span>Delineado</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                              <span>Cejas</span>
+                              <span>$3</span>
+                              
+                            </div>
+                            <div class="flex justify-between">
+                            <span>5:30 p.m. - 5:45 p.m.</span>
+                              <span>Carlos Guerra</span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between">
+                          <div class="font-bold">25/05/2024</div>
+                          <div className="font-bold">4:30 p.m. - 5:45 p.m.</div>
+                          <div class="font-bold text-right">$12</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button data-modal-hide="default-modal3" type="button" class="text-white boton1 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cerrar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
                 <button className="boton2 texto font-bold py-2 px-4 rounded ml-2">
                   Cancelar
                 </button>
