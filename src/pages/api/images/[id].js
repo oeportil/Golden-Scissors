@@ -90,7 +90,7 @@ export default async function handler(req, res) {
               `${process.env.NEXT_PUBLIC_API_URL}/images`,
               enviodelete
             );
-            return result.data.mensaje;
+            //return result.data.mensaje;
           } catch (error) {
             console.log(error);
           }
