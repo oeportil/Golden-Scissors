@@ -77,7 +77,7 @@ const Page = () => {
     {cook.nombre + " " + cook.apellido}
   </h2>
   {elementos && 
-    <div className="mb-6">
+    <div className="mb-6 text-center bg-red-600 py-2 text-white font-semibold uppercase">
       {elementos}
     </div>
   }
