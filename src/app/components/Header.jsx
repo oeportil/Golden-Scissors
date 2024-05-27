@@ -147,7 +147,11 @@ const Header = () => {
               >
                 <Link href="/blog">Blog</Link>
               </li>
-
+              {cook.admin == false && <li className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${
+                  pathname === "/dashboard/admin/empleados" ? "activo" : ""
+                }`}>
+                  <Link href={"/dashboard/user/reservar"}> Reservar</Link>
+                </li>}
               {cook.admin == true && 
                 <li className={`block py-2 px-3 md:p-0  md:border-none border-b border-b-gray-900 ${
                   pathname === "/dashboard/admin/empleados" ? "activo" : ""

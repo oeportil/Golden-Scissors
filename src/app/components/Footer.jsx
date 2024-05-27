@@ -31,8 +31,8 @@ const Footer = () => {
                   </p>
                 </li>
                 <li>
-                  <p className="w-48">
-                    goldenscissorsbarbershop@gmail.com (+503) 2230-1234
+                  <p className="w-10/12">
+                    goldenscissors@gmail.com (+503) 2230-1234
                   </p>
                 </li>
               </ul>

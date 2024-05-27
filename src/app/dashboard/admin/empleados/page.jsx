@@ -45,7 +45,7 @@ const Page = () => {
     estado: 1,
     contratado: true,
     salario: 0,
-    id_horarioEmpleado: 1,
+    id_horarioEmpleado: 4,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -161,13 +161,18 @@ const Page = () => {
           alert(e);
         }
       }
-    } // Pocho hace el alert
+
+    } else {
+      alert("Seleccione al menos un Servicios")
+    }
   };
 
   const handleEdit = (id) => {
     const empleact = async () => {
       const data = await getEmpleadoById(id);
       await setEmpleadoActual(data);
+      const c = await getCategorias();
+      await setCategorias(c);
       const array = await getCategsById(id);
       console.log(array);
       for (let i = 0; i < array.length; i++) {

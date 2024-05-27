@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       return res.json({ mensaje: "No se ha encontrado usuario" });
     }
     res.json(usuario);
-  } else if (req.method === "PUT") {
+  } else if (req.method === "PATCH") {
     try {
       const usuario = await prisma.usuarios.update({
         where: { id_usuario: Number(id) },

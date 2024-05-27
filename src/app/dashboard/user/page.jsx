@@ -93,9 +93,9 @@ const Page = () => {
               <Image src={route} width={200} height={200} alt="Foto de perfil" className="rounded-full w-full h-full" />
             </div>
 
-            <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <Link href={"user/editar"} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Editar
-            </button>
+            </Link>
           </div>
         </div>
       </section>

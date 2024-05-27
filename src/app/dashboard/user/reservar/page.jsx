@@ -97,11 +97,32 @@ const Page = () => {
 
 
                         <div className={`p-4 ${activeTab === "fecha" ? "" : "hidden"} `} id="fecha" role="tabpanel" aria-labelledby="fecha-tab">
-                        <p className="text-sm ">This is some placeholder content the <strong className="font-medium ">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                            <h3 className='text-center brown mb-8 text-xl font-semibold'>Seleccionar Fecha y Hora</h3>        
+                           <div className='md:w-9/12 mx-auto'>
+                                <div className='grid mb-2'>
+                                    <label htmlFor="" className='brown text-lg font-semibold'>Fecha</label>
+                                    <input type="date" className='border-none'/>
+                                </div>
+                                <div className='grid'>
+                                    <label htmlFor="" className='brown text-lg font-semibold'>Seleccionar Hora de Inicio</label>
+                                    <input type="time" className='border-none' />
+                                </div>    
+                                <p className='brown text-lg font-semibold mt-5'>
+                                Hora de Finalización: 4:15p.m.
+                                </p>       
+                            </div>                                             
                         </div>
 
                         <div className={`p-4  ${activeTab === "resumen" ? "" : "hidden"} `} id="resumen" role="tabpanel" aria-labelledby="resumen-tab">
-                        <p className="text-sm">This is some placeholder content the <strong className="font-medium ">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+                            <h3 className='text-center brown mb-8 text-xl font-semibold'>Resumen</h3>
+                            <div>
+                                <div>
+
+                                </div>
+                                <div>
+                                    
+                                </div>
+                            </div>
                         </div>
                        
                     </div>

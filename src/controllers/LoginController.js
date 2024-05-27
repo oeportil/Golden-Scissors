@@ -6,7 +6,7 @@ export const iniciarSesion = async (datos) => {
   const { email, password } = datos;
 
   if (email.length === 0 && password.length === 0) {
-    return "Malo ting ling";
+    return "Llena todos los campos";
   } else {
     try {
       let usuarios = [];
