@@ -50,7 +50,7 @@ export default async function handler(req, res) {
           contratado
         }
       })
-      res.json({empleado})
+      res.json({contratado})
     } catch (error) {
       res.json({mensaje: "error"})
       console.log(error)

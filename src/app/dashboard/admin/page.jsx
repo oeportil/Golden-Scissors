@@ -639,9 +639,11 @@ const page = () => {
         <div className="md:w-1/2 ml-4 mx-auto">
           <div className="justify-center text-center">
             <h2 className="texto font-bold text-lg mb-4">Peluqueros actuales</h2>
-            {empleados.map(empleado => (
-              <PeluquerosActualesCard empleado={empleado}/>
-            ))}
+            <div className="overflow-y-scroll h-screen">
+              {empleados.map(empleado => (
+                <PeluquerosActualesCard empleado={empleado}/>
+              ))}
+            </div>
           </div>        
         </div>
       </div>
