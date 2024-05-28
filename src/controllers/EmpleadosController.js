@@ -6,6 +6,13 @@ export async function getEmpleados() {
   );
   return empleados.data;
 }
+export async function getEmpContraConServ(){
+  const empleados = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/empleadoscontra`
+  );
+  return empleados.data;
+}
+
 export async function getEmpleadoById(id) {
   const empleados = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/empleados/${id}`

@@ -1,6 +1,6 @@
 import prisma from "@/utils/prismaClient";
 
-export default async function handler() {
+export default async function handler(req, res) {
   if (req.method === "GET") {
     const detallecitas = await prisma.detalleCita.findMany();
     if (detallecitas.isEmpty) {
