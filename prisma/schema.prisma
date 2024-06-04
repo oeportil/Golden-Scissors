@@ -98,5 +98,6 @@ model detalleCita {
   empleadoCit    Empleados @relation(fields: [id_empleado], references: [id_empleado])
   id_empleado    Int
   precio         Float
-  fecha          DateTime
+  fecha_inicio    DateTime
+  fecha_fin       DateTime
 }
