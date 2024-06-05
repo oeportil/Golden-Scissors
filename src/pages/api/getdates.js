@@ -32,6 +32,7 @@ async function verificarfecha(horario, liserv, fechaini) {
   //El while para verificar si todos los campos se tomaron
   while (liscas.length > 0) {
     //Recorreremos esto una cantidad no especificada de veces (Modelo tipo sort)
+    fIni = fechaini;
     for (let i = liscas.length - 1; i >= 0; i--) {
       //Establecemos la fecha fin
       fFin = addMinutes(fIni, liscas[i].duracion);
