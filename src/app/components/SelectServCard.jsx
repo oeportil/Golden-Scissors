@@ -49,15 +49,15 @@ const SelectServCard = ({ corte }) => {
           height={100}
           src={route}
           alt={`imagen del corte ${corte.nombre}`}
-          className="w-full md:h-28"
+          className="w-full h-72 md:h-28"
         />
       )}
-      <h3 className="text-white text-center text-xl">{corte.nombre}</h3>
-      <div className="flex justify-between">
-        <h3 className="text-white text-center text-xl p-2">
+      <h3 className="text-white text-center">{corte.nombre}</h3>
+      <div className="flex justify-between p-2">
+        <h3 className="text-white text-center p-2">
           Duración: {corte.duracion} min.
         </h3>
-        <h3 className="text-white text-center text-xl p-2">${corte.precio}</h3>
+        <h3 className="text-white text-center p-2">${corte.precio}</h3>
       </div>
     </div>
   );

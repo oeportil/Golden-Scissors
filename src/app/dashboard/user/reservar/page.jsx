@@ -40,6 +40,7 @@ const Page = () => {
         slidesToScroll: 3,
         responsive: [
           {
+            breakpoint: 768,
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
@@ -248,13 +249,15 @@ const Page = () => {
                 opacity={opacity}
                 backgroundProps={{ opacity }}
             >
-                <div className='py-6'>
+                <div className='py-6 h-96 md:h-auto overflow-y-scroll md:overflow-auto'>
                     <h3 className='text-black text-3xl '>Seleccione el servicio que desea</h3>
-                    <Slider {...settings} className="m-7 w-auto">
-                        {categActv.map(categ => (
-                            <SelectServCard key={categ.id_servicio} corte={categ} />
+                    <div className='flex flex-col items-center mx-auto md:flex-row justify-center gap-1 overflow-x-scroll '>
+                    {categActv.map(categ => (
+                            <div key={categ.id_servicio}>
+                                <SelectServCard  corte={categ}/>
+                            </div>
                         ))} 
-                    </Slider>                            
+                    </div>                                              
                 </div>
             </StyledModal>
             </ModalProvider>
