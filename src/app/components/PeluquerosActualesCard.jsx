@@ -44,9 +44,8 @@ const PeluquerosActualesCard = ({empleado}) => {
     empleado.cateCapacitadas.map(categ => {
         services += " "+categ.categoria.nombre+","
     })
-    // console.log(empleado.estado)
   return (
-    <div className="p-1 boton1 mb-7">
+    <div className={`p-1 ${empleado.estado == 1 ? "boton1": " "} mb-7`}>
     <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg" style={{ height: '19vh' }}>
       <div>
         <h3 className="font-bold text-start">{empleado.nombre+" "+empleado.apellido}</h3>
