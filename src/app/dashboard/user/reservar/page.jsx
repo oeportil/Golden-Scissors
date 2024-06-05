@@ -1,26 +1,99 @@
 "use client"
 import { useState, useEffect } from 'react'
-import { getCategoServicios, getServicesByCat, getServicesById } from '@/controllers/ServiciosController';
+import { getCategoServicios, getServicesByCat} from '@/controllers/ServiciosController';
+import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
+import styled from "styled-components";
 import "@/styles/reservar.css";
 
-const Page = () => {
+//para el slider del modal
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import SelectServCard from '@/app/components/selectServCard';
 
+
+const StyledModal = Modal.styled`
+  width: auto;
+  height: auto;
+  display: flex;
+  padding: 3rem;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  background-color: white;
+  opacity: ${(props) => props.opacity};
+  transition : all 0.3s ease-in-out;`;
+
+const FadingBackground = styled(BaseModalBackground)`
+  opacity: ${(props) => props.opacity};
+  transition: all 0.3s ease-in-out;
+`;
+
+
+
+const Page = () => {
+    //settings para el modal de reservas
+    const settings = {
+        dots: true,
+        infinite: false,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        responsive: [
+          {
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1,
+              centerMode: true,
+            },
+          },
+        ],
+      };
+
+    //estados del modal
+    const [isOpen, setIsOpen] = useState(false);
+    const [opacity, setOpacity] = useState(0);
+
+      //estados de la tab 
     const [activeTab, setActiveTab] = useState("servicios");
+
+    //setear las categorias
     const [categs, setCategs] = useState([]);
-    const [categActv, setCategActv] = useState("")
+    //setear los servicios de cada categoria
+    const [categActv, setCategActv] = useState([])
+
+    function toggleModal(e) {
+        setOpacity(0);
+        setIsOpen(!isOpen);
+    }
+
+    function afterOpen() {
+        setTimeout(() => {
+            setOpacity(1);
+        }, 100);
+        
+    }
+
+    function beforeClose() {
+        setCategActv([])
+        return new Promise((resolve) => {
+            setOpacity(0);
+            setTimeout(resolve, 300);
+        });       
+    }
 
     const handleTabClick = (tabId) => {
         setActiveTab(tabId);
     };
+
     const selected = active => {
 
         const datos = async () => {
             const servCatg = await getServicesByCat(active)
-            await console.log(servCatg)
+            await setCategActv(servCatg)
         }
         datos()
-
-        setCategActv(active)
+        console.log(categActv)
+        setIsOpen(!isOpen);
     }
 
     useEffect(() => {
@@ -161,6 +234,30 @@ const Page = () => {
 
                 </div>
             </div>
+
+
+
+                {/* Modal que se abre */}
+            <ModalProvider backgroundComponent={FadingBackground}>
+                <StyledModal
+                isOpen={isOpen}
+                afterOpen={afterOpen}
+                beforeClose={beforeClose}
+                onBackgroundClick={toggleModal}
+                onEscapeKeydown={toggleModal}
+                opacity={opacity}
+                backgroundProps={{ opacity }}
+            >
+                <div className='py-6'>
+                    <h3 className='text-black text-3xl '>Seleccione el servicio que desea</h3>
+                    <Slider {...settings} className="m-7 w-auto">
+                        {categActv.map(categ => (
+                            <SelectServCard key={categ.id_servicio} corte={categ} />
+                        ))} 
+                    </Slider>                            
+                </div>
+            </StyledModal>
+            </ModalProvider>
         </>
     )
 }
