@@ -1,0 +1,121 @@
+.brown {
+    color: #4b2e2e; 
+}
+
+.text-white {
+    color: #ffffff; 
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.input-field {
+    width: 100%;
+    padding-left: 2.5rem; 
+    padding-right: 1rem;
+    background-color: #4b2e2e; 
+    color: #ffffff; 
+    border: none;
+    border-radius: 4px;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+
+
+
+.btn-back, .btn-continue {
+    background-color: #2e2e2e; 
+    color: #ffcc00; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover, .btn-continue:hover {
+    background-color: #1e1e1e; 
+}
+
+.btn-back:focus, .btn-continue:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.5); 
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+
+body {
+    background-color: #f7fafc;
+  }
+  
+  .brown {
+    color: #4b2e2e; 
+  }
+  
+  .text-gray-500 {
+    color: #6b7280; 
+  }
+  
+  .btn-back, .btn-continue {
+    background-color: #2e2e2e; 
+    color: #ffcc00; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px; 
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-back:hover, .btn-continue:hover {
+    background-color: #1e1e1e; 
+  }
+  
+  .btn-back:focus, .btn-continue:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.5); 
+  }
+  
+  .flex {
+    display: flex;
+  }
+  
+  .justify-between {
+    justify-content: space-between;
+  }
+  
+  hr {
+    border: 0;
+    border-top: 1px solid #000000; 
+  }
+  
+  .border-r {
+    border-right: 1px solid #000000; 
+  }
+  
+  p {
+    margin: 0; /* Elimina los márgenes de los párrafos */
+  }
+  
+  h3 {
+    margin: 0 0 16px 0; /* Margen inferior para el encabezado */
+  }
+  
+  button {
+    margin-top: 16px; /* Margen superior para los botones */
+  }
+  
