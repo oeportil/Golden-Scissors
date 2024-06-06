@@ -32,6 +32,7 @@ async function verificarfecha(horario, liserv, fechaini) {
   //El while para verificar si todos los campos se tomaron
   while (liscas.length > 0) {
     //Recorreremos esto una cantidad no especificada de veces (Modelo tipo sort)
+    fIni = fechaini;
     for (let i = liscas.length - 1; i >= 0; i--) {
       //Establecemos la fecha fin
       fFin = addMinutes(fIni, liscas[i].duracion);
@@ -80,6 +81,7 @@ async function obtenerDisponibles(
       where: {
         AND: [
           { id_horarioEmpleado: idHorario }, // Filtro por Horario
+          { contratado: true },
           { cateCapacitadas: { some: { id_categ: idCategoria } } }, // Filtro por categoría
           {
             detalleCita: {
@@ -114,7 +116,7 @@ async function obtenerDisponibles(
               },
             },
           },
-          ...(isToday ? [{ estado: 1 }] : []), // Filtro por estado si la fecha es hoy
+          ...(isToday ? [{ OR: [{ estado: 1 }, { estado: 2 }] }] : []), // Filtro por estado si la fecha es hoy
         ],
       },
     });
@@ -124,6 +126,10 @@ async function obtenerDisponibles(
     console.error("Error al obtener empleados disponibles:", error);
     throw error;
   }
+}
+function roundToNext5Minutes(date) {
+  const ms = 1000 * 60 * 5; // 5 minutos en milisegundos
+  return new Date(Math.ceil(date.getTime() / ms) * ms);
 }
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -198,10 +204,11 @@ export default async function handler(req, res) {
       // Verificar si la fecha es la del día de hoy y ajustar la fecha mínima si es necesario
       if (startOfDay(givenDate).getTime() === startOfDay(zonedDate).getTime()) {
         const currentPlusOneHour = addHours(zonedDate, 1);
-        if (currentPlusOneHour > horaMin) {
-          horaMin = currentPlusOneHour;
-        }
+        const roundedDate = roundToNext5Minutes(currentPlusOneHour);
 
+        if (roundedDate > horaMin) {
+          horaMin = roundedDate;
+        }
         // Verificar si la fecha mínima supera la máxima
         if (horaMin > horaMax) {
           console.log("La fecha minima supera la máxima");
@@ -231,7 +238,7 @@ export default async function handler(req, res) {
         if (comprobante.validar) {
           elemental = {
             fecha: contadorfecha,
-            orden: comprobante.orden,
+            orden: JSON.parse(JSON.stringify(comprobante.orden)),
           };
           listafechas.push(elemental);
         }
@@ -239,7 +246,7 @@ export default async function handler(req, res) {
         contadorfecha = addMinutes(contadorfecha, 5);
         console.log(contadorfecha);
       }
-      res.json({
+      return res.json({
         zonedDate,
         horario,
         totalDuration,
@@ -249,10 +256,10 @@ export default async function handler(req, res) {
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json([]);
+      return res.status(500).json([]);
     }
   } else {
     console.log("Método inválido");
-    res.status(415).json([]);
+    return res.status(415).json([]);
   }
 }
