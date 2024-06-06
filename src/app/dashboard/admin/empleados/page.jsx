@@ -161,9 +161,8 @@ const Page = () => {
           alert(e);
         }
       }
-
     } else {
-      alert("Seleccione al menos un Servicios")
+      alert("Seleccione al menos un Servicios");
     }
   };
 
@@ -202,6 +201,7 @@ const Page = () => {
     setCurrentPage(1);
   };
   const [selecto, setSelecto] = useState([]);
+  console.log(horarios);
   return (
     <div className="container mx-auto my-4">
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-5 ">

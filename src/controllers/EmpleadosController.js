@@ -6,16 +6,19 @@ export async function getEmpleados() {
   );
   return empleados.data;
 }
-export async function getEmpContraConServ(){
+export async function getEmpContraConServ() {
   const empleados = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/empleadoscontra`
   );
   return empleados.data;
 }
 
-export async function cambiarEstado(estado, id){
-  const estate = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/empleaestado/${id}`, {estado: parseInt(estado)});
-  return estate.data  
+export async function cambiarEstado(estado, id) {
+  const estate = await axios.patch(
+    `${process.env.NEXT_PUBLIC_API_URL}/empleaestado/${id}`,
+    { estado: parseInt(estado) }
+  );
+  return estate.data;
 }
 
 export async function getEmpleadoById(id) {
@@ -34,6 +37,7 @@ export async function getHorarios() {
   const horarios = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/horario`
   );
+
   return horarios.data;
 }
 export async function getCategorias() {
