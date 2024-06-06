@@ -24,12 +24,21 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "DELETE") {
     try {
+      const detacitas = await prisma.detalleCita.deleteMany({
+        where: {
+          id_cita: Number(id),
+        },
+      });
       const cita = await prisma.citas.delete({
         where: {
           id_cita: Number(id),
         },
       });
-      res.json({ data: cita, mensaje: "cita eliminada correctamente" });
+      res.json({
+        data: cita,
+        datadeta: detacitas,
+        mensaje: "cita eliminada correctamente",
+      });
     } catch (error) {
       res.json({ mensaje: "cita no encontrada" });
     }
