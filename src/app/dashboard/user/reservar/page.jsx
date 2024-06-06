@@ -6,20 +6,22 @@ import styled from "styled-components";
 import "@/styles/reservar.css";
 
 //para el slider del modal
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SelectServCard from '@/app/components/selectServCard';
+
+//Para el toast
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const StyledModal = Modal.styled`
   width: auto;
   height: auto;
-  display: flex;
   padding: 3rem;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
   background-color: white;
   opacity: ${(props) => props.opacity};
   transition : all 0.3s ease-in-out;`;
@@ -50,6 +52,19 @@ const Page = () => {
         ],
       };
 
+      const[servs, setServs] = useState([])
+      const[activados, setActivados] = useState([])
+      const [categActv, setCategActv] = useState([])
+      const[servActiv, setServActiv] = useState([])
+
+      useEffect(() => {
+        const actv = servs.map(service => service.id_categoria)
+        const servid = servs.map(service => service.id_servicio)
+        setActivados(actv)
+        setServActiv(servid)        
+      }, [servs])
+
+
     //estados del modal
     const [isOpen, setIsOpen] = useState(false);
     const [opacity, setOpacity] = useState(0);
@@ -58,10 +73,11 @@ const Page = () => {
     const [activeTab, setActiveTab] = useState("servicios");
 
     //setear las categorias
-    const [categs, setCategs] = useState([]);
-    //setear los servicios de cada categoria
-    const [categActv, setCategActv] = useState([])
+    const [categs, setCategs] = useState([]);   
 
+    
+
+   
     function toggleModal(e) {
         setOpacity(0);
         setIsOpen(!isOpen);
@@ -88,13 +104,40 @@ const Page = () => {
 
     const selected = active => {
 
+        if(activados.includes(1) && active == 2){
+            toast.error('No se pueden elegir Cortes de pelo Tradicional ', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+        return 
+        } else if(activados.includes(2) && active == 1){
+            toast.error('No se pueden elegir Cortes de pelo Especial ', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                });
+            return 
+        }
+            
         const datos = async () => {
             const servCatg = await getServicesByCat(active)
             await setCategActv(servCatg)
         }
         datos()
-        console.log(categActv)
+        
         setIsOpen(!isOpen);
+        
     }
 
     useEffect(() => {
@@ -161,7 +204,7 @@ const Page = () => {
                                 {categs.map(categoria => (
                                     <div
                                         key={categoria.id_categoria}
-                                        className={`px-2 p-5 m-4 bg-ligthbrown cursor-pointer ${categoria.id_categoria === categActv ? "border-yellow-400 border-4" : " "}`}
+                                        className={`px-2 p-5 m-4 bg-ligthbrown cursor-pointer  ${activados.includes(categoria.id_categoria) ? "border-yellow-400 border-4" : " "} `}
                                         onClick={() => selected(categoria.id_categoria)}>
                                         <p className='text-center text-white font-semibold'>{categoria.nombre}</p>
                                     </div>
@@ -169,7 +212,7 @@ const Page = () => {
                             </div>
 
                         </div>
-
+                        {/**/}
 
                         <div className={`p-5 ${activeTab === "fecha" ? "" : "hidden"}`} id="fecha" role="tabpanel" aria-labelledby="fecha-tab">
                             <h3 className='text-center brown mb-8 text-xl font-semibold'>Seleccionar Fecha y Hora</h3>
@@ -185,10 +228,6 @@ const Page = () => {
                                 <p className='brown text-lg font-semibold mt-5'>
                                     Hora de Finalización: 4:15p.m.
                                 </p>
-                            </div>
-                            <div className='flex justify-between mt-8 p-10'>
-                                <button className='btn-back'>Regresar</button>
-                                <button className='btn-continue'>Continuar</button>
                             </div>
                         </div>
 
@@ -218,7 +257,6 @@ const Page = () => {
                                         <p>4:00p.m. - 4:15p.m.</p>
                                         <hr className="my-2" />
                                     </div>
-                                    <button className="btn-back mt-4">Regresar</button>
                                 </div>
                                 <div className="w-1/4 pl-4">
                                     <h4 className="font-semibold mb-2">Total a Pagar: <span className="font-normal">$12</span></h4>
@@ -226,7 +264,7 @@ const Page = () => {
                                     <p className="mb-1">Fecha: <span className="font-semibold">31/04/24</span></p>
                                     <p className="mb-1">Hora: <span className="font-semibold">3:00p.m. - 4:15p.m.</span></p>
                                     <p className="text-gray-500 mt-4">*Presentarse 15 minutos antes de su cita</p>
-                                    <button className="btn-continue mt-4">Finalizar Reservación</button>
+                                    <button onClick={hacerReservacion} className="btn-continue mt-4">Finalizar Reservación</button>
                                 </div>
                             </div>
                         </div>
@@ -249,11 +287,11 @@ const Page = () => {
                 opacity={opacity}
                 backgroundProps={{ opacity }}
             >
-                <div className='py-6 h-96 md:h-auto overflow-y-scroll md:overflow-auto'>
-                    <h3 className='text-black text-3xl '>Seleccione el servicio que desea</h3>
-                    <div className='flex flex-col items-center mx-auto md:flex-row justify-center gap-1 overflow-x-scroll '>
+                <h3 className='text-black text-3xl text-center'>Seleccione el servicio que desea</h3>
+                <div className='py-6 h-96 md:w-96 md:h-auto overflow-y-scroll md:overflow-y-visible'>                    
+                    <div className='flex flex-col items-center md:flex-row  gap-2 overflow-x-scroll'>
                     {categActv.map(categ => (
-                            <div key={categ.id_servicio}>
+                            <div key={categ.id_servicio} onClick={() =>agregarLista(categ)} className={`cursor-pointer ${servActiv.includes(categ.id_servicio) && "border-yellow-400 border-b-4"}`}>
                                 <SelectServCard  corte={categ}/>
                             </div>
                         ))} 
@@ -261,8 +299,37 @@ const Page = () => {
                 </div>
             </StyledModal>
             </ModalProvider>
+            <ToastContainer/>
         </>
     )
+
+    function agregarLista(servicio){
+        let existe = servs.find(service => service.id_servicio === servicio.id_servicio)
+        if(existe == undefined){
+            if(!activados.includes(servicio.id_categoria)){
+                setServs([...servs, servicio]) 
+            } else {
+                toast.error('No se puede elegir un Servicio de la misma Categoria', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    });
+            }           
+        } else{
+            const deleteServ = servs.filter(service => service.id_servicio !== servicio.id_servicio)
+            setServs(deleteServ)
+        }
+        toggleModal()              
+    }
+
+    function hacerReservacion() {
+        console.log(servs)
+    }
 }
 
 export default Page

@@ -42,7 +42,7 @@ const SelectServCard = ({ corte }) => {
   }, []);
 
   return (
-    <div className="bg-black w-10/12 rounded-md">
+    <div className="bg-black w-10/12 md:w-40 rounded-md">
       {route && (
         <Image
           width={500}
@@ -53,7 +53,7 @@ const SelectServCard = ({ corte }) => {
         />
       )}
       <h3 className="text-white text-center">{corte.nombre}</h3>
-      <div className="flex justify-between p-2">
+      <div className="">
         <h3 className="text-white text-center p-2">
           Duración: {corte.duracion} min.
         </h3>
