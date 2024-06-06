@@ -99,7 +99,7 @@ const Page = () => {
 
   const selected = (active) => {
     if (activados.includes(1) && active == 2) {
-      toast.error("No se pueden elegir Cortes de pelo Tradicional ", {
+      toast.error("No se pueden elegir Cortes de pelo especiales", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -111,7 +111,7 @@ const Page = () => {
       });
       return;
     } else if (activados.includes(2) && active == 1) {
-      toast.error("No se pueden elegir Cortes de pelo Especial ", {
+      toast.error("No se pueden elegir Cortes de pelo tradicionales", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
