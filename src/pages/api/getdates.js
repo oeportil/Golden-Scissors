@@ -120,7 +120,6 @@ async function obtenerDisponibles(
         ],
       },
     });
-
     return employees;
   } catch (error) {
     console.error("Error al obtener empleados disponibles:", error);
@@ -144,13 +143,16 @@ export default async function handler(req, res) {
     const today = new Date();
     const zonedDate = addHours(today, todayvar);
     const givenDate = new Date(fechadato);
-    if (isBefore(startOfDay(givenDate), startOfDay(zonedDate))) {
+    const fixeddate = addHours(givenDate, 6);
+    console.log(givenDate);
+    console.log(zonedDate);
+    if (isBefore(startOfDay(fixeddate), startOfDay(zonedDate))) {
       console.log("Fecha inválida");
       return res.status(400).json([]);
     }
-    console.log(givenDate)
+
     // Obtener el día de la semana de fechadato (0 es domingo, 6 es sábado)
-    const dayOfWeek = getDay(givenDate);
+    const dayOfWeek = getDay(fixeddate);
 
     // Consultar la base de datos para obtener los horarios según el día de la semana
     let horario;
@@ -186,13 +188,13 @@ export default async function handler(req, res) {
         );
       }
 
-      const horaFin = new Date(givenDate);
+      const horaFin = new Date(fixeddate);
       horaFin.setHours(
         horario.hora_fin.getHours(),
         horario.hora_fin.getMinutes()
       );
 
-      let horaMin = new Date(givenDate);
+      let horaMin = new Date(fixeddate);
       horaMin.setHours(
         horario.hora_inicio.getHours(),
         horario.hora_inicio.getMinutes()

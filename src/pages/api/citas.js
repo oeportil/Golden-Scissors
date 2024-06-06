@@ -27,9 +27,10 @@ export default async function handler(req, res) {
     }
     try {
       const givenDate = new Date(fecha);
+      const fixeddate = addHours(givenDate, 6);
 
       // Obtener el día de la semana de fechadato (0 es domingo, 6 es sábado)
-      const dayOfWeek = getDay(givenDate);
+      const dayOfWeek = getDay(fixeddate);
 
       // Consultar la base de datos para obtener los horarios según el día de la semana
       let horario;
