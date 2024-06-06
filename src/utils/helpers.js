@@ -45,3 +45,14 @@ export const Hora = (hora) => {
 
   return `${horaInicioString} - ${horaFinString} (${status})`;
 };
+
+export const horaReserva = hora =>{
+  const date = new Date(hora);
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // El cero debe ser "12"
+  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+  return hours + ':' + minutesStr + ' ' + ampm;
+}

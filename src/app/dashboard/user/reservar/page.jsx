@@ -16,6 +16,8 @@ import SelectServCard from "@/app/components/selectServCard";
 //Para el toast
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getFechas } from "@/controllers/ReservaController";
+import { horaReserva } from "@/utils/helpers";
 
 const StyledModal = Modal.styled`
   width: auto;
@@ -74,6 +76,12 @@ const Page = () => {
   //setear las categorias
   const [categs, setCategs] = useState([]);
 
+  //para manejar fechas que se envian para la reservacion
+  const[fecha, setFecha] = useState("");
+
+  //state para fecha Y orden de funcion getdates
+  const[fecOrden, setFecOrden] = useState([]) 
+
   function toggleModal(e) {
     setOpacity(0);
     setIsOpen(!isOpen);
@@ -94,6 +102,32 @@ const Page = () => {
   }
 
   const handleTabClick = (tabId) => {
+    if(servs.length == 0 && tabId == "fecha"){
+        toast.error("No se han elegido servicios", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          return 
+    } else if(servs.length == 0 && tabId == "resumen" ) {
+        //incluir la validacion si la fecha y hora existe
+        toast.error("Debe de Seleccionar la Fecha y La Hora", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          return
+    }
     setActiveTab(tabId);
   };
 
@@ -254,9 +288,11 @@ const Page = () => {
                     type="date"
                     id="fecha"
                     className="input-field border-none mt-5"
+                    value = {fecha}
+                    onChange={(e) => setFecha(e.target.value)}
                   />
                   <button
-                    onClick={() => console.log("gogogogogog")}
+                    onClick={buscarFechas}
                     className="bg-gold text-white rounded-lg  font-bold"
                   >
                     Buscar Fecha
@@ -270,12 +306,12 @@ const Page = () => {
                   >
                     Seleccionar Hora de Inicio
                   </label>
-                  <input
-                    type="time"
-                    id="horaInicio"
-                    className="input-field border-none mt-5"
-                  />
-                </div>
+                  <select className="input-field border-none mt-5">
+                        {fecOrden.map((fecha, i) => (
+                            <option key={i} value={fecha}>{horaReserva(fecha.fecha)}</option>
+                        ))}
+                  </select>
+                </div>                
                 <p className="brown text-lg font-semibold mt-5">
                   Hora de Finalización: 4:15p.m.
                 </p>
@@ -412,6 +448,34 @@ const Page = () => {
 
   function hacerReservacion() {
     console.log(servs);
+  }
+
+
+  async function buscarFechas() {
+    if(fecha.length == 0 ){
+        toast.error("Debe de Seleccionar una Fecha", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        return 
+    }
+    const fechaParse = new Date(fecha)
+    const findF = {
+        liservicios: servs,
+        fechadato: fechaParse.toISOString()
+    }
+    const fechas = await getFechas(findF)
+    
+    if(fechas.status == 200){
+      setFecOrden(fechas.data.listafechas)
+    }
+
   }
 };
 

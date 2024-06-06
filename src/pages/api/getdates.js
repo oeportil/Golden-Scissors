@@ -148,7 +148,7 @@ export default async function handler(req, res) {
       console.log("Fecha inválida");
       return res.status(400).json([]);
     }
-
+    console.log(givenDate)
     // Obtener el día de la semana de fechadato (0 es domingo, 6 es sábado)
     const dayOfWeek = getDay(givenDate);
 
@@ -244,7 +244,7 @@ export default async function handler(req, res) {
         }
         //Salto de fecha
         contadorfecha = addMinutes(contadorfecha, 5);
-        console.log(contadorfecha);
+        //console.log(contadorfecha);
       }
       return res.json({
         zonedDate,
