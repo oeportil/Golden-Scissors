@@ -246,19 +246,23 @@ const Page = () => {
                 Seleccionar Fecha y Hora
               </h3>
               <div className="md:w-9/12 mx-auto">
-                <div className="grid mb-2">
-                  <label
-                    htmlFor="fecha"
-                    className="brown text-lg font-semibold"
-                  >
-                    Fecha
-                  </label>
+                <label htmlFor="fecha" className="brown text-lg font-semibold">
+                  Fecha
+                </label>
+                <div className=" mb-2 flex justify-between gap-6">
                   <input
                     type="date"
                     id="fecha"
                     className="input-field border-none mt-5"
                   />
+                  <button
+                    onClick={() => console.log("gogogogogog")}
+                    className="bg-gold text-white rounded-lg  font-bold"
+                  >
+                    Buscar Fecha
+                  </button>
                 </div>
+
                 <div className="grid">
                   <label
                     htmlFor="horaInicio"
