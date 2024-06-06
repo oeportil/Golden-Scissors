@@ -81,6 +81,7 @@ async function obtenerDisponibles(
       where: {
         AND: [
           { id_horarioEmpleado: idHorario }, // Filtro por Horario
+          { contratado: true },
           { cateCapacitadas: { some: { id_categ: idCategoria } } }, // Filtro por categoría
           {
             detalleCita: {

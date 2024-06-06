@@ -4,19 +4,29 @@ import { addMinutes } from "date-fns";
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const citas = await prisma.citas.findMany();
-    if (citas.isEmpty) {
+    if (citas.length === 0) {
       return res.send("No hay citas que mostrar");
     }
     res.json(citas);
   } else if (req.method === "POST") {
     //Aqui comienza la locura
     let { liservicios, fecha, id_usu } = req.body;
+    if (
+      !liservicios ||
+      !Array.isArray(liservicios) ||
+      liservicios.length === 0
+    ) {
+      return res
+        .status(400)
+        .json({ error: "La lista de servicios no debe ir vacía" });
+    }
+    if (!fecha || !id_usu) {
+      return res
+        .status(400)
+        .json({ error: "Fecha e ID de usuario son requeridos" });
+    }
     try {
       const givenDate = new Date(fecha);
-      if (isBefore(startOfDay(givenDate), startOfDay(zonedDate))) {
-        console.log("Fecha inválida");
-        return res.status(400).json({ error: "Fecha inválida" });
-      }
 
       // Obtener el día de la semana de fechadato (0 es domingo, 6 es sábado)
       const dayOfWeek = getDay(givenDate);
@@ -69,12 +79,10 @@ export default async function handler(req, res) {
         );
         if (comprobante.length == 0) {
           await borrarCitas(cita.id_cita);
-          return res
-            .status(400)
-            .json({
-              error:
-                "No se pudo crear la reserva, hubo conflictos con fechas de reserva",
-            });
+          return res.status(400).json({
+            error:
+              "No se pudo crear la reserva, hubo conflictos con fechas de reserva",
+          });
         }
         randnum = getRandomInt(0, comprobante.length - 1);
         const detacita = await prisma.detalleCita.create({
@@ -110,7 +118,7 @@ async function borrarCitas(idcit) {
     });
   } catch (err) {
     console.log(err.message);
-    json.status(500).json(err);
+    return { error: err.message };
   }
 }
 async function obtenerDisponibles(
@@ -127,6 +135,7 @@ async function obtenerDisponibles(
       where: {
         AND: [
           { id_horarioEmpleado: idHorario }, // Filtro por Horario
+          { contratado: true },
           { cateCapacitadas: { some: { id_categ: idCategoria } } }, // Filtro por categoría
           {
             detalleCita: {
