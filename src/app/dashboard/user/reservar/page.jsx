@@ -19,6 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { getFechas } from "@/controllers/ReservaController";
 import { horaReserva } from "@/utils/helpers";
 
+import { getCookie } from "cookies-next";
+
 const StyledModal = Modal.styled`
   width: auto;
   height: auto;
@@ -59,6 +61,18 @@ const Page = () => {
   const [categActv, setCategActv] = useState([]);
   const [servActiv, setServActiv] = useState([]);
 
+  const [cook, setCook] = useState({});
+
+  const user = getCookie("token");
+  useEffect(() => {
+    const cokie = () => {
+      if (user !== undefined) {
+        setCook(JSON.parse(user));
+      }
+    };
+    cokie();
+  }, [user]);
+
   useEffect(() => {
     const actv = servs.map((service) => service.id_categoria);
     const servid = servs.map((service) => service.id_servicio);
@@ -81,6 +95,11 @@ const Page = () => {
 
   //state para fecha Y orden de funcion getdates
   const[fecOrden, setFecOrden] = useState([]) 
+
+  const[datosFinales, setDatosFinales] = useState({})
+
+  //state XD para Reservacion Final
+  const[reservacion, setReservacion] = useState({})
 
   function toggleModal(e) {
     setOpacity(0);
@@ -114,7 +133,7 @@ const Page = () => {
             theme: "colored",
           });
           return 
-    } else if(servs.length == 0 && tabId == "resumen" ) {
+    } else if((servs.length == 0  || Object.keys(datosFinales).length == 0) && tabId == "resumen") {
         //incluir la validacion si la fecha y hora existe
         toast.error("Debe de Seleccionar la Fecha y La Hora", {
             position: "top-right",
@@ -132,7 +151,7 @@ const Page = () => {
   };
 
   const selected = (active) => {
-    if (activados.includes(1) && active == 2) {
+    if (activados.includes(1) && active == 2 ) {
       toast.error("No se pueden elegir Cortes de pelo especiales", {
         position: "top-right",
         autoClose: 5000,
@@ -174,6 +193,13 @@ const Page = () => {
     };
     data();
   }, [categs]);
+
+  useEffect(() =>{
+    setReservacion({...datosFinales, id_usu: cook.id_usuario})
+    console.log(reservacion)
+  }, [datosFinales, servs])
+
+
 
   return (
     <>
@@ -306,9 +332,9 @@ const Page = () => {
                   >
                     Seleccionar Hora de Inicio
                   </label>
-                  <select className="input-field border-none mt-5">
+                  <select onChange={e => setDatosFinales(JSON.parse(e.target.value))} className="input-field border-none mt-5">
                         {fecOrden.map((fecha, i) => (
-                            <option key={i} value={fecha}>{horaReserva(fecha.fecha)}</option>
+                            <option key={i} value={JSON.stringify(fecha)}>{horaReserva(fecha.fecha)}</option>
                         ))}
                   </select>
                 </div>                
@@ -329,27 +355,15 @@ const Page = () => {
               </h3>
               <div className="md:w-10/12 mx-auto flex justify-between">
                 <div className="w-1/2 pr-4 border-r border-gray-300">
-                  <div className="mb-4">
-                    <p className="font-semibold">Corte Tradicional</p>
-                    <p className="text-gray-500">Crew</p>
-                    <p className="font-semibold">$5</p>
-                    <p>3:00p.m. - 3:45p.m.</p>
-                    <hr className="my-2" />
-                  </div>
-                  <div className="mb-4">
-                    <p className="font-semibold">Barba</p>
-                    <p className="text-gray-500">Candado</p>
-                    <p className="font-semibold">$4</p>
-                    <p>3:45p.m. - 4:00p.m.</p>
-                    <hr className="my-2" />
-                  </div>
-                  <div className="mb-4">
-                    <p className="font-semibold">Delineado</p>
-                    <p className="text-gray-500">Cejas</p>
-                    <p className="font-semibold">$3</p>
-                    <p>4:00p.m. - 4:15p.m.</p>
-                    <hr className="my-2" />
-                  </div>
+                  {reservacion?.orden?.map((reserv, i) => (
+                    <div className="mb-4" key={i}>
+                      <p className="font-semibold">{reserv.nombre}</p>
+                      <p className="font-semibold">${reserv.precio}</p>
+                      <hr className="my-2" />
+                    </div>
+                  ))}
+                 
+                 
                 </div>
                 <div className="w-1/4 pl-4">
                   <h4 className="font-semibold mb-2">
@@ -447,7 +461,7 @@ const Page = () => {
   }
 
   function hacerReservacion() {
-    console.log(servs);
+    console.log(reservacion);
   }
 
 
@@ -471,9 +485,66 @@ const Page = () => {
         fechadato: fechaParse.toISOString()
     }
     const fechas = await getFechas(findF)
-    
+
     if(fechas.status == 200){
+      if(fechas.data.listafechas.length == 0 ){
+        toast.error("No Hay Citas Disponibles para este dia", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        setDatosFinales({})
+        setFecOrden([])
+        return 
+      }
       setFecOrden(fechas.data.listafechas)
+    } else if(fechas.status == 402){
+      setDatosFinales({})
+      setFecOrden([])
+       toast.error("El local estara Cerrado, Debe de Seleccionar una Fecha Valida", {
+         position: "top-right",
+         autoClose: 5000,
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "colored",
+       });
+     return 
+    } else if(fechas.status == 404){
+      setDatosFinales({})
+      setFecOrden([])
+       toast.error("No hay Horarios Disponibles para esta Fecha", {
+         position: "top-right",
+         autoClose: 5000,
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "colored",
+       });
+     return 
+    } else if(fechas.status == 400){
+      setDatosFinales({})
+      setFecOrden([])
+       toast.error("Seleccione una fecha disponible", {
+         position: "top-right",
+         autoClose: 5000,
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "colored",
+       });
+     return 
     }
 
   }

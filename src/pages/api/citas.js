@@ -9,12 +9,12 @@ export default async function handler(req, res) {
     }
     res.json(citas);
   } else if (req.method === "POST") {
-    //Aqui comienza la locura
-    let { liservicios, fecha, id_usu } = req.body;
+    //Aqui comienza la locura, el lado misterioso de la isla
+    let { orden, fecha, id_usu } = req.body;
     if (
-      !liservicios ||
-      !Array.isArray(liservicios) ||
-      liservicios.length === 0
+      !orden ||
+      !Array.isArray(orden) ||
+      orden.length === 0
     ) {
       return res
         .status(400)

@@ -204,7 +204,7 @@ export default async function handler(req, res) {
       horaMax.setMinutes(horaMax.getMinutes() - totalDuration);
 
       // Verificar si la fecha es la del día de hoy y ajustar la fecha mínima si es necesario
-      if (startOfDay(givenDate).getTime() === startOfDay(zonedDate).getTime()) {
+      if (startOfDay(fixeddate).getTime() === startOfDay(zonedDate).getTime()) {
         const currentPlusOneHour = addHours(zonedDate, 1);
         const roundedDate = roundToNext5Minutes(currentPlusOneHour);
 
