@@ -20,6 +20,7 @@ import { getFechas } from "@/controllers/ReservaController";
 import { horaReserva } from "@/utils/helpers";
 
 import { getCookie } from "cookies-next";
+import { formatDate } from "date-fns";
 
 const StyledModal = Modal.styled`
   width: auto;
@@ -100,6 +101,9 @@ const Page = () => {
 
   //state XD para Reservacion Final
   const[reservacion, setReservacion] = useState({})
+
+  //state para Info de Reservacion
+  const[info, setInfo] = useState({})
 
   function toggleModal(e) {
     setOpacity(0);
@@ -196,9 +200,26 @@ const Page = () => {
 
   useEffect(() =>{
     setReservacion({...datosFinales, id_usu: cook.id_usuario})
-    console.log(reservacion)
-  }, [datosFinales, servs])
+    let precios = reservacion.orden?.map(precio => precio.precio)
+    let minutos = reservacion.orden?.map(mins => mins.duracion)
 
+    const tiempo = minutos?.reduce((total, numero) => {
+      return total + numero;
+    }, 0);
+
+    const total = precios?.reduce((total, numero) => {
+      return total + numero;
+    }, 0);
+
+    setInfo({total, tiempo})   
+    console.log(info)
+
+  }, [datosFinales])
+
+  useEffect(() =>{
+    setDatosFinales({})
+    setFecOrden([])
+  }, [servs])
 
 
   return (
@@ -338,9 +359,6 @@ const Page = () => {
                         ))}
                   </select>
                 </div>                
-                <p className="brown text-lg font-semibold mt-5">
-                  Hora de Finalización: 4:15p.m.
-                </p>
               </div>
             </div>
 
@@ -359,6 +377,7 @@ const Page = () => {
                     <div className="mb-4" key={i}>
                       <p className="font-semibold">{reserv.nombre}</p>
                       <p className="font-semibold">${reserv.precio}</p>
+                      <p className="font-semibold text-slate-600">{reserv.duracion} mins</p>
                       <hr className="my-2" />
                     </div>
                   ))}
@@ -367,11 +386,11 @@ const Page = () => {
                 </div>
                 <div className="w-1/4 pl-4">
                   <h4 className="font-semibold mb-2">
-                    Total a Pagar: <span className="font-normal">$12</span>
+                    Total a Pagar: <span className="font-normal">${info.total != undefined ? info.total : 0}</span>
                   </h4>
                   <p className="mb-1">
                     Tiempo estimado:{" "}
-                    <span className="font-semibold">75 min</span>
+                    <span className="font-semibold">{info.tiempo != undefined ? info.tiempo : 0} min</span>
                   </p>
                   <p className="mb-1">
                     Fecha: <span className="font-semibold">31/04/24</span>
@@ -438,6 +457,7 @@ const Page = () => {
     );
     if (existe == undefined) {
       if (!activados.includes(servicio.id_categoria)) {
+       
         setServs([...servs, servicio]);
       } else {
         toast.error("No se puede elegir un Servicio de la misma Categoria", {

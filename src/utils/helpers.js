@@ -1,12 +1,15 @@
-export const formatDate = (fecha) => {
-  const nuevaFecha = new Date(fecha);
-  const nueva = nuevaFecha
-    .toLocaleDateString("es-Es", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })
-    .toString();
+export const formatDate = (fecha = "") => {
+  let nueva = ""
+  if(fecha.length != 0 || fecha != undefined ){
+    const nuevaFecha = new Date(fecha);
+    nueva = nuevaFecha
+      .toLocaleDateString("es-Es", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+      .toString();
+  }
   return nueva;
 };
 
@@ -47,13 +50,16 @@ export const Hora = (hora) => {
 };
 
 export const horaReserva = hora => {
-  const date = new Date(hora);
-  date.setHours(date.getHours() + 6); 
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  hours = hours ? hours : 12; 
-  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
-  return hours + ':' + minutesStr + ' ' + ampm;
+  if(hora != undefined){
+    const date = new Date(hora);
+    date.setHours(date.getHours() + 6); 
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+    return hours + ':' + minutesStr + ' ' + ampm;
+  }
+  return ""
 }
