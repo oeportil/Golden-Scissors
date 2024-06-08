@@ -1,5 +1,5 @@
 import prisma from "@/utils/prismaClient";
-import { addMinutes } from "date-fns";
+import { addMinutes, addHours, getDay, isSameDay } from "date-fns";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
         console.log("Sin horarios disponibles");
         return res.status(401).json({ error: "Sin horarios disponibles" });
       }
-      if (liservicios.length == 0) {
+      if (orden.length == 0) {
         res
           .status(400)
           .json({ error: "La lista de servicios no debe ir vacía" });
@@ -71,8 +71,9 @@ export default async function handler(req, res) {
       let fechafin = new Date(fechaini);
       let comprobante;
       let randnum;
-      for (let i = 0; i <= liservicios.length; i++) {
-        fechafin = addMinutes(fechaini, liservicios[i].duracion);
+
+      for (let i = 0; i < orden.length; i++) {
+        fechafin = addMinutes(fechaini, orden[i].duracion);
         comprobante = await obtenerDisponibles(
           fechaini,
           fechafin,
@@ -89,14 +90,14 @@ export default async function handler(req, res) {
         const detacita = await prisma.detalleCita.create({
           data: {
             id_cita: cita.id_cita,
-            id_servicio: liservicios[i].id_servicio,
+            id_servicio: orden[i].id_servicio,
             id_empleado: comprobante[randnum].id_empleado,
-            precio: liservicios[i].precio,
+            precio: orden[i].precio,
             fecha_inicio: fechaini,
             fecha_fin: fechafin,
           },
         });
-        fechaini = addMinutes(fechaini, liservicios[i].duracion);
+        fechaini = addMinutes(fechaini, orden[i].duracion);
       }
       return res.json(cita);
     } catch (error) {

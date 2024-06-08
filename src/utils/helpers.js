@@ -63,3 +63,34 @@ export const horaReserva = hora => {
   }
   return ""
 }
+
+
+//para reservacion calculo de fechas
+export function calcularHoras(inicio, duracionMinutos) {
+  const fechaInicio = new Date(inicio);
+  const fechaFin = new Date(fechaInicio.getTime() + duracionMinutos * 60000); 
+
+
+  fechaInicio.setHours(fechaInicio.getHours() + 6);
+  fechaFin.setHours(fechaFin.getHours() + 6);
+
+  const horaInicio = obtenerHora12Horas(fechaInicio);
+  const horaFin = obtenerHora12Horas(fechaFin);
+
+  return `${horaInicio} - ${horaFin}`;
+}
+
+function obtenerHora12Horas(fecha) {
+  let horas = fecha.getHours();
+  const minutos = fecha.getMinutes();
+  const ampm = horas >= 12 ? 'PM' : 'AM';
+
+  horas = horas % 12;
+  horas = horas ? horas : 12; 
+
+  return `${agregarCeros(horas)}:${agregarCeros(minutos)} ${ampm}`;
+}
+
+function agregarCeros(numero) {
+  return (numero < 10 ? '0' : '') + numero;
+}
