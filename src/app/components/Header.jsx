@@ -81,7 +81,7 @@ const Header = () => {
 
   const pathname = usePathname();
   return (
-    <header>
+    <header className={pathname == "/disponibilidad" ? "hidden" : ""}>
       <nav className=" border-gray-200 navegacion">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link

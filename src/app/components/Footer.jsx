@@ -1,10 +1,13 @@
+"use client"
 import Image from "next/image";
 import Logo from "../../logos/GS_logo_blanco.png";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Footer = () => {
+  const pathname = usePathname()
   return (
-    <footer className=" dark:bg-gray-900 footer">
+    <footer className={pathname == "/disponibilidad" ? "hidden" : "dark:bg-gray-900 footer"}  >
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 items-center w-100">
           <div className="mb-6 md:mb-0 me-12 ms-12">
