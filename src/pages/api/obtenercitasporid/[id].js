@@ -10,6 +10,9 @@ export default async function handler(req, res) {
 
     try {
       const citas = await prisma.citas.findMany({
+        orderBy: {
+          fecha: "desc",
+        },
         where: { id_usuario: parseInt(id, 10) },
         include: {
           usuario: {
