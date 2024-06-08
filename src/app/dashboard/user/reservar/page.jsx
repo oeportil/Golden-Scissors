@@ -210,10 +210,8 @@ const Page = () => {
     const total = precios?.reduce((total, numero) => {
       return total + numero;
     }, 0);
-
-    setInfo({total, tiempo})   
-    console.log(info)
-
+    
+    setInfo({ total, tiempo})   
   }, [datosFinales])
 
   useEffect(() =>{
