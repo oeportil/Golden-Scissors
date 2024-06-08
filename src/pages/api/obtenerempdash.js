@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       // Obtener empleados con su horario del día actual
       const empleados = await prisma.empleados.findMany({
         where: {
-          OR: [
+          AND: [
             {
               horarioEmpleado: {
                 laboral: hoy.getDay() >= 1 && hoy.getDay() <= 5,
