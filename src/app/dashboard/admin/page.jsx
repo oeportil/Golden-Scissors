@@ -4,16 +4,23 @@ import "@/styles/admin.css";
 import { getEmpContraConServ } from "@/controllers/EmpleadosController";
 import PeluquerosActualesCard from "@/app/components/PeluquerosActualesCard";
 import ReservaActualesCard from "@/app/components/ReservaActualesCard";
-import { getCitasAdmin } from "@/controllers/ReservaController";
+import { deleteCita, getCitasAdmin, getSearchReserv } from "@/controllers/ReservaController";
 //impors para el modal
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
+import { calcularHoras, formatDate, Hora } from "@/utils/helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
+
+//el toast 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledModal = Modal.styled`
   width: 95%;
   height: 70vh; 
   overflow-y: scroll;
-  background-color: white;
+  background-color: rgb(17 24 39);
   opacity: ${(props) => props.opacity};
   transition : all 0.3s ease-in-out;
   `;
@@ -30,8 +37,12 @@ const page = () => {
 
   //para los modales
   const [isOpen, setIsOpen] = useState(false);
+  const [secondModal, setSecondModal] = useState(false);
   const [opacity, setOpacity] = useState(0);
   const [serRes, setSerRes] = useState([]);
+  
+  //detalle de reservacion
+  const[details, setDetails] = useState({});
 
   function toggleModal(e) {
     setOpacity(0);
@@ -63,6 +74,11 @@ const page = () => {
     data()
     data2()
   }, [])
+
+  useEffect(() => {
+    console.log(details)
+  }, [details])
+  
   
   return (
     <div className="p-8 fondo text-white min-h-screen">
@@ -121,6 +137,7 @@ const page = () => {
           type="text"
           placeholder="Buscar..."
           className="ml-2 px-4 py-2 rounded-md bg-gray-800 text-gray-300 border border-gray-700 focus:outline-none focus:border-gray-500"
+          onChange={filterByresandUser}
         />
       </div>
       <table className="min-w-full bg-gray-800 rounded-lg">
@@ -132,34 +149,142 @@ const page = () => {
           </tr>
         </thead>
         <tbody>
-          {/* {reservations.map((reservation) => (
-            <tr key={reservation.id} className="border-b border-gray-700">
-              <td className="py-2 px-4">{reservation.id}</td>
-              <td className="py-2 px-4">{reservation.user}</td>
-              <td className="py-2 px-4">{reservation.date}</td>
-              <td className="py-2 px-4">{reservation.agenda}</td>
-              <td className="py-2 px-4">{reservation.attendedBy}</td>
-              <td className="py-2 px-4">{reservation.total}</td>
-              <td className="py-2 px-4">
-                <button>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6 text-gray-500">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12m-9 0a9 9 0 0118 0 9 9 0 01-18 0zm0 0a9 9 0 0118 0 9 9 0 01-18 0z"></path>
-                  </svg>
+          {serRes?.map((reservation) => (
+            <tr key={reservation.idCita} className="border-b border-gray-700">
+              <td className="py-2 px-4">{reservation.idCita}</td>
+              <td className="py-2 px-4">{reservation.nombreUsuario}</td>
+              <td className="py-2 px-4">{formatDate(reservation.fechaCorte)}</td>
+              <td className="py-2 px-4">{reservation.servicios.map(serv => serv)}</td>
+              <td className="py-2 px-4">{reservation.peluqueros.map(pelu => pelu)}</td>
+              <td className="py-2 px-4">{reservation.totalCorte}</td>
+              <td className="py-2 px-4 flex gap-4">
+                <button onClick={() => showDetails(reservation)}>
+                <FontAwesomeIcon
+                    style={{ color: "gray" }}
+                    icon={faEye}
+                    size="1x"
+                  />
                 </button>
+                {!reservation.citaRealizada && 
+                <button onClick={()=> eliminarReserva(reservation.idCita)} className=" disabled:text-">
+                  <FontAwesomeIcon
+                    style={{ color: "red" }}
+                    icon={faTrash}
+                    size="1x"
+                  />
+                </button>}
               </td>
             </tr>
-          ))} */}
+          ))}
         </tbody>
       </table>
     </div>
         </StyledModal>
+        
+        <StyledModal
+          isOpen={secondModal}
+          onBackgroundClick={closeSecondModal}
+          onEscapeKeydown={closeSecondModal}
+          opacity={opacity}
+          backgroundProps={{ opacity }}
+        >
+               <div className="p-4 bg-gray-900 text-white mx-auto">
+                <div className="flex justify-between items-center mb-4">
+                  <span>{details?.idCita}</span>
+                  <div className="flex items-center">
+                    <h3>DETALLES</h3>
+                    <button className="ml-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6 text-gray-500">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-center">
+                    <span>{details?.nombreUsuario}</span>
+                    <span>{details?.telefonoUsuario}</span>
+                    <button className="ml-2 mt-2 sm:mt-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6 text-gray-500">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                {details?.detalles?.map((service, index) => (
+                  <div key={index} className="mb-4 p-2 bg-gray-800 rounded-lg">
+                    <div className="flex justify-between items-center mb-2">
+                      <span>{service.nombreServicio}</span>
+                      <span>{service.precioIndividual}</span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between items-center mb-2">
+                      <span>{service.nombreCategoria}</span>
+                      <span>{calcularHoras(service?.fechaInicio, service?.duracion)}</span>
+                      <span>{service.nombrePeluquero}</span>
+                    </div>
+                  </div>
+                ))}
+                <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+                  <span>{formatDate(details?.fechaCorte)}</span>
+                  <span>{calcularHoras(details?.fechaCorte, details?.duracionTotal)}</span>
+                  <span>${details?.totalCorte}</span>
+                </div>
+              </div>
+        </StyledModal>
+
       </ModalProvider>
+      <ToastContainer />
     </div>
   );
+  //para cerrar el modal de detalle
+  function closeSecondModal(){
+    setDetails({})
+    setSecondModal(false)
+  }
+  //para abrir el modal de detalle, es necesario siempre pasarle el objeto
+  function showDetails(reservation){
+    setDetails(reservation)
+    setSecondModal(true)
+  }
+
   async function searchReserv(){
     const reserva = await getSearchReserv()
     await setSerRes(reserva)
     toggleModal()
+  }
+
+  async function filterByresandUser(e){
+    const reserva = await getSearchReserv(e.target.value)
+    await setSerRes(reserva)
+  }
+
+  async function eliminarReserva(id){
+    const del = await deleteCita(id)
+    if(del.status == 200){
+      toast.success(del.data.mensaje, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    });
+    const reserva = await getSearchReserv()
+    await setSerRes(reserva)
+    } else {
+      toast.error("No se puede eliminar el servicio, intente mas tarde", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+    });
+    }
   }
 };
 

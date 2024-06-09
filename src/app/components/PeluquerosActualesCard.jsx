@@ -29,7 +29,6 @@ const PeluquerosActualesCard = ({empleado}) => {
       const url = `${process.env.NEXT_PUBLIC_API_URL}/empleadash/${empleado.id_empleado}`;
       const resultado = await fetch(url)
       const respuesta = await resultado.json()
-      console.log(respuesta.minutosParaProximoDetalle)
       if(respuesta.minutosParaProximoDetalle != null){
         setMinutos(respuesta.minutosParaProximoDetalle)
       }

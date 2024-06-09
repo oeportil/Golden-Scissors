@@ -67,7 +67,7 @@ export default async function handler(req, res) {
       });
 
       if (citas.length === 0) {
-        return res.json({ mensaje: "No hay citas que mostrar" });
+        return res.send([]);
       }
 
       const response = citas.map((cita) => {
@@ -84,6 +84,7 @@ export default async function handler(req, res) {
             fechaInicio: detalle.fecha_inicio,
             fechaFin: detalle.fecha_fin,
             nombrePeluquero: peluquero,
+            duracion: detalle.servicio.duracion
           };
         });
 
