@@ -6,11 +6,11 @@ export default async function handler(req, res) {
 
     let filter = {};
 
-    if (busqueda) {
+    if (busqueda || busqueda.length > 0) {
       // Verificar si busqueda es numérica o cadena
       if (!isNaN(busqueda)) {
         filter = { id_cita: parseInt(busqueda, 10) };
-      } else if (busqueda != "") {
+      } else {
         filter = {
           OR: [
             {
