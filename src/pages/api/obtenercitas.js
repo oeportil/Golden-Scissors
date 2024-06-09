@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       // Verificar si busqueda es numérica o cadena
       if (!isNaN(busqueda)) {
         filter = { id_cita: parseInt(busqueda, 10) };
-      } else {
+      } else if (busqueda != "") {
         filter = {
           OR: [
             {
@@ -29,7 +29,6 @@ export default async function handler(req, res) {
                 },
               },
             },
-            busqueda === "",
           ],
         };
       }
