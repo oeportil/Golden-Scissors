@@ -8,7 +8,7 @@ export async function getEmpleados() {
 }
 export async function getEmpContraConServ() {
   const empleados = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/empleadoscontra`
+    `${process.env.NEXT_PUBLIC_API_URL}/obtenerempdash`
   );
   return empleados.data;
 }
@@ -134,4 +134,13 @@ export async function createEmpleado(empleado, selecto) {
     selecto
   );
   return emplea.data;
+}
+
+export async function AtendVisit(id) {
+  try {
+    const atnv = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/empleadash/${id}`, {estado: 2})
+    return atnv
+  } catch (error) {
+    return error
+  }
 }

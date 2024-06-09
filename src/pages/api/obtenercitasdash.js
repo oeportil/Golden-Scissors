@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     // Obtener la fecha actual
     //Las fantasias animadas del
     const hoy = new Date(); //Fecha actual
-    const ayer = endOfDay(); //Fin del dia
+    const ayer = endOfDay(hoy); //Fin del dia
 
     try {
       const citas = await prisma.citas.findMany({
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       });
 
       if (citas.length === 0) {
-        return res.send("No hay citas que mostrar");
+        return res.json({mensaje: "No hay citas que mostrar"});
       }
 
       const response = citas.map((cita) => {

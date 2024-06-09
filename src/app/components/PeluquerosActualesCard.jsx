@@ -1,7 +1,7 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import styled from "styled-components";
-import { cambiarEstado } from '@/controllers/EmpleadosController';
+import { AtendVisit, cambiarEstado } from '@/controllers/EmpleadosController';
 
 const StyledModal = Modal.styled`
   width: 20rem;
@@ -22,6 +22,21 @@ const FadingBackground = styled(BaseModalBackground)`
 const PeluquerosActualesCard = ({empleado}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [opacity, setOpacity] = useState(0);
+  const [minutos, setMinutos] = useState(0)
+
+  useEffect(() => {
+    const datos = async() => {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/empleadash/${empleado.id_empleado}`;
+      const resultado = await fetch(url)
+      const respuesta = await resultado.json()
+      console.log(respuesta.minutosParaProximoDetalle)
+      if(respuesta.minutosParaProximoDetalle != null){
+        setMinutos(respuesta.minutosParaProximoDetalle)
+      }
+    }
+    datos()
+  }, [empleado])
+  
 
   function toggleModal(e) {
     setOpacity(0);
@@ -41,17 +56,18 @@ const PeluquerosActualesCard = ({empleado}) => {
     });
   }
     let services = "";
-    empleado.cateCapacitadas.map(categ => {
-        services += " "+categ.categoria.nombre+","
+    empleado.categorias.map(categ => {
+        services += " "+categ+","
     })
+    
   return (
-    <div className={`p-1 ${empleado.estado == 1 ? "boton1": " "} mb-7`}>
+    <div className={`p-1 ${empleado.state == 1 ? "boton1": " "} mb-7`}>
     <div className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg" style={{ height: '19vh' }}>
       <div>
         <h3 className="font-bold text-start">{empleado.nombre+" "+empleado.apellido}</h3>
        <p>{services}</p>
        <p className='text-start cursor-pointer' onClick={toggleModal}>
-        {empleado.estado == 1 ? "Disponible" : empleado.estado === 2 ? "Ocupado" : "Retirado"}
+        {empleado.estado}
       </p>
         {/* Modal que se abre */}
         <ModalProvider backgroundComponent={FadingBackground}>
@@ -67,10 +83,11 @@ const PeluquerosActualesCard = ({empleado}) => {
             <div className='py-6'>
               {/* <button onClick={toggleModal} className='text-black text-3xl'>x</button> */}
               <h3 className='text-black text-3xl '>{empleado.nombre+" "+empleado.apellido}</h3>
-              <p className='text-black text-2xl'>{empleado.estado == 1 ? "Disponible" : empleado.estado === 2 ? "Ocupado" : "Retirado"}</p>
-              <div className='flex md:flex-row flex-col gap-4 mt-2'>
-                {empleado.estado === 1 && <button className='text-white bg-slate-700 hover:bg-slate-500 p-2'>Atender Visitante</button>}
-                {empleado.estado == 1 ? <button onClick={() => CambiarEstado(3)} className='text-white bg-slate-950 hover:bg-slate-800 p-2'>Retirar</button> : <button onClick={() => CambiarEstado(1)}  className='text-white bg-slate-950 hover:bg-slate-800 p-2 mx-auto'>Marcar Disponible</button>}
+              <p className='text-black text-2xl'>{empleado.estado}</p>
+              <p className='text-black text-lg'>{minutos != 0 ? <>Proximo Servicio Reservado en: {minutos} mins</> : <>No hay Servicios reservados que atender</>}</p>
+              <div className='flex md:flex-row flex-col gap-4 mt-2 items-center justify-center'>
+                {empleado.state === 1 && <button onClick={() => AtenderVisitante()} className='text-white bg-slate-700 hover:bg-slate-500 p-2'>Atender Visitante</button>}
+                {empleado.state == 1 ? <button onClick={() => CambiarEstado(3)} className='text-white bg-slate-950 hover:bg-slate-800 p-2'>Retirar</button> : <button onClick={() => CambiarEstado(1)}  className='text-white bg-slate-950 hover:bg-slate-800 p-2 mx-auto'>Marcar Disponible</button>}
               </div>
             </div>
           </StyledModal>
@@ -80,9 +97,17 @@ const PeluquerosActualesCard = ({empleado}) => {
   </div>
   )
 
+  async function AtenderVisitante(){
+    const resultado = await AtendVisit(empleado.id_empleado)
+    if(resultado.status == 200){
+      window.location.reload();
+    } else {
+      alert("ocurrio un error, Intentelo Nuevamente")
+    }
+  }
+
   async function CambiarEstado(estado, id = empleado.id_empleado){
-    const resultado = await cambiarEstado(estado, id)
-    console.log(resultado)
+    const resultado = await cambiarEstado(estado, id)    
     if(resultado.estado !== undefined){
       window.location.reload();
     } else {

@@ -89,6 +89,7 @@ export default async function handler(req, res) {
         }
 
         return {
+          id_empleado: empleado.id_empleado,
           nombre: empleado.nombre,
           apellido: empleado.apellido,
           telefono: empleado.telefono,

@@ -18,3 +18,12 @@ export async function createReservacion(cita) {
         return error.response
     }
 }
+
+export async function getCitasAdmin(){
+    try {
+        const reserva = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/obtenercitasdash`)
+        return reserva.data
+    } catch (error) {
+        return error
+    }
+}

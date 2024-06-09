@@ -10,6 +10,7 @@
 }
 .boton1{
     background-color: var(--gold);
+    border-radius: .5rem;
 }
 .boton2 {
     background-color: #595858;
