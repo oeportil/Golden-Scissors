@@ -105,6 +105,7 @@ export async function createEmpleado(empleado, selecto) {
     genero,
     id_horarioEmpleado,
     salario,
+    contratado: true,
     telefono,
   };
 
@@ -138,9 +139,12 @@ export async function createEmpleado(empleado, selecto) {
 
 export async function AtendVisit(id) {
   try {
-    const atnv = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/empleadash/${id}`, {estado: 2})
-    return atnv
+    const atnv = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/empleadash/${id}`,
+      { estado: 2 }
+    );
+    return atnv;
   } catch (error) {
-    return error
+    return error;
   }
 }
