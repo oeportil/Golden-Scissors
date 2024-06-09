@@ -11,6 +11,7 @@ export default async function handler(req, res) {
     const inicioDelDia = startOfDay(hoy);
     const finDelDia = endOfDay(hoy);
 
+    // Obtener empleados con su horario del día actual y filtrar según contratación
     const empleados = await prisma.empleados.findMany({
       where: {
         AND: [
@@ -21,21 +22,23 @@ export default async function handler(req, res) {
           }, // Lunes a viernes
           { horarioEmpleado: { sabatino: hoy.getDay() === 6 } }, // Sábado
           { horarioEmpleado: { dominguero: hoy.getDay() === 0 } }, // Domingo
-        ],
-        OR: [
-          { contratado: true },
           {
-            contratado: false,
-            detalleCita: {
-              some: {
-                cita: {
-                  fecha: {
-                    gte: inicioDelDia,
-                    lte: finDelDia,
+            OR: [
+              { contratado: true },
+              {
+                contratado: false,
+                detalleCita: {
+                  some: {
+                    cita: {
+                      fecha: {
+                        gte: inicioDelDia,
+                        lte: finDelDia,
+                      },
+                    },
                   },
                 },
               },
-            },
+            ],
           },
         ],
       },
@@ -54,8 +57,14 @@ export default async function handler(req, res) {
               },
             },
           },
+
           include: {
             cita: true,
+            servicio: {
+              include: {
+                categoria: true,
+              },
+            },
           },
           orderBy: {
             fecha_inicio: "asc",
@@ -69,7 +78,7 @@ export default async function handler(req, res) {
         (cap) => cap.categoria.nombre
       );
       const detallesHoy = empleado.detalleCita.map((detalle) => ({
-        idCita: detalle.id_cita,
+        idCita: detalle.cita.id_cita,
         fechaInicio: detalle.fecha_inicio,
         fechaFin: detalle.fecha_fin,
         nombreServicio: detalle.servicio.nombre,
@@ -108,7 +117,7 @@ export default async function handler(req, res) {
 
     res.json(response);
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 }
