@@ -8,7 +8,8 @@ import { deleteCita, getCitasAdmin, getSearchReserv } from "@/controllers/Reserv
 //impors para el modal
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
-import { calcularHoras, formatDate, Hora } from "@/utils/helpers";
+
+import { calcularHoras, formatDate} from "@/utils/helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -75,11 +76,6 @@ const page = () => {
     data2()
   }, [])
 
-  useEffect(() => {
-    console.log(details)
-  }, [details])
-  
-  
   return (
     <div className="p-8 fondo text-white min-h-screen">
       <button
@@ -93,15 +89,15 @@ const page = () => {
       <div className="md:flex justify-between gap-4">
         <div className="md:w-1/2  mx-auto">          
           <h2 className="texto font-bold text-lg mb-4 text-center">Reservaciones</h2>
-          {typeof reservaciones == "object" ? 
+          {reservaciones.length == 0 ? 
           <div>
-            <h4 className="text-slate-500 text-3xl font-semibold text-center">{reservaciones.mensaje}</h4>
-          </div> : 
-          <>
-            <ReservaActualesCard/>
-            <ReservaActualesCard/>
-            <ReservaActualesCard/>
-          </>
+            <h4 className="text-slate-500 text-3xl font-semibold text-center">No hay citas que mostrar</h4>
+          </div> :
+            <>
+              {reservaciones.map( (reserv, i) => (
+                <ReservaActualesCard key={i} reservacion={reserv} closeSecondModal={closeSecondModal} />  
+              ))}
+            </>
           }
         </div>
         <div className="md:w-1/2  mx-auto">
@@ -259,6 +255,10 @@ const page = () => {
   }
 
   async function eliminarReserva(id){
+    const confirmCancel = window.confirm("¿Está seguro de que desea cancelar esta reserva?");
+    if (!confirmCancel) {
+      return;
+    }
     const del = await deleteCita(id)
     if(del.status == 200){
       toast.success(del.data.mensaje, {
@@ -274,7 +274,7 @@ const page = () => {
     const reserva = await getSearchReserv()
     await setSerRes(reserva)
     } else {
-      toast.error("No se puede eliminar el servicio, intente mas tarde", {
+      toast.error("No se puede eliminar la reserva, intente mas tarde", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,

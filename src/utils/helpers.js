@@ -64,7 +64,6 @@ export const horaReserva = hora => {
   return ""
 }
 
-
 //para reservacion calculo de fechas
 export function calcularHoras(inicio, duracionMinutos) {
   const fechaInicio = new Date(inicio);
