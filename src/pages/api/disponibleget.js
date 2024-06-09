@@ -86,17 +86,21 @@ export default async function handler(req, res) {
       }));
 
       let estado = "Retirado";
+      const now = new Date();
+      const citaActual = detallesHoy.find(
+        (detalle) =>
+          new Date(detalle.fechaInicio) <= now &&
+          new Date(detalle.fechaFin) >= now
+      );
+
       if (empleado.estado === 1) {
-        estado =
-          detallesHoy.length === 0
-            ? "Disponible"
-            : `Atendiendo ${detallesHoy[0].idCita}`;
+        estado = citaActual ? `Atendiendo ${citaActual.idCita}` : "Disponible";
       } else if (empleado.estado === 2) {
-        estado =
-          detallesHoy.length === 0
-            ? "Atendiendo visitante"
-            : `Atendiendo ${detallesHoy[0].idCita}`;
-        if (detallesHoy.length > 0) {
+        estado = citaActual
+          ? `Atendiendo ${citaActual.idCita}`
+          : "Atendiendo visitante";
+
+        if (citaActual) {
           // Cambiar el estado a 1 si está atendiendo un detalle de cita
           prisma.empleados.update({
             where: { id_empleado: empleado.id_empleado },

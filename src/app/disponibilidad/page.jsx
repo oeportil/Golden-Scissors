@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { format, addHours } from "date-fns";
+import { format, addHours, addMinutes } from "date-fns";
 
 function EmpleadoCard({ empleado }) {
   return (
@@ -10,7 +10,7 @@ function EmpleadoCard({ empleado }) {
           <span className="text-xl font-semibold">{empleado.nombre[0]}</span>
         </div>
       </div>
-      <div>
+      <div className="w-32">
         <h2 className="text-lg font-bold">{`${empleado.nombre} ${empleado.apellido}`}</h2>
         <p className="text-sm text-gray-600">
           {empleado.categorias.join(", ")}
@@ -24,10 +24,22 @@ function EmpleadoCard({ empleado }) {
 function Timeline({ detalles, estado }) {
   const intervals = [];
   const now = new Date();
-  const startOfDay = new Date(now.setHours(0, 0, 0, 0));
-  for (let i = 0; i < 160; i++) {
-    const time = new Date(startOfDay.getTime() + i * 5 * 60000);
-    intervals.push(time);
+  const startOfDay = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    now.getHours(),
+    Math.floor(now.getMinutes() / 5) * 5,
+    0,
+    0
+  );
+
+  let currentTime = startOfDay;
+
+  for (let i = 0; i < 120; i++) {
+    // 5 minutos * 60 iteraciones = 5 horas
+    intervals.push(currentTime);
+    currentTime = addMinutes(currentTime, 5);
   }
 
   const renderDetails = (interval) => {
