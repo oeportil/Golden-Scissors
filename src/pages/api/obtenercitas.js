@@ -29,6 +29,7 @@ export default async function handler(req, res) {
                 },
               },
             },
+            busqueda === "",
           ],
         };
       }
@@ -67,7 +68,7 @@ export default async function handler(req, res) {
       });
 
       if (citas.length === 0) {
-        return res.send("No hay citas que mostrar");
+        return res.json({ mensaje: "No hay citas que mostrar" });
       }
 
       const response = citas.map((cita) => {
