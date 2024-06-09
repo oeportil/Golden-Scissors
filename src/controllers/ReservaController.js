@@ -27,3 +27,12 @@ export async function getCitasAdmin(){
         return error
     }
 }
+
+export async function getSearchReserv(busque = ""){
+    try {
+        const reserva = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/obtenercitas?busqueda=${busque}`)
+        return reserva.data
+    } catch (error) {
+        return error
+    }
+}
