@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, addHours } from "date-fns";
 
 function EmpleadoCard({ empleado }) {
   return (
@@ -25,24 +25,25 @@ function Timeline({ detalles, estado }) {
   const intervals = [];
   const now = new Date();
   const startOfDay = new Date(now.setHours(0, 0, 0, 0));
-  for (let i = 0; i < 48; i++) {
-    const time = new Date(startOfDay.getTime() + i * 30 * 60000);
+  for (let i = 0; i < 160; i++) {
+    const time = new Date(startOfDay.getTime() + i * 5 * 60000);
     intervals.push(time);
   }
 
   const renderDetails = (interval) => {
     const detail = detalles.find(
       (det) =>
-        new Date(det.fechaInicio) <= interval &&
-        new Date(det.fechaFin) > interval
+        addHours(new Date(det.fechaInicio), 6) <= interval &&
+        addHours(new Date(det.fechaFin), 6) > interval
     );
     if (detail) {
       return (
         <div className="bg-gray-200 rounded p-2 m-1 text-center" key={interval}>
-          {`${detail.nombreServicio} (${format(
-            new Date(detail.fechaInicio),
+          <p>{`Reserva N°${detail.idCita}`}</p>
+          <p>{`${detail.nombreServicio} (${format(
+            addHours(new Date(detail.fechaInicio), 6),
             "p"
-          )} - ${format(new Date(detail.fechaFin), "p")})`}
+          )} - ${format(addHours(new Date(detail.fechaFin), 6), "p")})`}</p>
         </div>
       );
     }
@@ -62,7 +63,7 @@ function Timeline({ detalles, estado }) {
   return (
     <div className="flex overflow-x-auto p-2 border rounded-lg shadow-inner">
       {intervals.map((interval) => (
-        <div className="flex-shrink-0 w-20 border-r" key={interval}>
+        <div className="flex-shrink-0 w-28 border-r" key={interval}>
           <span className="text-xs block text-gray-500">
             {format(interval, "p")}
           </span>
