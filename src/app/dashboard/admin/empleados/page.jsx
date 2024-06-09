@@ -89,7 +89,6 @@ const Page = () => {
     categ();
     h();
     datos();
-    console.log("Viendo");
   }, []);
 
   let empleados = [];
@@ -166,25 +165,33 @@ const Page = () => {
     }
   };
 
-  const handleEdit = (id) => {
+  async function handleEdit(id) {
     const empleact = async () => {
       const data = await getEmpleadoById(id);
       await setEmpleadoActual(data);
-      const c = await getCategorias();
-      await setCategorias(c);
+
       const array = await getCategsById(id);
-      console.log(array);
+
       for (let i = 0; i < array.length; i++) {
         handleServ2(array[i].id_categ);
       }
     };
-    empleact();
 
+    await empleact();
     toggleModal();
-  };
+  }
+  useEffect(() => {
+    const datos = async () => {
+      if (!isOpen) {
+        const c = await getCategorias();
+        await setCategorias(c);
+      }
+    };
+    datos();
+  }, [isOpen]);
   const handleChangeEmpleado = (e) => {
     //const { name, value } = e.target;
-    console.log(selecto);
+
     setEmpleadoActual((prevEmpleado) => ({
       ...prevEmpleado,
       [e.target.name]: e.target.value,
@@ -201,7 +208,7 @@ const Page = () => {
     setCurrentPage(1);
   };
   const [selecto, setSelecto] = useState([]);
-  console.log(horarios);
+
   return (
     <div className="container mx-auto my-4">
       <div className="flex flex-col md:flex-row md:justify-between items-center mb-5 ">
@@ -572,8 +579,6 @@ const Page = () => {
           copy.splice(index, 1);
         }
       }
-      console.log(categorias);
-      console.log(selecto);
     }
   }
   function handleServ2(id) {
@@ -589,12 +594,9 @@ const Page = () => {
           copy.splice(index, 1);
         }
       }
-      console.log(categorias);
-      console.log(selecto);
     }
   }
   function deleteServ(id) {
-    console.log(id);
     const result = selecto.filter((categoria) => categoria.id_categoria == id);
     if (result[0]) {
       setCategorias((prevCategorias) => [result[0], ...prevCategorias]);
@@ -623,7 +625,6 @@ const Page = () => {
       contratado: false,
       salario: 0,
     });
-    console.log(empleadoActual);
   }
 };
 
