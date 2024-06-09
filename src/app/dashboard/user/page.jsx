@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPrint, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -8,9 +8,67 @@ import { getCookie } from "cookies-next";
 import { formatDate } from "@/utils/helpers";
 import Link from "next/link";
 
+import styled from "styled-components";
+import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
+
+import logo from "@/./logos/GS_logo.png";
+import fondo from "@/./logos/fondo_opaco.png";
+
+import ReactToPrint from "react-to-print";
+
+const InvoiceModal = Modal.styled`
+  width: 400px;
+  height: auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  background-color: #3490dc;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #2779bd;
+  }
+`;
+const SpecialModalBackground = styled(BaseModalBackground)`
+  opacity: ${(props) => props.opacity};
+  transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(2px); // This applies the blur effect
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.1
+  ); // This adds a semi-transparent black background
+`;
+
 const Page = () => {
   const [cook, setCook] = useState({});
   const [route, setRoute] = useState("");
+  const [selectedCita, setSelectedCita] = useState("");
+  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  const invoiceRef = useRef();
+  const refs = useRef([]);
+  const handleInvoiceOpen = (cita) => {
+    setSelectedCita(cita);
+    setIsInvoiceOpen(true);
+  };
+
+  const handleInvoiceClose = () => {
+    setIsInvoiceOpen(false);
+  };
+
   //este es el state que tiene las reservaciones
   const [citas, setCitas] = useState([]);
 
@@ -42,6 +100,27 @@ const Page = () => {
       LLamadoCitas();
     }
   }, [cook]);
+
+  //esto borra las citas
+  const deleteCita = (idCita) => {
+    try {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/citas/${idCita}`;
+      console.log(url);
+      const EliminarCita = async () => {
+        const response = await fetch(url, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        window.location.reload();
+      };
+      EliminarCita();
+    } catch (error) {
+      console.error("Ocurrio el siguiente error: " + error);
+    }
+  };
 
   useEffect(() => {
     async function obtenerRuta() {
@@ -147,7 +226,7 @@ const Page = () => {
         </div>
       </section>
       <section className="tabla container">
-        <div className="p-10 relative overflow-x-auto">
+        <div className="p-10 relative overflow-x-auto overflow-y-scroll h-96">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -178,17 +257,39 @@ const Page = () => {
                   >
                     <td
                       scope="row"
+                      onClick={() => handleInvoiceOpen(cita)}
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {cita.idCita}
                     </td>
-                    <td className="px-6 py-4">
+                    <td
+                      className="px-6 py-4"
+                      onClick={() => handleInvoiceOpen(cita)}
+                    >
                       {fechaBonitaVisualmente(cita.fechaCorte)}
                     </td>
-                    <td className="px-6 py-4">{cita.servicios[0]}</td>
-                    <td className="px-6 py-4">{cita.peluqueros[0]}</td>
-                    <td className="px-6 py-4">${cita.totalCorte}</td>
-                    <td className="px-6 py-4 flex">
+                    <td
+                      onClick={() => handleInvoiceOpen(cita)}
+                      className="px-6 py-4"
+                    >
+                      {cita.servicios[0]}
+                    </td>
+                    <td
+                      onClick={() => handleInvoiceOpen(cita)}
+                      className="px-6 py-4"
+                    >
+                      {cita.peluqueros[0]}
+                    </td>
+                    <td
+                      onClick={() => handleInvoiceOpen(cita)}
+                      className="px-6 py-4"
+                    >
+                      ${cita.totalCorte}
+                    </td>
+                    <td
+                      onClick={() => handleInvoiceOpen(cita)}
+                      className="px-6 py-4 flex"
+                    >
                       <button>
                         <FontAwesomeIcon
                           style={{ color: "green" }}
@@ -200,7 +301,10 @@ const Page = () => {
                     <td className="px-6 py-4 flex">
                       {" "}
                       {cita.citaRealizada == false && (
-                        <button className=" disabled:text-">
+                        <button
+                          className=" disabled:text-"
+                          onClick={() => deleteCita(cita.idCita)}
+                        >
                           <FontAwesomeIcon
                             style={{ color: "red" }}
                             icon={faTrash}
@@ -214,6 +318,100 @@ const Page = () => {
               ))}
             </tbody>
           </table>
+          <ModalProvider backgroundComponent={SpecialModalBackground}>
+            <InvoiceModal
+              isOpen={isInvoiceOpen}
+              onBackgroundClick={handleInvoiceClose}
+              onEscapeKeydown={handleInvoiceClose}
+            >
+              <div
+                ref={invoiceRef}
+                className="fondo w-full p-4 border-2 border-gray-300 rounded-lg"
+                style={{
+                  position: "relative",
+                  backgroundImage: `url(${fondo.src})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                <style jsx>{`
+                  @media print {
+                    .fondo {
+                      background-image: url(${fondo.src}) !important;
+                      -webkit-print-color-adjust: exact;
+                    }
+                  }
+                `}</style>
+                <div className="content invoice-content">
+                  <div className="flex justify-center mb-4">
+                    <Image src={logo} alt="Logo" className="w-16 h-16" />
+                  </div>
+                  {selectedCita && (
+                    <div className="text-center mb-4">
+                      <div className="invoice-row">
+                        <p className="font-semibold">
+                          Cliente:{" "}
+                          <span className="font-normal">
+                            {cook.nombre + " " + cook.apellido}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="invoice-row">
+                        <p className="font-semibold">
+                          Barbero:{" "}
+                          <span className="font-normal">
+                            {selectedCita.peluqueros[0]}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="invoice-row">
+                        <p className="font-semibold">
+                          Fecha:{" "}
+                          <span className="font-normal">
+                            {fechaBonitaVisualmente(selectedCita.fechaCorte)}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="invoice-row">
+                        <p className="font-semibold">
+                          Servicios: <br />
+                          {selectedCita.servicios.map((servicio, index) => (
+                            <span key={index} className="font-normal">
+                              {" "}
+                              {servicio}
+                              <br />
+                            </span>
+                          ))}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  <div className="text-center font-semibold">
+                    <p>
+                      Total:{" "}
+                      <span className="font-normal">
+                        ${selectedCita ? selectedCita.totalCorte : ""}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <ReactToPrint
+                trigger={() => (
+                  <Button>
+                    Imprimir{" "}
+                    <FontAwesomeIcon
+                      style={{ color: "white" }}
+                      icon={faPrint}
+                    />
+                  </Button>
+                )}
+                content={() => invoiceRef.current}
+                pageStyle="@page { size: auto; margin: 20mm; }"
+              />
+            </InvoiceModal>
+          </ModalProvider>
         </div>
       </section>
       <Link
