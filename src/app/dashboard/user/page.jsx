@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPrint, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
 import { formatDate } from "@/utils/helpers";
@@ -28,6 +29,10 @@ const Page = () => {
     const LLamadoCitas = async () => {
       const id = cook.id_usuario?.toString();
       try {
+        const url = `http://localhost:3000/api/obtenercitasporid/${id}`;
+        const respuesta = await fetch(url);
+        const citasData = await respuesta.json();
+        setCitas(citasData);
       } catch (error) {
         console.error("Ocurrio un error:" + error);
       }
@@ -77,6 +82,23 @@ const Page = () => {
     }
   }, [cook]);
 
+  //esta función formatea la fecha de la tabla a un formato bonito :v
+  function fechaBonitaVisualmente(date) {
+    if (!(date instanceof Date)) {
+      date = new Date(date);
+    }
+    const formattedDateUTC =
+      date.getUTCFullYear() +
+      "-" +
+      ("0" + (date.getUTCMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + date.getUTCDate()).slice(-2) +
+      " " +
+      ("0" + date.getUTCHours()).slice(-2) +
+      ":" +
+      ("0" + date.getUTCMinutes()).slice(-2);
+    return formattedDateUTC;
+  }
   return (
     <div className="flex flex-col items-center mb-4">
       <section className="parte1 container grid justify-center w-full">
@@ -136,10 +158,10 @@ const Page = () => {
                   Fecha
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Agenda
+                  primer servicio
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Atendido por
+                  posible barbero
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Total
@@ -148,53 +170,48 @@ const Page = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  12343
-                </th>
-                <td className="px-6 py-4">20/05/2024 1:50 p.m</td>
-                <td className="px-6 py-4">
-                  Corte de pelo, Corte de barba Estilo de cejas
-                </td>
-                <td className="px-6 py-4">Sin atender</td>
-                <td className="px-6 py-4">$30.00</td>
-                <td className="px-6 py-4">
-                  <FontAwesomeIcon icon={["fas", "print"]} />
-                </td>
-              </tr>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  --
-                </th>
-                <td className="px-6 py-4">--/--/--</td>
-                <td className="px-6 py-4">--</td>
-                <td className="px-6 py-4">--</td>
-                <td className="px-6 py-4">--</td>
-                <td className="px-6 py-4">
-                  <FontAwesomeIcon icon={["fas", "print"]} />
-                </td>
-              </tr>
-              <tr className="bg-white dark:bg-gray-800">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  --
-                </th>
-                <td className="px-6 py-4">--/--/--</td>
-                <td className="px-6 py-4">--</td>
-                <td className="px-6 py-4">--</td>
-                <td className="px-6 py-4">--</td>
-                <td className="px-6 py-4">
-                  <FontAwesomeIcon icon={["fas", "print"]} />
-                </td>
-              </tr>
+              {citas.map((cita) => (
+                <>
+                  <tr
+                    key={cita.idCita}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  >
+                    <td
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {cita.idCita}
+                    </td>
+                    <td className="px-6 py-4">
+                      {fechaBonitaVisualmente(cita.fechaCorte)}
+                    </td>
+                    <td className="px-6 py-4">{cita.servicios[0]}</td>
+                    <td className="px-6 py-4">{cita.peluqueros[0]}</td>
+                    <td className="px-6 py-4">${cita.totalCorte}</td>
+                    <td className="px-6 py-4 flex">
+                      <button>
+                        <FontAwesomeIcon
+                          style={{ color: "green" }}
+                          icon={faPrint}
+                        />
+                        <strong>Imprimir</strong>
+                      </button>
+                    </td>
+                    <td className="px-6 py-4 flex">
+                      {" "}
+                      {cita.citaRealizada == false && (
+                        <button className=" disabled:text-">
+                          <FontAwesomeIcon
+                            style={{ color: "red" }}
+                            icon={faTrash}
+                          />
+                          <strong>Eliminar</strong>
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                </>
+              ))}
             </tbody>
           </table>
         </div>
