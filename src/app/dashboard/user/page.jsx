@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +10,8 @@ import Link from "next/link";
 const Page = () => {
   const [cook, setCook] = useState({});
   const [route, setRoute] = useState("");
+  //este es el state que tiene las reservaciones
+  const [citas, setCitas] = useState([]);
 
   const user = getCookie("token");
   useEffect(() => {
@@ -20,6 +22,21 @@ const Page = () => {
     };
     cokie();
   }, [user]);
+
+  //acá se obtienen las citas del usuario
+  useEffect(() => {
+    const LLamadoCitas = async () => {
+      const id = cook.id_usuario?.toString();
+      try {
+      } catch (error) {
+        console.error("Ocurrio un error:" + error);
+      }
+    };
+
+    if (Object.keys(cook).length !== 0) {
+      LLamadoCitas();
+    }
+  }, [cook]);
 
   useEffect(() => {
     async function obtenerRuta() {
@@ -60,7 +77,6 @@ const Page = () => {
     }
   }, [cook]);
 
-
   return (
     <div className="flex flex-col items-center mb-4">
       <section className="parte1 container grid justify-center w-full">
@@ -90,10 +106,19 @@ const Page = () => {
 
           <div className=" flex flex-col gap-2 justify-center items-center">
             <div className="rounded-full">
-              <Image src={route} width={200} height={200} alt="Foto de perfil" className="rounded-full w-full h-full" />
+              <Image
+                src={route}
+                width={200}
+                height={200}
+                alt="Foto de perfil"
+                className="rounded-full w-full h-full"
+              />
             </div>
 
-            <Link href={"user/editar"} className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <Link
+              href={"user/editar"}
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
               Editar
             </Link>
           </div>
@@ -174,11 +199,14 @@ const Page = () => {
           </table>
         </div>
       </section>
-      <Link className="bg-ligthbrown gold py-2 px-8 font-semibold rounded-full hover:bg-yellow-500 hover:text-amber-950"  href={"user/reservar"}>
-          Reservar
+      <Link
+        className="bg-ligthbrown gold py-2 px-8 font-semibold rounded-full hover:bg-yellow-500 hover:text-amber-950"
+        href={"user/reservar"}
+      >
+        Reservar
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
