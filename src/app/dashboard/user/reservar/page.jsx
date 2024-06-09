@@ -27,6 +27,7 @@ import logo from "@/./logos/GS_logo.png";
 import fondo from "@/./logos/fondo_opaco.png";
 import Image from "next/image";
 import ReactToPrint from 'react-to-print';
+import { useRouter } from "next/navigation";
 
 const StyledModal = Modal.styled`
   width: auto;
@@ -123,7 +124,10 @@ const Page = () => {
 
     //para un modal de no se que
     const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+    
     const invoiceRef = useRef();
+    
+    const { push } = useRouter()
 
     const handleInvoiceOpen = () => {
         setIsInvoiceOpen(true);
@@ -131,8 +135,13 @@ const Page = () => {
 
     const handleInvoiceClose = () => {
         setIsInvoiceOpen(false);
+        setInfo({})
+        setReservacion({})
+        setDatosFinales({})
+        setActivados([])
+        push("/dashboard/user")
     };
-
+    
 
 
     function toggleModal(e) {
@@ -251,6 +260,7 @@ const Page = () => {
         setFecOrden([])
     }, [servs])
 
+    
 
     return (
         <>
@@ -380,6 +390,7 @@ const Page = () => {
                                         Seleccionar Hora de Inicio
                                     </label>
                                     <select onChange={e => setDatosFinales(JSON.parse(e.target.value))} className="input-field border-none mt-5">
+                                            <option disabled>-- Seleccionar Una Hora --</option>
                                         {fecOrden.map((fecha, i) => (
                                             <option key={i} value={JSON.stringify(fecha)}>{horaReserva(fecha.fecha)}</option>
                                         ))}
@@ -565,35 +576,35 @@ const Page = () => {
     }
 
     async function hacerReservacion() {
-        // const cita = await createReservacion(reservacion)
-        // if (cita.status == 200) {
-        //     toast.success("Creada Con Exito")
-        // } else if (cita.status == 400) {
-        //     toast.error("Seleccione Otra fecha Disponible", {
-        //         position: "top-right",
-        //         autoClose: 5000,
-        //         hideProgressBar: true,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "colored",
-        //     });
-        //     return
-        // } else {
-        //     toast.error("Error interno, intente mas tarde", {
-        //         position: "top-right",
-        //         autoClose: 5000,
-        //         hideProgressBar: true,
-        //         closeOnClick: true,
-        //         pauseOnHover: true,
-        //         draggable: true,
-        //         progress: undefined,
-        //         theme: "colored",
-        //     });
-        //     return
-        // }
-        handleInvoiceOpen()
+        const cita = await createReservacion(reservacion)
+        if (cita.status == 200) {
+            toast.success("Creada Con Exito")
+            handleInvoiceOpen()             
+        } else if (cita.status == 400) {
+            toast.error("Seleccione Otra fecha Disponible", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            return
+        } else {
+            toast.error("Error interno, intente mas tarde", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+            return
+        } 
     }
 
 
