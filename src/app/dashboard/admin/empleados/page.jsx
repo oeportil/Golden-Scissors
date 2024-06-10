@@ -150,6 +150,7 @@ const Page = () => {
       setEmployesFiltered(empleados);
     };
     fetchData();
+    setCurrentPage(1);
   }, [filterStatus, filterTime]);
   //funcion para despedir empleados
   const Despedir = async (id) => {
