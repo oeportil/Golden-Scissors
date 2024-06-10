@@ -112,6 +112,7 @@ const Page = () => {
   }
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
+  console.log(records);
   const nextPage = () => {
     if (currentPage !== lastIndex) {
       setCurrentPage(currentPage + 1);
@@ -244,6 +245,15 @@ const Page = () => {
               <th scope="col" className="px-6 py-3">
                 Salario
               </th>
+              <th scope="col" className="px-6 py-3">
+                Horas trabajadas
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Nº Trabajos realizados
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <strong>Opciónes</strong>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -262,6 +272,8 @@ const Page = () => {
                     <td className="px-6 py-4">
                       {emple.nombre} {emple.apellido}
                     </td>
+                    <td className="px-6 py-4">$ {emple.salario}</td>
+                    <td className="px-6 py-4">$ {emple.salario}</td>
                     <td className="px-6 py-4">$ {emple.salario}</td>
                     {emple.contratado ? (
                       <td className="px-6 py-4 flex gap-2">
