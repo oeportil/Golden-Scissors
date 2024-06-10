@@ -1,9 +1,9 @@
 import prisma from "@/utils/prismaClient";
-import { startOfDay, endOfDay } from "date-fns";
+import { startOfDay, endOfDay, addHours } from "date-fns";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
-    const hoy = new Date();
+    const hoy = addHours(new Date(), -6);
     const inicioDelDia = startOfDay(hoy);
     const finDelDia = endOfDay(hoy);
 
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
         });
 
         let estado = "Retirado";
-        const now = new Date();
+        const now = addHours(new Date(), -6);
         const citaActual = detallesHoy.find(
           (detalle) =>
             new Date(detalle.fechaInicio) <= now &&

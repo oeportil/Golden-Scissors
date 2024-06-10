@@ -9,10 +9,9 @@ export default async function handler(req, res) {
   }
 
   const empleadoId = parseInt(id, 10);
-
+  const hoy = addHours(new Date(), -6);
   if (req.method === "GET") {
     try {
-      const hoy = new Date();
       const inicioDelDia = startOfDay(hoy);
       const finDelDia = endOfDay(hoy);
 
@@ -64,8 +63,8 @@ export default async function handler(req, res) {
             where: {
               cita: {
                 fecha: {
-                  gte: startOfDay(new Date()),
-                  lte: endOfDay(new Date()),
+                  gte: startOfDay(hoy),
+                  lte: endOfDay(hoy),
                 },
               },
             },
@@ -83,31 +82,27 @@ export default async function handler(req, res) {
       const detalleActual = empleado.detalleCita.find((detalle) => {
         const fechaInicio = new Date(detalle.fecha_inicio);
         const fechaFin = new Date(detalle.fecha_fin);
-        const ahora = new Date();
+        const ahora = hoy;
         return ahora >= fechaInicio && ahora <= fechaFin;
       });
 
       const tieneDetallePendienteHoy = empleado.detalleCita.some((detalle) => {
         const fechaInicio = new Date(detalle.fecha_inicio);
-        return new Date() < fechaInicio;
+        return hoy < fechaInicio;
       });
 
       if (detalleActual && estado !== 1) {
-        return res
-          .status(400)
-          .json({
-            error:
-              "No se puede cambiar a estado 2 o 3 mientras se atiende un detalle de cita",
-          });
+        return res.status(400).json({
+          error:
+            "No se puede cambiar a estado 2 o 3 mientras se atiende un detalle de cita",
+        });
       }
 
       if (estado === 3 && tieneDetallePendienteHoy) {
-        return res
-          .status(400)
-          .json({
-            error:
-              "No se puede cambiar a estado 3 con detalles de cita pendientes hoy",
-          });
+        return res.status(400).json({
+          error:
+            "No se puede cambiar a estado 3 con detalles de cita pendientes hoy",
+        });
       }
 
       let nuevoEstado = estado;

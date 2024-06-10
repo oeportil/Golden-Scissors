@@ -1,5 +1,5 @@
 import prisma from "@/utils/prismaClient";
-
+import { addHours } from "date-fns";
 export default async function handler(req, res) {
   if (req.method === "GET") {
     const { id } = req.query;
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
           totalCorte: total,
           duracionTotal: duracionTotal / 60000, // Convertir milisegundos a minutos
           detalles: detalles,
-          citaRealizada: new Date() > new Date(cita.fecha),
+          citaRealizada: addHours(new Date(), -6) > new Date(cita.fecha),
         };
       });
 

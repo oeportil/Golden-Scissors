@@ -1,11 +1,11 @@
 import prisma from "@/utils/prismaClient";
-import { endOfDay } from "date-fns";
+import { endOfDay, addHours } from "date-fns";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
     // Obtener la fecha actual
     //Las fantasias animadas del
-    const hoy = new Date(); //Fecha actual
+    const hoy = addHours(new Date(), -6); //Fecha actual
     const ayer = endOfDay(hoy); //Fin del dia
 
     try {
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
             fechaInicio: detalle.fecha_inicio,
             fechaFin: detalle.fecha_fin,
             nombrePeluquero: peluquero,
-            duracion: detalle.servicio.duracion
+            duracion: detalle.servicio.duracion,
           };
         });
 
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
           totalCorte: total,
           duracionTotal: duracionTotal / 60000, // Convertir milisegundos a minutos
           detalles: detalles,
-          citaRealizada: new Date() > new Date(cita.fecha),
+          citaRealizada: addHours(new Date(), -6) > new Date(cita.fecha),
         };
       });
 

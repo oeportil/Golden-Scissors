@@ -14,12 +14,16 @@ export async function getEmpContraConServ() {
   return empleados.data;
 }
 
-export async function cambiarEstado(estado, id) {
-  const estate = await axios.patch(
-    `${process.env.NEXT_PUBLIC_API_URL}/empleaestado/${id}`,
-    { estado: parseInt(estado) }
-  );
-  return estate.data;
+export async function cambiarEstado(estat, id) {
+  try {
+    const atnv = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/empleadash/${id}`,
+      { estado: estat }
+    );
+    return atnv.data;
+  } catch (error) {
+    return error.response.data;
+  }
 }
 
 export async function getEmpleadoById(id) {
