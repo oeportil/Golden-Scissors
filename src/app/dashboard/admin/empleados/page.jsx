@@ -30,6 +30,8 @@ const FadingBackground = styled(BaseModalBackground)`
 const Page = () => {
   const [empleado, setEmpleado] = useState([]);
   const [horarios, setHorarios] = useState([]);
+  const [filterStatus, setFilterStatus] = useState(true);
+  const [filterTime, setFilterTime] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [employesFiltered, setEmployesFiltered] = useState([]);
@@ -45,7 +47,7 @@ const Page = () => {
     estado: 1,
     contratado: true,
     salario: 0,
-    id_horarioEmpleado: 4,
+    id_horarioEmpleado: 1,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +114,6 @@ const Page = () => {
   }
   const numbers = [...Array(npage + 1).keys()].slice(1);
 
-  console.log(records);
   const nextPage = () => {
     if (currentPage !== lastIndex) {
       setCurrentPage(currentPage + 1);
@@ -126,6 +127,30 @@ const Page = () => {
   const chhangeCPage = (id) => {
     setCurrentPage(id);
   };
+  //esto maneja el cambio del select de despedido a contratado
+  const handleEmployeState = (e) => {
+    const estadoEmpleado = e.target.value === "true";
+    setFilterStatus(estadoEmpleado);
+  };
+  //esto realmente hace otra cosa XD, sirve para el segundo filtro (año,mes,semana)
+  const handleContratados = (e) => {
+    const tiempo = parseInt(e.target.value);
+    setFilterTime(tiempo);
+  };
+  //esta función hace el  filtrado
+  useEffect(() => {
+    const fetchData = async () => {
+      //mandas el filterTime para que sirva como parametro opcional en la url
+      let empleados = await getEmpleados(filterTime);
+      // Aplica el filtro de estado (contratado o despedido)
+      empleados = empleados.filter(
+        (empleado) => empleado.contratado === filterStatus
+      );
+
+      setEmployesFiltered(empleados);
+    };
+    fetchData();
+  }, [filterStatus, filterTime]);
   //funcion para despedir empleados
   const Despedir = async (id) => {
     if (confirm("¿Seguro que desea despedirlo") == true) {
@@ -199,15 +224,6 @@ const Page = () => {
     }));
   };
 
-  //esta función es la que filtra los empleados en base a su estado (contratado ,despedido)
-  const handleEmployeState = (e) => {
-    const estadoEmpleado = e.target.value === "true"; // Convertir el valor seleccionado a booleano
-    const employesFilter = empleado.filter(
-      (empleado) => empleado.contratado === estadoEmpleado
-    );
-    setEmployesFiltered(employesFilter);
-    setCurrentPage(1);
-  };
   const [selecto, setSelecto] = useState([]);
 
   return (
@@ -227,8 +243,11 @@ const Page = () => {
           </option>
         </select>
 
-        <select name="filtro" id="" className="">
-          <option value="">Ultima Semana</option>
+        <select onChange={handleContratados} name="filtro" id="" className="">
+          <option value="1">Ultima Semana</option>
+          <option value="2">Ultimo Més</option>
+          <option value="3">Ultimo Año </option>
+          <option value="4">Todos los tiempos </option>
         </select>
       </div>
 
@@ -304,15 +323,6 @@ const Page = () => {
           aria-label="Table navigation"
         >
           <ul className="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                onClick={prePage}
-              >
-                Previous
-              </a>
-            </li>
             {numbers.map((n) => (
               <li key={n}>
                 <a
@@ -324,15 +334,6 @@ const Page = () => {
                 </a>
               </li>
             ))}
-            <li>
-              <a
-                href="#"
-                onClick={nextPage}
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-700 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                Next
-              </a>
-            </li>
           </ul>
         </nav>
       </div>

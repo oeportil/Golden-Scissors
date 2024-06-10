@@ -8,6 +8,7 @@ export default async function handle(req, res) {
     }
     res.json(empleado);
   } else if (req.method === "POST") {
+    console.log(req.body);
     try {
       const empleado = await prisma.empleados.create({
         data: req.body,

@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export async function getEmpleados() {
+export async function getEmpleados(estado) {
+  if (estado <= 0 || estado >= 5) estado = 4;
   const empleados = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/datosempleo`
+    `${process.env.NEXT_PUBLIC_API_URL}/datosempleo?tipofiltro=${estado}`
   );
   return empleados.data;
 }
