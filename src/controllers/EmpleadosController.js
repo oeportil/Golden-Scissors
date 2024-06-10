@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getEmpleados() {
   const empleados = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/empleados`
+    `${process.env.NEXT_PUBLIC_API_URL}/datosempleo`
   );
   return empleados.data;
 }

@@ -249,8 +249,9 @@ const Page = () => {
                 Horas trabajadas
               </th>
               <th scope="col" className="px-6 py-3">
-                Nº Trabajos realizados
+                Trabajos hechos
               </th>
+
               <th scope="col" className="px-6 py-3">
                 <strong>Opciónes</strong>
               </th>
@@ -273,8 +274,8 @@ const Page = () => {
                       {emple.nombre} {emple.apellido}
                     </td>
                     <td className="px-6 py-4">$ {emple.salario}</td>
-                    <td className="px-6 py-4">$ {emple.salario}</td>
-                    <td className="px-6 py-4">$ {emple.salario}</td>
+                    <td className="px-6 py-4">{emple.tiempo_trabajo}</td>
+                    <td className="px-6 py-4">{emple.trabajos_hechos}</td>
                     {emple.contratado ? (
                       <td className="px-6 py-4 flex gap-2">
                         <button
