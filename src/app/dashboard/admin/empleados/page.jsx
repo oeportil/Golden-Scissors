@@ -14,6 +14,8 @@ import { formatDate, Hora, prismaFecha } from "@/utils/helpers";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import "@/styles/empleados.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledModal = Modal.styled`
   width: 95%;
@@ -47,7 +49,7 @@ const Page = () => {
     estado: 1,
     contratado: true,
     salario: 0,
-    id_horarioEmpleado: 1,
+    id_horarioEmpleado: 0,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -168,12 +170,45 @@ const Page = () => {
     e.preventDefault();
     if (selecto.length > 0) {
       if (empleadoActual.id_empleado == 0) {
-        empleadoActual.fechaContra = prismaFecha(new Date());
-        const e = await createEmpleado(empleadoActual, selecto);
-        if (typeof e != "string") {
-          window.location.reload();
+        if (empleadoActual.id_horarioEmpleado != 0) {
+          empleadoActual.fechaContra = prismaFecha(new Date());
+          const e = await createEmpleado(empleadoActual, selecto);
+          if (e.mensaje != "Ocurrio un Error") {
+            toast.success(e.mensaje, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            setTimeout(() => {}, 1500);
+            window.location.reload();
+          } else {
+            toast.error("No se permiten datos repetidos", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
         } else {
-          alert(e);
+          toast.error("Seleccione un horario para el empleado", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } else {
         const e = await updateEmpleado(
@@ -184,11 +219,29 @@ const Page = () => {
         if (typeof e != "string") {
           window.location.reload();
         } else {
-          alert(e);
+          toast.error(e, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       }
     } else {
-      alert("Seleccione al menos un Servicios");
+      toast.error("Seleccione al menos un servicio", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
@@ -467,12 +520,14 @@ const Page = () => {
                   <div className="relative z-0 w-full mb-5 group">
                     <select
                       name="id_horarioEmpleado"
-                      id=""
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                       onChange={handleChangeEmpleado}
-                      value={empleadoActual.id_horarioEmpleado}
+                      value={empleadoActual.id_horarioEmpleado || 0}
                     >
-                      {horarios.length != 0
+                      <option disabled value={0}>
+                        Seleccione un horario
+                      </option>
+                      {horarios.length !== 0
                         ? horarios.map((horario) => (
                             <option
                               key={horario.id_horarioEmpleado}
@@ -484,8 +539,8 @@ const Page = () => {
                         : ""}
                     </select>
                     <label
-                      htmlFor="floating_last_name"
-                      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                      htmlFor="id_horarioEmpleado"
+                      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >
                       Horarios
                     </label>
@@ -579,6 +634,7 @@ const Page = () => {
           </div>
         </StyledModal>
       </ModalProvider>
+      <ToastContainer />
     </div>
   );
   function handleServ(e) {

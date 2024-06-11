@@ -1,32 +1,32 @@
-h1{
-    color: var(--gold);
-    line-height: 1.5;
+h1 {
+  color: var(--gold);
+  line-height: 1.5;
 }
-.goldest{
-    color: var(--gold);
-}
-
-.introduccion .iniciar_sesion{
-    background-color: var(--brown);
-    color: var(--gold);
-    padding: .5rem 2rem;
-    transition-property: background-color;
-    transition-duration: 300ms;
+.goldest {
+  color: var(--gold);
 }
 
-.introduccion .iniciar_sesion:hover{
-    background-color:  var(--gold);
-    color: var(--brown);
+.introduccion .iniciar_sesion {
+  background-color: var(--brown);
+  color: var(--gold);
+  padding: 0.5rem 2rem;
+  transition-property: background-color;
+  transition-duration: 300ms;
 }
-.servicios{
-    background-color: var(--ligthbrown);
+
+.introduccion .iniciar_sesion:hover {
+  background-color: var(--gold);
+  color: var(--brown);
 }
-.servicios h2{
-    color: var(--gold);
+.servicios {
+  background-color: var(--ligthbrown);
 }
-.card_inicio{
-    background-color: var(--white);
+.servicios h2 {
+  color: var(--gold);
 }
-.titulo_card{
-    color: var(--brown);
+.card_inicio {
+  background-color: var(--white);
+}
+.titulo_card {
+  color: var(--brown);
 }

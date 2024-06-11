@@ -13,7 +13,7 @@ export default async function handle(req, res) {
       const empleado = await prisma.empleados.create({
         data: req.body,
       });
-      res.json(empleado);
+      res.json({ empleado: empleado, mensaje: "Empleado Creado con éxito" });
     } catch (error) {
       res.json({ mensaje: "Ocurrio un Error" });
       console.log(error);

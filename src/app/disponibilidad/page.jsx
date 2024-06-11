@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { format, addHours, addMinutes } from "date-fns";
+import "@/styles/disponible.css";
 
 function EmpleadoCard({ empleado }) {
   return (
@@ -21,6 +22,26 @@ function EmpleadoCard({ empleado }) {
   );
 }
 
+function TimeLabels({ intervals }) {
+  return (
+    <div className="flex overflow-x-auto p-2">
+      {intervals.map((interval, index) => (
+        <div
+          key={index}
+          className="flex-shrink-0 text-center"
+          style={{
+            width: `4.5vh`,
+          }}
+        >
+          <span className="text-xs block text-gray-500">
+            {format(interval, "p")}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Timeline({ detalles, estado }) {
   const intervals = [];
   const now = new Date();
@@ -36,7 +57,7 @@ function Timeline({ detalles, estado }) {
 
   let currentTime = startOfDay;
 
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 60; i++) {
     // 5 minutos * 60 iteraciones = 5 horas
     intervals.push(currentTime);
     currentTime = addMinutes(currentTime, 5);
@@ -45,43 +66,75 @@ function Timeline({ detalles, estado }) {
   const renderDetails = (interval) => {
     const detail = detalles.find(
       (det) =>
-        addHours(new Date(det.fechaInicio), 6) <= interval &&
-        addHours(new Date(det.fechaFin), 6) > interval
+        addMinutes(new Date(det.fechaInicio), 360) <= interval && // Adjust for timezone if necessary
+        addMinutes(new Date(det.fechaFin), 360) > interval // Adjust for timezone if necessary
     );
     if (detail) {
-      return (
-        <div className="bg-gray-200 rounded p-2 m-1 text-center" key={interval}>
-          <p>{`Reserva N°${detail.idCita}`}</p>
-          <p>{`${detail.nombreServicio} (${format(
-            addHours(new Date(detail.fechaInicio), 6),
-            "p"
-          )} - ${format(addHours(new Date(detail.fechaFin), 6), "p")})`}</p>
-        </div>
-      );
+      return {
+        content: `Reserva N°${detail.idCita}\n${
+          detail.nombreServicio
+        } (${format(
+          addMinutes(new Date(detail.fechaInicio), 360),
+          "p"
+        )} - ${format(addMinutes(new Date(detail.fechaFin), 360), "p")})`,
+        key: `detail-${interval}`,
+      };
     }
     if (estado === "Atendiendo visitante" && !detail) {
-      return (
-        <div
-          className="bg-yellow-200 rounded p-2 m-1 text-center"
-          key={interval}
-        >
-          Atendiendo visitante
-        </div>
-      );
+      return {
+        content: "Atendiendo visitante",
+        key: `visitor-${interval}`,
+      };
     }
-    return <div className="p-2 m-1" key={interval}></div>;
+    return { content: "", key: `empty-${interval}` };
   };
 
+  const mergedIntervals = [];
+  let previousContent = "";
+  let spanCount = 0;
+
+  intervals.forEach((interval) => {
+    const { content, key } = renderDetails(interval);
+    if (content == previousContent) {
+      spanCount += 1;
+    } else {
+      console.log(content);
+      console.log(previousContent);
+      console.log(spanCount);
+      mergedIntervals.push({
+        content: previousContent,
+        span: spanCount,
+        key: key + spanCount,
+      });
+
+      previousContent = content;
+      spanCount = 1;
+    }
+  });
+
+  // Push the last interval
+  mergedIntervals.push({
+    content: previousContent,
+    span: spanCount,
+    key: previousContent + spanCount,
+  });
+
   return (
-    <div className="flex overflow-x-auto p-2 border rounded-lg shadow-inner">
-      {intervals.map((interval) => (
-        <div className="flex-shrink-0 w-28 border-r" key={interval}>
-          <span className="text-xs block text-gray-500">
-            {format(interval, "p")}
-          </span>
-          {renderDetails(interval)}
-        </div>
-      ))}
+    <div>
+      <TimeLabels intervals={intervals} />
+      <div className="flex overflow-x-auto p-2 border rounded-lg shadow-inner hide-scrollbar">
+        {mergedIntervals.map(({ content, span, key }) => (
+          <div
+            className={`flex-shrink-0 border-r p-2 m-1 text-center`}
+            key={key}
+            style={{
+              width: `${span * 4.5}vh`,
+            }}
+          >
+            <span className="text-s block text-gray-500">{content}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

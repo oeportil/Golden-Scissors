@@ -100,7 +100,7 @@ const page = () => {
               </h4>
             </div>
           ) : (
-            <>
+            <div className="overflow-y-scroll h-screen hide-scrollbar">
               {reservaciones.map((reserv, i) => (
                 <ReservaActualesCard
                   key={i}
@@ -108,7 +108,7 @@ const page = () => {
                   closeSecondModal={closeSecondModal}
                 />
               ))}
-            </>
+            </div>
           )}
         </div>
         <div className="md:w-1/2  mx-auto">
@@ -116,7 +116,7 @@ const page = () => {
             <h2 className="texto font-bold text-lg mb-4">
               Peluqueros actuales
             </h2>
-            <div className="overflow-y-scroll h-screen">
+            <div className="overflow-y-scroll h-screen hide-scrollbar">
               {empleados.map((empleado, i) => (
                 <PeluquerosActualesCard key={i} empleado={empleado} />
               ))}
