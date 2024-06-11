@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 import styled from "styled-components";
 import { AtendVisit, cambiarEstado } from "@/controllers/EmpleadosController";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledModal = Modal.styled`
   width: 20rem;
@@ -61,6 +63,7 @@ const PeluquerosActualesCard = ({ empleado }) => {
 
   return (
     <div className={`p-1 ${empleado.state == 1 ? "boton1" : " "} mb-7`}>
+      <ToastContainer />
       <div
         className="reser text-white p-4 py-4 flex items-center justify-between rounded-lg"
         style={{ height: "19vh" }}
@@ -135,7 +138,16 @@ const PeluquerosActualesCard = ({ empleado }) => {
     if (resultado.status == 200) {
       window.location.reload();
     } else {
-      alert("ocurrio un error, Intentelo Nuevamente");
+      toast.error("Ocurrio un error, Intentelo Nuevamente", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   }
 
@@ -147,12 +159,30 @@ const PeluquerosActualesCard = ({ empleado }) => {
       resultado.error ==
       "No se puede cambiar a estado 3 con detalles de cita pendientes hoy"
     ) {
-      alert("No se puede retirar, Aún tiene citas pendientes");
+      toast.error("No se puede retirar, Aún tiene citas pendientes", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } else if (
       resultado.error ==
       "No se puede cambiar a estado 2 o 3 mientras se atiende un detalle de cita"
     ) {
-      alert("No se puede cambiar su estado, está atendiendo una cita");
+      toast.error("No se puede cambiar su estado, está atendiendo una cita", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } else {
       alert("ocurrio un error, Intentelo Nuevamente");
     }
