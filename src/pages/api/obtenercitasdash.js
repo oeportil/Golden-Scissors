@@ -14,9 +14,13 @@ export default async function handler(req, res) {
           fecha: "desc",
         },
         where: {
-          fecha: {
-            gte: hoy,
-            lte: ayer,
+          detalleCita: {
+            some: {
+              fecha_fin: {
+                gte: hoy,
+                lte: ayer,
+              },
+            },
           },
         },
         include: {
@@ -25,6 +29,7 @@ export default async function handler(req, res) {
               nombre: true,
               apellido: true,
               telefono: true,
+              id_usuario: true,
             },
           },
           detalleCita: {
@@ -80,13 +85,14 @@ export default async function handler(req, res) {
 
         return {
           idCita: cita.id_cita,
+          idUsuario: cita.usuario.id_usuario,
           nombreUsuario: `${cita.usuario.nombre} ${cita.usuario.apellido}`,
           telefonoUsuario: cita.usuario.telefono,
           fechaCorte: cita.fecha,
           servicios: detalles.map((detalle) => detalle.nombreServicio),
           peluqueros: peluqueros,
           totalCorte: total,
-          duracionTotal: duracionTotal / 60000, // Convertir milisegundos a minutos
+          duracionTotal: duracionTotal / 60000,
           detalles: detalles,
           citaRealizada: addHours(new Date(), -6) > new Date(cita.fecha),
         };

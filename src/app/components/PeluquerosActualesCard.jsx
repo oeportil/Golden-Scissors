@@ -53,10 +53,11 @@ const PeluquerosActualesCard = ({ empleado }) => {
       setTimeout(resolve, 300);
     });
   }
-  let services = "";
+  let services = "|";
   empleado.categorias.map((categ) => {
-    services += " " + categ + ",";
+    services += "| " + categ + " |";
   });
+  services += "|";
 
   return (
     <div className={`p-1 ${empleado.state == 1 ? "boton1" : " "} mb-7`}>
