@@ -22,13 +22,14 @@ export function middleware(req) {
         }
     }
 
-    if(token && req.nextUrl.pathname === '/dashboard/admin'){
+    if(token && req.nextUrl.pathname.startsWith('/dashboard/admin')){
         const data = JSON.parse(token)   
         if(!data.admin){
             const response = NextResponse.redirect(new URL('/dashboard/user', req.url))
             return response
         }
     }
+    
 
     if(token && req.nextUrl.pathname === '/dashboard/user'){
         const data = JSON.parse(token)   

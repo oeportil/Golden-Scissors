@@ -26,7 +26,7 @@ function EmpleadoCard({ empleado }) {
 
 function TimeLabels({ intervals }) {
   return (
-    <div className="flex overflow-x-auto p-2">
+    <div className="flex gap-8 overflow-x-auto p-2">
       {intervals.map((interval, index) => (
         <div
           key={index}
@@ -35,7 +35,7 @@ function TimeLabels({ intervals }) {
             width: `4.5vh`,
           }}
         >
-          <span className="text-s block text-gray-500">
+          <span className="text-xs lg:text-s block text-gray-500 ">
             {format(interval, "p")}
           </span>
         </div>
