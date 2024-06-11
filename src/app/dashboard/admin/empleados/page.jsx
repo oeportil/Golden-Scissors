@@ -217,7 +217,33 @@ const Page = () => {
           selecto
         );
         if (typeof e != "string") {
-          window.location.reload();
+          if(e.mensaje != "Ocurrio un error"){
+            toast.success(e.mensaje, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);           
+          } else {
+            toast.error("No se pueden repetir campos", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
+          // window.location.reload();
         } else {
           toast.error(e, {
             position: "top-right",
