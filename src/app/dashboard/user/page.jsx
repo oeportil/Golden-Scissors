@@ -11,10 +11,16 @@ import Link from "next/link";
 import styled from "styled-components";
 import Modal, { ModalProvider, BaseModalBackground } from "styled-react-modal";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import logo from "@/./logos/GS_logo.png";
 import fondo from "@/./logos/fondo_opaco.png";
 
 import ReactToPrint from "react-to-print";
+
+import edit from "@/img/editImage.png"
+import axios from "axios";
 
 const InvoiceModal = Modal.styled`
   width: 400px;
@@ -178,6 +184,46 @@ const Page = () => {
       ("0" + date.getUTCMinutes()).slice(-2);
     return formattedDateUTC;
   }
+  const[mEvent, setMEvent] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null);
+  
+  const changeImage = async () => {
+    if (!selectedFile) {
+      toast.error("Debe de elegir una imagen diferente para actualizar foto", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+    const formData = new FormData();
+    formData.append('imagen', selectedFile);
+    formData.append('nombrid', cook.id_usuario);
+    try {
+      const response = await axios.post(`/api/images/1`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      toast.success(response.data.mensaje);
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500);
+    } catch (error) {
+      console.error('Error al subir la imagen:', error);
+    }
+  };
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
   return (
     <div className="flex flex-col items-center mb-4">
       <section className="parte1 container grid justify-center w-full">
@@ -204,18 +250,33 @@ const Page = () => {
               </p>
             </div>
           </div>
-
+          <ToastContainer/>
           <div className=" flex flex-col gap-2 justify-center items-center">
-            <div className="rounded-full">
-              <Image
+            <div onMouseEnter={() => setMEvent(true)} onMouseLeave={() => setMEvent(false)} className="rounded-full">
+             {!mEvent ?  <Image
                 src={route}
                 width={200}
                 height={200}
                 alt="Foto de perfil"
                 className="rounded-full w-full h-full"
+              /> :  <div>
+                <Image
+                src={edit}
+                width={200}
+                height={200}
+                alt="Foto de perfil"
+                className="rounded-full w-full h-full cursor-pointer"
+                onClick={() => document.getElementById('fileInput').click()}
               />
+              <button onClick={changeImage}>Cambiar Imagen</button>
+              </div> }
             </div>
-
+            <input
+              type="file"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              id="fileInput"
+            />
             <Link
               href={"user/editar"}
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -250,9 +311,9 @@ const Page = () => {
             </thead>
             <tbody>
               {citas.map((cita) => (
-                <>
+                <React.Fragment key={cita.idCita}>
                   <tr
-                    key={cita.idCita}
+                    
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
                     <td
@@ -314,7 +375,7 @@ const Page = () => {
                       )}
                     </td>
                   </tr>
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>
