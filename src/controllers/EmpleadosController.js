@@ -51,13 +51,16 @@ export async function getCategorias() {
   );
   return categorias.data;
 }
-export async function updateEmpleado(id, update, selecto) {
+
+//update empleado
+export async function updateEmpleado(id, upd, selecto) {
+  const {id_empleado, ...update} = upd
   update.id_horarioEmpleado = Number(update.id_horarioEmpleado);
   update.salario = Number.parseFloat(update.salario);
   if (update.salario <= 0) {
     return "Salario Debe de ser mayor a cero";
   }
-  delete update.id_empleado;
+
   let i = 0;
   Object.keys(update).map((emp) => {
     if (Object.values(update)[i] == "" || Object.values(update)[i] == 0) {
@@ -65,16 +68,18 @@ export async function updateEmpleado(id, update, selecto) {
     }
     i++;
   });
-  const empeAct = axios.put(
+  const empeAct = await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL}/empleados/${id}`,
     update
   );
-  const cateAct = axios.patch(
+  const cateAct = await axios.patch(
     `${process.env.NEXT_PUBLIC_API_URL}/categcapacita/${id}`,
     selecto
   );
-  return empeAct.data;
+  return empeAct.data
 }
+
+//despedir el empleado
 export async function despedirEmpleado(id) {
   console.log(id);
   const despedir = { contratado: false };
@@ -85,6 +90,8 @@ export async function despedirEmpleado(id) {
   console.log(desp.data);
   return desp.data;
 }
+
+
 export async function createEmpleado(empleado, selecto) {
   const {
     nombre,

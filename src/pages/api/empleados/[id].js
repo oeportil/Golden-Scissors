@@ -21,10 +21,10 @@ export default async function handler(req, res) {
       });
       res.json({
         data: empleado,
-        mensaje: "empleado actualizado correctamente",
+        mensaje: "Empleado Actualizado Correctamente",
       });
     } catch (error) {
-      res.json({ mensaje: "empleado no encontrado" });
+      res.json({ mensaje: "Ocurrio un error" });
       console.log(error)
     }
   } else if (req.method === "DELETE") {
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
           id_empleado: Number(id),
         },
       });
-      res.json({ data: empleado, mensaje: "empleado eliminado correctamente" });
+      res.json({ data: empleado, mensaje: "Empleado eliminado correctamente" });
     } catch (error) {
       res.json({ mensaje: "empleado no encontrado" });
     }
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
           contratado
         }
       })
-      res.json({contratado})
+      res.json({contratado, mensaje:"Actualizado Satisfactoriamente"})
     } catch (error) {
       res.json({mensaje: "error"})
       console.log(error)
