@@ -71,6 +71,9 @@ export default async function handler(req, res) {
           },
         },
       },
+      orderBy: {
+        fechaContra: "asc",
+      },
     });
 
     const response = empleados.map((empleado) => {

@@ -1,17 +1,19 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { format, addHours, addMinutes } from "date-fns";
+import React, { useEffect, useState, useRef } from "react";
+import { format, addMinutes } from "date-fns";
 import "@/styles/disponible.css";
 
 function EmpleadoCard({ empleado }) {
   return (
-    <div className="flex items-center border rounded-lg p-4 shadow-lg mb-4">
+    <div className="flex items-center border rounded-lg p-4 shadow-lg mb-4 h-60">
       <div className="flex-shrink-0 mr-4">
-        <div className="bg-gray-300 rounded-full w-16 h-16 flex items-center justify-center">
-          <span className="text-xl font-semibold">{empleado.nombre[0]}</span>
+        <div className="bg-gray-300 rounded-full w-12 h-12 flex items-center justify-center">
+          <span className="text-xl font-semibold">
+            {empleado.nombre[0] + empleado.apellido[0]}
+          </span>
         </div>
       </div>
-      <div className="w-32">
+      <div className="w-40">
         <h2 className="text-lg font-bold">{`${empleado.nombre} ${empleado.apellido}`}</h2>
         <p className="text-sm text-gray-600">
           {empleado.categorias.join(", ")}
@@ -33,7 +35,7 @@ function TimeLabels({ intervals }) {
             width: `4.5vh`,
           }}
         >
-          <span className="text-xs block text-gray-500">
+          <span className="text-s block text-gray-500">
             {format(interval, "p")}
           </span>
         </div>
@@ -58,7 +60,6 @@ function Timeline({ detalles, estado }) {
   let currentTime = startOfDay;
 
   for (let i = 0; i < 60; i++) {
-    // 5 minutos * 60 iteraciones = 5 horas
     intervals.push(currentTime);
     currentTime = addMinutes(currentTime, 5);
   }
@@ -66,8 +67,8 @@ function Timeline({ detalles, estado }) {
   const renderDetails = (interval) => {
     const detail = detalles.find(
       (det) =>
-        addMinutes(new Date(det.fechaInicio), 360) <= interval && // Adjust for timezone if necessary
-        addMinutes(new Date(det.fechaFin), 360) > interval // Adjust for timezone if necessary
+        addMinutes(new Date(det.fechaInicio), 360) <= interval &&
+        addMinutes(new Date(det.fechaFin), 360) > interval
     );
     if (detail) {
       return {
@@ -95,12 +96,9 @@ function Timeline({ detalles, estado }) {
 
   intervals.forEach((interval) => {
     const { content, key } = renderDetails(interval);
-    if (content == previousContent) {
+    if (content === previousContent) {
       spanCount += 1;
     } else {
-      console.log(content);
-      console.log(previousContent);
-      console.log(spanCount);
       mergedIntervals.push({
         content: previousContent,
         span: spanCount,
@@ -112,7 +110,6 @@ function Timeline({ detalles, estado }) {
     }
   });
 
-  // Push the last interval
   mergedIntervals.push({
     content: previousContent,
     span: spanCount,
@@ -125,13 +122,15 @@ function Timeline({ detalles, estado }) {
       <div className="flex overflow-x-auto p-2 border rounded-lg shadow-inner hide-scrollbar">
         {mergedIntervals.map(({ content, span, key }) => (
           <div
-            className={`flex-shrink-0 border-r p-2 m-1 text-center`}
+            className={`flex-shrink-0 border-r p-2 m-1 text-center h-36 ${
+              content.includes("Atendiendo") && "atendiendo"
+            } ${content.includes("Reserva") && "detalle"}`}
             key={key}
             style={{
               width: `${span * 4.5}vh`,
             }}
           >
-            <span className="text-s block text-gray-500">{content}</span>
+            <span className="text-s block text-gray-950">{content}</span>
           </div>
         ))}
       </div>
@@ -141,18 +140,46 @@ function Timeline({ detalles, estado }) {
 
 function EmpleadosList() {
   const [empleados, setEmpleados] = useState([]);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/disponibleget`) // Asegúrate de que este endpoint esté configurado correctamente
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/disponibleget`)
       .then((response) => response.json())
       .then((data) => setEmpleados(data))
       .catch((error) => console.error("Error fetching empleados:", error));
   }, []);
 
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    let scrollPosition = 0;
+
+    const scrollInterval = setInterval(() => {
+      if (
+        scrollContainer.scrollHeight - scrollContainer.scrollTop <=
+        scrollContainer.clientHeight + 1
+      ) {
+        scrollContainer.scrollTop = 0;
+        scrollPosition = 0;
+      } else {
+        scrollPosition += 1;
+        scrollContainer.scrollTo({
+          top: scrollPosition,
+          behavior: "smooth",
+        });
+      }
+    }, 75);
+
+    return () => clearInterval(scrollInterval);
+  }, []);
+
   return (
-    <div className="container mx-auto">
-      {empleados.map((empleado) => (
-        <div className="flex mb-4" key={empleado.id}>
+    <div
+      className=" mx-5 scroll-container hide-scrollbar"
+      style={{ overflowY: "auto", height: "100vh" }}
+      ref={scrollContainerRef}
+    >
+      {[...empleados, ...empleados].map((empleado, index) => (
+        <div className="flex mb-4" key={index}>
           <EmpleadoCard empleado={empleado} />
           <Timeline detalles={empleado.detalles} estado={empleado.estado} />
         </div>

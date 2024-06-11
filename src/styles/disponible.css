@@ -34,3 +34,13 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+.atendiendo {
+  background-color: burlywood;
+  color: black !important;
+}
+
+.detalle {
+  background-color: #ccc;
+  color: black !important;
+}

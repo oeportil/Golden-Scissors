@@ -79,7 +79,7 @@ const page = () => {
   }, []);
 
   return (
-    <div className="p-8 fondo text-white min-h-screen">
+    <div className="p-8 fondo text-white h-100">
       <button
         onClick={searchReserv}
         className="block text-white boton2 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -100,7 +100,12 @@ const page = () => {
               </h4>
             </div>
           ) : (
-            <div className="overflow-y-scroll h-screen hide-scrollbar">
+            <div
+              className="overflow-y-scroll hide-scrollbar"
+              style={{
+                height: "80vh",
+              }}
+            >
               {reservaciones.map((reserv, i) => (
                 <ReservaActualesCard
                   key={i}
@@ -116,7 +121,12 @@ const page = () => {
             <h2 className="texto font-bold text-lg mb-4">
               Peluqueros actuales
             </h2>
-            <div className="overflow-y-scroll h-screen hide-scrollbar">
+            <div
+              className="overflow-y-scroll hide-scrollbar"
+              style={{
+                height: "80vh",
+              }}
+            >
               {empleados.map((empleado, i) => (
                 <PeluquerosActualesCard key={i} empleado={empleado} />
               ))}
