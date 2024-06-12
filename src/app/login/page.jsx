@@ -82,11 +82,7 @@ const Page = () => {
                 Ingrese su contraseña
               </label>
             </div>
-            <p className="gold">¿Olvidaste tu contraseña?</p>
-            {/*hola*/}
-            <Link className="gold mb-5" href={"#"}>
-              Recuperar contraseña
-            </Link>
+
             <input
               type="submit"
               className="font-medium rounded-full bg-brown text-sm w-full transition-colors  px-5 py-2.5 text-center gold  hover:bg-yellow-500 hover:text-amber-950 cursor-pointer"
