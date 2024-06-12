@@ -11,11 +11,7 @@ export default async function handler(req, res) {
   } else if (req.method === "POST") {
     //Aqui comienza la locura, el lado misterioso de la isla
     let { orden, fecha, id_usu } = req.body;
-    if (
-      !orden ||
-      !Array.isArray(orden) ||
-      orden.length === 0
-    ) {
+    if (!orden || !Array.isArray(orden) || orden.length === 0) {
       return res
         .status(400)
         .json({ error: "La lista de servicios no debe ir vacía" });
@@ -77,7 +73,8 @@ export default async function handler(req, res) {
         comprobante = await obtenerDisponibles(
           fechaini,
           fechafin,
-          horario.id_horarioEmpleado
+          horario.id_horarioEmpleado,
+          orden[i].id_categoria
         );
         if (comprobante.length == 0) {
           await borrarCitas(cita.id_cita);
