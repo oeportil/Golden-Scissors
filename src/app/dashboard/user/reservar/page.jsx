@@ -390,7 +390,7 @@ const Page = () => {
                                         Seleccionar Hora de Inicio
                                     </label>
                                     <select onChange={e => setDatosFinales(JSON.parse(e.target.value))} className="input-field border-none mt-5">
-                                            <option disabled>-- Seleccionar Una Hora --</option>
+                                            <option disabled selected>-- Seleccionar Una Hora --</option>
                                         {fecOrden.map((fecha, i) => (
                                             <option key={i} value={JSON.stringify(fecha)}>{horaReserva(fecha.fecha)}</option>
                                         ))}
