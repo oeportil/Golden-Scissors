@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Nosotros from "../../img/Nosotros.webp";
-import Nosotros2 from "@/img/Nosotros2.png";
+import Nosotros2 from "../../img/Nosotros2.png";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 
 export const metadata = {
