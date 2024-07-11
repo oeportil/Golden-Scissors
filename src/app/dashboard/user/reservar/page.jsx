@@ -11,7 +11,7 @@ import "@/styles/reservar.css";
 //para el slider del modal
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import SelectServCard from "@/app/components/selectServCard";
+import SelectServCard from "../../../components/selectServCard";
 
 //Para el toast
 import { ToastContainer, toast } from "react-toastify";
